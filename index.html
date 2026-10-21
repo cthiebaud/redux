@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TDQNBYVEQS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-TDQNBYVEQS');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alerte — variations</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+  <style>
+    :root {
+      --accent: #b5482f;
+    }
+
+    [data-bs-theme="dark"] {
+      --accent: #e08a6c;
+    }
+
+    body {
+      padding: 2.5rem 0 4rem;
+    }
+
+    h1 {
+      letter-spacing: -0.01em;
+    }
+
+    .lyrics-link {
+      color: var(--accent);
+      opacity: 0.75;
+    }
+
+
+    .lyrics-link:hover {
+      opacity: 1;
+    }
+
+    .lyrics-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .stars {
+      display: flex;
+      gap: 0.1rem;
+    }
+
+    .stars button {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 1.05rem;
+      line-height: 1;
+      color: var(--bs-border-color);
+      cursor: pointer;
+    }
+
+    .stars button.filled {
+      color: var(--accent);
+    }
+
+    .chevron-btn {
+      color: var(--bs-secondary-color);
+    }
+
+    .track-vote-link {
+      display: none !important; /* temporarily hidden, restore the style collapse instead */
+    }
+
+    .section-divider {
+      margin: 0.5rem 0;
+    }
+
+    .section-divider hr {
+      border: none;
+      border-top: 2px dotted var(--bs-border-color);
+      opacity: 1;
+      margin: 0;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      color: var(--bs-secondary-color);
+    }
+
+    .download-btn:hover {
+      color: var(--bs-body-color);
+    }
+
+    .chevron-btn svg {
+      transition: transform 0.15s ease;
+    }
+
+    .chevron-btn[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+    }
+
+    .note-langs .btn.active {
+      color: var(--bs-secondary);
+      border-color: var(--bs-secondary);
+      background-color: transparent;
+    }
+
+    .btn-outline-secondary {
+      --bs-btn-border-color: var(--bs-border-color);
+    }
+
+    .note-text a {
+      color: var(--accent);
+    }
+
+    #trackList .card.track-playing {
+      background-color: hsl(var(--track-hue) 65% 93%);
+    }
+
+    [data-bs-theme="dark"] #trackList .card.track-playing {
+      background-color: hsl(var(--track-hue) 30% 16%);
+    }
+
+    #nowPlayingWrap {
+      color: hsl(var(--track-hue, 0) 70% 35%);
+    }
+
+    [data-bs-theme="dark"] #nowPlayingWrap {
+      color: hsl(var(--track-hue, 0) 70% 65%);
+    }
+  </style>
+</head>
+
+<body data-bs-theme="light">
+  <div class="container" style="max-width: 720px;">
+    <div class="d-flex justify-content-between align-items-start gap-2 mb-4">
+      <div class="d-flex flex-column">
+        <h1 class="h3 mb-0">Alerte</h1>
+        <p class="text-body-secondary mb-0 d-flex align-items-center gap-1" id="subtitle">
+          <span id="subtitleText">Exercises in Style</span>
+          <a id="subtitleLink" href="https://en.wikipedia.org/wiki/Exercises_in_Style" target="_blank" rel="noopener" aria-label="Wikipedia" class="d-inline-flex text-body-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        </p>
+        <p class="text-body-secondary mb-0" id="subtitleCount">Thirty Variations on Alerte</p>
+      </div>
+      <div class="d-flex flex-column align-items-end gap-2">
+        <div class="d-flex align-items-center gap-2">
+          <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill d-inline-flex align-items-center justify-content-center" id="aboutTriggerBtn" data-bs-toggle="modal" data-bs-target="#aboutModal" style="width: 2rem; height: 2rem;" aria-label="About" title="About">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </button>
+          <a href="paroles.html" target="alerte-paroles" class="btn btn-outline-secondary btn-sm rounded-pill" id="pageNavLink">Paroles</a>
+        </div>
+        <div class="d-flex align-items-stretch gap-2">
+          <!-- Shuffle icon from svgrepo.com (shuffle-random-svgrepo-com.svg) -->
+          <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill d-inline-flex align-items-center" id="shufflePlayBtn" title="Shuffle" aria-label="Shuffle">
+            <svg viewBox="0 0 512 512" fill="currentColor" width="14" height="14">
+              <path d="M512,387.67L405.406,281.024v84.694h-10.435c-48.766,0-80.203-28.752-108.698-68.925
+				c-7.856,12.825-16.14,26.159-25.113,39.387c32.329,41.052,73.081,73.424,133.81,73.424h10.435v84.686L512,387.67z"></path>
+              <path d="M512,124.355L405.406,17.71v84.695h-10.435c-92.763,0-138.917,75.524-179.637,142.158
+				c-39.73,65.009-74.04,121.155-142.191,121.155H0v43.886h73.143c92.763,0,138.917-75.524,179.637-142.158
+				c39.73-65.011,74.04-121.157,142.191-121.157h10.435v84.686L512,124.355z"></path>
+              <path d="M73.143,102.404H0v43.886h73.143c48.766,0,80.203,28.752,108.698,68.925c7.856-12.825,16.14-26.159,25.113-39.387
+				C174.624,134.774,133.872,102.404,73.143,102.404z"></path>
+            </svg>
+          </button>
+          <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill d-inline-flex align-items-center" id="playlistStartBtn" title="Play" aria-label="Play">
+            <svg id="playlistStartIcon" viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </button>
+        </div>
+        <div class="small invisible d-flex align-items-center gap-1" id="nowPlayingWrap">
+          <span id="nowPlayingText">&nbsp;</span>
+          <a href="#" id="nowPlayingLink" class="d-inline-flex align-items-center" aria-label="Jump to track" title="Jump to track">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+              <polyline points="9 6 15 12 9 18"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ul class="list-unstyled vstack gap-3 mb-4" id="trackList"></ul>
+
+    <template id="track-template">
+      <li>
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge rounded-pill text-bg-light border track-badge"></span>
+                <h2 class="h6 mb-0 track-title"></h2>
+                <span class="track-voice text-body-secondary" style="font-size: 0.8rem;"></span>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <a class="lyrics-link d-inline-flex align-items-center gap-1 small text-decoration-none track-lyrics-link"
+                  target="alerte-paroles">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="4" y1="6" x2="20" y2="6"></line>
+                    <line x1="4" y1="12" x2="16" y2="12"></line>
+                    <line x1="4" y1="18" x2="20" y2="18"></line>
+                  </svg>
+                  <span class="track-lyrics-label"></span>
+                </a>
+                <a class="download-btn track-download" download title="Télécharger" aria-label="Télécharger">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M12 3v12"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <path d="M5 19h14"></path>
+                  </svg>
+                </a>
+                <!-- Suno's own favicon mark, fetched from cdn-o.suno.com -->
+                <a class="download-btn track-suno-link position-relative d-inline-flex" target="_blank" rel="noopener" title="Écouter sur Suno" aria-label="Écouter sur Suno">
+                  <img src="_images/suno-icon.png" alt="" width="18" height="18">
+                  <span class="track-suno-approx-badge d-none position-absolute top-0 start-100 translate-middle badge rounded-pill" style="font-size: 0.55rem; padding: 0.15em 0.3em;">≈</span>
+                </a>
+              </div>
+            </div>
+            <div class="player-row d-flex align-items-center gap-2 flex-wrap">
+              <audio controls preload="metadata" class="flex-grow-1 track-audio" style="min-width: 160px; height: 36px;"></audio>
+              <div class="stars" role="radiogroup" aria-label="Note">
+                <button type="button" data-value="1" aria-label="1 étoile">★</button>
+                <button type="button" data-value="2" aria-label="2 étoiles">★</button>
+                <button type="button" data-value="3" aria-label="3 étoiles">★</button>
+                <button type="button" data-value="4" aria-label="4 étoiles">★</button>
+                <button type="button" data-value="5" aria-label="5 étoiles">★</button>
+              </div>
+              <a class="track-vote-link btn btn-sm btn-link ms-auto p-0 disabled" href="#" target="_blank" rel="noopener" aria-disabled="true" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <polyline points="5 6 11 12 5 18"></polyline>
+                  <polyline points="12 6 18 12 12 18"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </template>
+
+    <footer>
+      <div class="card border-0">
+        <div class="card-body">
+          <!-- Flags from lipis/flag-icons (MIT License), https://github.com/lipis/flag-icons -->
+          <div class="btn-group-vertical btn-group-sm note-langs float-end ms-3 mb-2" role="group" aria-label="Language">
+            <button type="button" class="btn btn-outline-secondary active d-inline-flex align-items-center" data-lang="en" aria-label="English" title="English">
+              <img src="_images/flags/gb.svg" width="20" height="14" alt="" aria-hidden="true">
+            </button>
+            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="fr" aria-label="Français" title="Français">
+              <img src="_images/flags/fr.svg" width="20" height="14" alt="" aria-hidden="true">
+            </button>
+            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="it" aria-label="Italiano" title="Italiano">
+              <img src="_images/flags/it.svg" width="20" height="14" alt="" aria-hidden="true">
+            </button>
+            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="de" aria-label="Deutsch" title="Deutsch">
+              <img src="_images/flags/de.svg" width="20" height="14" alt="" aria-hidden="true">
+            </button>
+            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="es" aria-label="Español" title="Español">
+              <img src="_images/flags/es.svg" width="20" height="14" alt="" aria-hidden="true">
+            </button>
+          </div>
+          <p class="note-text small text-body-secondary mb-2" id="noteIntro"></p>
+          <p class="note-text small text-body-secondary mb-2">
+            <em id="noteAddendumLabel"></em>
+            <span id="noteAddendumText"></span>
+            <button type="button" class="btn btn-link border-0 p-0 answer-reveal-btn d-inline-flex align-items-center justify-content-center" style="width: 1.75rem; height: 1.75rem;" aria-label="Reveal answer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button> <span class="badge text-bg-info answer-reveal-badge invisible">16</span>
+          </p>
+          <p class="note-text small text-body-secondary mb-2" id="noteTranslated"></p>
+          <p class="note-text small text-body-secondary mb-0" id="noteStage"></p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="text-center text-body-secondary small mt-3" id="authorCredit">
+      <div class="fw-semibold" id="authorCreditHeading">Authors</div>
+      <div id="authorCreditMugnier">Éric Mugnier: lyrics 100%, music 98%.</div>
+      <div id="authorCreditThiebaud">Christophe Thiebaud: music 2%, production 100%.</div>
+    </div>
+
+    <p class="text-center text-body-secondary small mb-0" id="pageMeta">
+      <span id="lastUpdated">Last updated: October 10, 2026.</span>
+    </p>
+  </div>
+
+  <div class="modal fade" id="aboutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-body">
+          <div class="row g-3 text-center mb-3">
+            <div class="col-6">
+              <img src="_images/Mugnier.jpg" alt="Éric Mugnier, 1984" class="img-fluid rounded" style="aspect-ratio: 1; object-fit: cover; width: 100%;">
+              <div class="small text-body-secondary mt-1">Éric Mugnier — <span class="about-then-label">1984</span></div>
+            </div>
+            <div class="col-6">
+              <img src="_images/Thiebaud.jpg" alt="Christophe Thiebaud, 1984" class="img-fluid rounded" style="aspect-ratio: 1; object-fit: cover; width: 100%;">
+              <div class="small text-body-secondary mt-1">Christophe Thiebaud — <span class="about-then-label">1984</span></div>
+            </div>
+            <div class="col-6">
+              <img src="_images/Mugnier_now.jpg" alt="Éric Mugnier, now" class="img-fluid rounded" style="aspect-ratio: 1; object-fit: cover; width: 100%;">
+              <div class="small text-body-secondary mt-1">Éric Mugnier — <span class="about-now-label">Now</span></div>
+            </div>
+            <div class="col-6">
+              <img src="_images/Thiebaud_now.jpg" alt="Christophe Thiebaud, now" class="img-fluid rounded" style="aspect-ratio: 1; object-fit: cover; width: 100%;">
+              <div class="small text-body-secondary mt-1">Christophe Thiebaud — <span class="about-now-label">Now</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="shared.js"></script>
+  <script>
+    // Name this tab so a link back from paroles.html (target="alerte-index")
+    // reuses it instead of opening a new one, however this tab was opened.
+    window.name = 'alerte-index';
+
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.setAttribute('data-bs-theme', 'dark');
+    }
+
+    const TRACKS = [
+      {
+            "key": "original",
+            "badge": null,
+            "src": "alerte/00_alerte-original.mp3",
+            "voice": "m",
+            "code": "fr",
+            "label": "FR",
+            "titles": {
+                  "en": "Original (1984)",
+                  "fr": "Original (1984)",
+                  "it": "Originale (1984)",
+                  "de": "Original (1984)",
+                  "es": "Original (1984)"
+            }
+      },
+      {
+            "key": "normal",
+            "badge": 1,
+            "src": "alerte/01_alerte_normal.mp3",
+            "voice": "m",
+            "code": "fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/7jcjC3JNLPHl7cZP",
+            "titles": {
+                  "en": "Contemporary Rock",
+                  "fr": "Rock contemporain",
+                  "it": "Rock contemporaneo",
+                  "de": "Zeitgenössischer Rock",
+                  "es": "Rock contemporáneo"
+            }
+      },
+      {
+            "key": "jazzy-salsa",
+            "badge": 2,
+            "src": "alerte/02_alerte_jazzy_salsa.mp3",
+            "voice": "f",
+            "code": "fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/Dp9ciNaTkOx2Kn0d",
+            "titles": {
+                  "en": "Jazzy Salsa",
+                  "fr": "Jazzy Salsa",
+                  "it": "Jazzy Salsa",
+                  "de": "Jazzy Salsa",
+                  "es": "Jazzy Salsa"
+            }
+      },
+      {
+            "key": "canadien",
+            "badge": 3,
+            "src": "alerte/03_alerte_canadien.mp3",
+            "voice": "f",
+            "code": "fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/wlb5uhRJQ1dU5uY2",
+            "titles": {
+                  "en": "Canadian",
+                  "fr": "Canadien",
+                  "it": "Canadese",
+                  "de": "Kanadisch",
+                  "es": "Canadiense"
+            }
+      },
+      {
+            "key": "italien",
+            "badge": 4,
+            "src": "alerte/04_alerte_italien.mp3",
+            "voice": "f",
+            "code": "it",
+            "label": "IT",
+            "suno": "https://suno.com/s/O9a7tZa1bdFBo199",
+            "titles": {
+                  "en": "Italian",
+                  "fr": "Italien",
+                  "it": "Italiano",
+                  "de": "Italienisch",
+                  "es": "Italiano"
+            }
+      },
+      {
+            "key": "bavarois",
+            "badge": 5,
+            "src": "alerte/05_alerte_bavarois.mp3",
+            "voice": "f",
+            "code": "de",
+            "label": "DE",
+            "suno": "https://suno.com/s/Uu8QZPwzkQjfpbxy",
+            "titles": {
+                  "en": "Bavarian",
+                  "fr": "Bavarois",
+                  "it": "Bavarese",
+                  "de": "Bayerisch",
+                  "es": "Bávaro"
+            }
+      },
+      {
+            "key": "bollywood",
+            "badge": 6,
+            "src": "alerte/06_alerte_bollywood.mp3",
+            "voice": "f",
+            "code": "en",
+            "label": "EN",
+            "suno": "https://suno.com/s/LDcPEiNXSNUKZrFT",
+            "titles": {
+                  "en": "Bollywood",
+                  "fr": "Bollywood",
+                  "it": "Bollywood",
+                  "de": "Bollywood",
+                  "es": "Bollywood"
+            }
+      },
+      {
+            "key": "amerique-du-sud",
+            "badge": 7,
+            "src": "alerte/07_alerte_amerique_du_sud.mp3",
+            "voice": "mf",
+            "code": "es",
+            "label": "ES",
+            "suno": "https://suno.com/s/sHAygE8EtuyodWww",
+            "titles": {
+                  "en": "Venezuelan",
+                  "fr": "Vénézuélien",
+                  "it": "Venezuelano",
+                  "de": "Venezolanisch",
+                  "es": "Venezolano"
+            }
+      },
+      {
+            "key": "death-metal-ukrainien",
+            "badge": 8,
+            "src": "alerte/08_alerte_death_metal_ukrainien.mp3",
+            "voice": "m",
+            "code": "ua",
+            "label": "UA",
+            "suno": "https://suno.com/s/Svxx1TqshWT1xj3A",
+            "titles": {
+                  "en": "Ukrainian Death Metal",
+                  "fr": "Death Metal ukrainien",
+                  "it": "Death Metal ucraino",
+                  "de": "Ukrainischer Death Metal",
+                  "es": "Death Metal ucraniano"
+            }
+      },
+      {
+            "key": "east-coast-hip-hop",
+            "badge": 9,
+            "src": "alerte/09_alerte_east_coast_hip_hop.mp3",
+            "voice": "m",
+            "code": "en-hh",
+            "label": "EN",
+            "suno": "https://suno.com/s/RryWVEwLoV5PvkOC",
+            "titles": {
+                  "en": "East Coast Hip Hop",
+                  "fr": "East Coast Hip Hop",
+                  "it": "East Coast Hip Hop",
+                  "de": "East Coast Hip Hop",
+                  "es": "East Coast Hip Hop"
+            }
+      },
+      {
+            "key": "egyptian",
+            "badge": 10,
+            "src": "alerte/10_alerte_egyptian.mp3",
+            "voice": "mf",
+            "code": "ar",
+            "label": "AR",
+            "suno": "https://suno.com/song/2229abcc-e214-445c-b03f-2877c6c1570e",
+            "titles": {
+                  "en": "Egyptian",
+                  "fr": "Égyptien",
+                  "it": "Egiziano",
+                  "de": "Ägyptisch",
+                  "es": "Egipcio"
+            }
+      },
+      {
+            "key": "andre-rieu-meets-wagner",
+            "badge": 11,
+            "src": "alerte/11_alerte_andre_rieu_meets_wagner.mp3",
+            "voice": "mf",
+            "code": "de",
+            "label": "DE",
+            "suno": "https://suno.com/s/OQTkIPpkAz0gRJtK",
+            "titles": {
+                  "en": "André Rieu Meets Wagner",
+                  "fr": "André Rieu rencontre Wagner",
+                  "it": "André Rieu incontra Wagner",
+                  "de": "André Rieu trifft Wagner",
+                  "es": "André Rieu se encuentra con Wagner"
+            }
+      },
+      {
+            "key": "k-pop",
+            "badge": 12,
+            "src": "alerte/12_k-pop.mp3",
+            "voice": "m",
+            "code": "ko",
+            "label": "KO",
+            "suno": "https://suno.com/s/8qeFzrbMgL9KYYFv",
+            "titles": {
+                  "en": "K-pop",
+                  "fr": "K-pop",
+                  "it": "K-pop",
+                  "de": "K-pop",
+                  "es": "K-pop"
+            }
+      },
+      {
+            "key": "flamenco",
+            "badge": 13,
+            "src": "alerte/13_flamenco.mp3",
+            "voice": "f",
+            "code": "es-fl",
+            "label": "ES",
+            "suno": "https://suno.com/s/AfcIgLYV4S4CuAIb",
+            "titles": {
+                  "en": "Flamenco",
+                  "fr": "Flamenco",
+                  "it": "Flamenco",
+                  "de": "Flamenco",
+                  "es": "Flamenco"
+            }
+      },
+      {
+            "key": "scottish-gaelic",
+            "badge": 14,
+            "src": "alerte/14_scottish-gaelic.mp3",
+            "voice": "f",
+            "code": "gd",
+            "label": "GD",
+            "suno": "https://suno.com/s/Q1CLB8tR051Vq66t",
+            "titles": {
+                  "en": "Scottish Gaelic",
+                  "fr": "Gaélique écossais",
+                  "it": "Gaelico scozzese",
+                  "de": "Schottisch-Gälisch",
+                  "es": "Gaélico escocés"
+            }
+      },
+      {
+            "key": "bossa-nova",
+            "badge": 15,
+            "src": "alerte/15_bossa-nova.mp3",
+            "voice": "mf",
+            "code": "pt-br",
+            "label": "PT",
+            "suno": "https://suno.com/s/xrsb3QGGGt0QTBx1",
+            "titles": {
+                  "en": "Bossa Nova",
+                  "fr": "Bossa Nova",
+                  "it": "Bossa Nova",
+                  "de": "Bossa Nova",
+                  "es": "Bossa Nova"
+            }
+      },
+      {
+            "key": "french-rnb",
+            "badge": 16,
+            "src": "alerte/16_french-rnb.mp3",
+            "voice": "f",
+            "code": "fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/sniTGQTIyySUccq5",
+            "titles": {
+                  "en": "R&B",
+                  "fr": "R&B",
+                  "it": "R&B",
+                  "de": "R&B",
+                  "es": "R&B"
+            }
+      },
+      {
+            "key": "manouche",
+            "badge": 17,
+            "src": "alerte/17_manouche.mp3",
+            "voice": "m",
+            "code": "fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/xMo2EfCMZvF2kr6t",
+            "titles": {
+                  "en": "Manouche",
+                  "fr": "Manouche",
+                  "it": "Manouche",
+                  "de": "Manouche",
+                  "es": "Manouche"
+            }
+      },
+      {
+            "key": "french-baroque",
+            "badge": 18,
+            "src": "alerte/18_french-baroque.mp3",
+            "voice": "f",
+            "code": "fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/FDQDpFpfrYpOpCcj",
+            "titles": {
+                  "en": "Baroque",
+                  "fr": "Baroque",
+                  "it": "Barocco",
+                  "de": "Barock",
+                  "es": "Barroco"
+            }
+      },
+      {
+            "key": "fado",
+            "badge": 19,
+            "src": "alerte/19_fado.mp3",
+            "voice": "f",
+            "code": "pt-pt",
+            "label": "PT",
+            "suno": "https://suno.com/s/tvfpoy5DQu2oRk9t",
+            "titles": {
+                  "en": "Fado",
+                  "fr": "Fado",
+                  "it": "Fado",
+                  "de": "Fado",
+                  "es": "Fado"
+            }
+      },
+      {
+            "key": "gregorian-chant",
+            "badge": 20,
+            "src": "alerte/20_gregorian-chant.mp3",
+            "voice": "m",
+            "code": "la",
+            "label": "LA",
+            "suno": "https://suno.com/s/rqFLIRMv7EZTdEOd",
+            "sunoApprox": true,
+            "titles": {
+                  "en": "Gregorian Chant",
+                  "fr": "Chant grégorien",
+                  "it": "Canto gregoriano",
+                  "de": "Gregorianischer Choral",
+                  "es": "Canto gregoriano"
+            }
+      },
+      {
+            "key": "seconde-ecole-de-vienne",
+            "badge": 21,
+            "src": "alerte/21_seconde-ecole-de-vienne.mp3",
+            "voice": "f",
+            "code": "de-sg",
+            "label": "DE",
+            "suno": "https://suno.com/s/7pUVj2vJ9mPL2ZwI",
+            "titles": {
+                  "en": "Second Viennese School",
+                  "fr": "Seconde École de Vienne",
+                  "it": "Seconda Scuola di Vienna",
+                  "de": "Zweite Wiener Schule",
+                  "es": "Segunda Escuela de Viena"
+            }
+      },
+      {
+            "key": "delta-blues",
+            "badge": 22,
+            "src": "alerte/22_delta-blues.mp3",
+            "voice": "f",
+            "code": "en-blues",
+            "label": "EN",
+            "suno": "https://suno.com/s/bTodoYXh3KpbsuG1",
+            "titles": {
+                  "en": "Delta Blues",
+                  "fr": "Delta Blues",
+                  "it": "Delta Blues",
+                  "de": "Delta Blues",
+                  "es": "Delta Blues"
+            }
+      },
+      {
+            "key": "reggae",
+            "badge": 23,
+            "src": "alerte/23_reggae.mp3",
+            "voice": "m",
+            "code": "en",
+            "label": "EN",
+            "suno": "https://suno.com/s/EidSUxvFZfAmACtU",
+            "titles": {
+                  "en": "Reggae",
+                  "fr": "Reggae",
+                  "it": "Reggae",
+                  "de": "Reggae",
+                  "es": "Reggae"
+            }
+      },
+      {
+            "key": "mongolian",
+            "badge": 24,
+            "src": "alerte/24_mongolian.mp3",
+            "voice": "m",
+            "code": "mn",
+            "label": "MN",
+            "suno": "https://suno.com/s/H6BP6flCzTqYaNt6",
+            "titles": {
+                  "en": "Mongolian",
+                  "fr": "Mongol",
+                  "it": "Mongolo",
+                  "de": "Mongolisch",
+                  "es": "Mongol"
+            }
+      },
+      {
+            "key": "red-army-choir",
+            "badge": 25,
+            "src": "alerte/25_red-army-choir.mp3",
+            "voice": "m",
+            "code": "ru",
+            "label": "RU",
+            "suno": "https://suno.com/song/7830572e-1d46-48b5-9426-58acc8408c9b",
+            "titles": {
+                  "en": "Red Army Choir",
+                  "fr": "Chœur de l'Armée rouge",
+                  "it": "Coro dell'Armata Rossa",
+                  "de": "Rotarmeechor",
+                  "es": "Coro del Ejército Rojo"
+            }
+      },
+      {
+            "key": "gospel",
+            "badge": 26,
+            "src": "alerte/26_gospel.mp3",
+            "voice": "f",
+            "code": "en",
+            "label": "EN",
+            "suno": "https://suno.com/s/17MnSAcJ7Slc1kx8",
+            "titles": {
+                  "en": "Gospel",
+                  "fr": "Gospel",
+                  "it": "Gospel",
+                  "de": "Gospel",
+                  "es": "Gospel"
+            }
+      },
+      {
+            "key": "japanese-enka",
+            "badge": 27,
+            "src": "alerte/27_japanese-enka.mp3",
+            "voice": "m",
+            "code": "ja",
+            "label": "JA",
+            "suno": "https://suno.com/s/RhxjswPKaTB6lzW5",
+            "titles": {
+                  "en": "Japanese Enka",
+                  "fr": "Enka japonais",
+                  "it": "Enka giapponese",
+                  "de": "Japanischer Enka",
+                  "es": "Enka japonés"
+            }
+      },
+      {
+            "key": "flute-des-andes",
+            "badge": 28,
+            "src": "alerte/28_flute-des-andes.mp3",
+            "voice": "m",
+            "code": "es",
+            "label": "ES",
+            "suno": "https://suno.com/song/4e6397ba-f14e-4ac2-a62f-32a5d1240a27",
+            "titles": {
+                  "en": "Andean Flute",
+                  "fr": "Flûte des Andes",
+                  "it": "Flauto delle Ande",
+                  "de": "Anden-Flöte",
+                  "es": "Flauta andina"
+            }
+      },
+      {
+            "key": "hebrew-klezmer",
+            "badge": 29,
+            "src": "alerte/29_hebrew-klezmer.mp3",
+            "voice": "m",
+            "code": "he",
+            "label": "HE",
+            "suno": "https://suno.com/song/1c0f5360-1a0d-439a-9781-2fbf2e42cdc9",
+            "titles": {
+                  "en": "Hebrew Klezmer",
+                  "fr": "Klezmer hébraïque",
+                  "it": "Klezmer ebraico",
+                  "de": "Hebräischer Klezmer",
+                  "es": "Klezmer hebreo"
+            }
+      },
+      {
+            "key": "soli-deo-gloria",
+            "badge": 30,
+            "src": "alerte/30_soli-deo-gloria.mp3",
+            "code": null,
+            "label": null,
+            "suno": "https://suno.com/s/Ux8FsFwhQ8yD07YD",
+            "titles": {
+                  "en": "Soli Deo Gloria",
+                  "fr": "Soli Deo Gloria",
+                  "it": "Soli Deo Gloria",
+                  "de": "Soli Deo Gloria",
+                  "es": "Soli Deo Gloria"
+            }
+      },
+      {
+            "key": "guess-what",
+            "sectionBreak": {
+                  "en": "Bonus Tracks",
+                  "fr": "Titres bonus",
+                  "it": "Tracce bonus",
+                  "de": "Bonus-Tracks",
+                  "es": "Pistas bonus"
+            },
+            "badge": null,
+            "src": "brouillard/guess-what.mp3",
+            "voice": "m",
+            "code": "brouillard-fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/NmvZBTFB1X8zdbJq",
+            "rateable": false,
+            "downloadable": false,
+            "titles": {
+                  "en": "Brouillard",
+                  "fr": "Brouillard",
+                  "it": "Brouillard",
+                  "de": "Brouillard",
+                  "es": "Brouillard"
+            }
+      },
+      {
+            "key": "matsubaba-suno",
+            "badge": null,
+            "src": "matsubaba/matsubaba-suno.mp3",
+            "voice": "mf",
+            "code": "matsubaba-es",
+            "label": "ES",
+            "suno": "https://suno.com/s/lGn054JDCf5G1yUj",
+            "rateable": false,
+            "downloadable": false,
+            "titles": {
+                  "en": "Matsubaba",
+                  "fr": "Matsubaba",
+                  "it": "Matsubaba",
+                  "de": "Matsubaba",
+                  "es": "Matsubaba"
+            }
+      },
+      {
+            "key": "nous-partirons",
+            "badge": null,
+            "src": "nous_partirons/nous-partirons.mp3",
+            "voice": "mf",
+            "code": "nous-partirons-fr",
+            "label": "FR",
+            "suno": "https://suno.com/s/6ognU0fiuNdtdzxf",
+            "rateable": false,
+            "downloadable": false,
+            "titles": {
+                  "en": "Nous partirons",
+                  "fr": "Nous partirons",
+                  "it": "Nous partirons",
+                  "de": "Nous partirons",
+                  "es": "Nous partirons"
+            }
+      },
+      {
+            "key": "sensation",
+            "badge": null,
+            "src": "sensation/sensation22.mp3",
+            "code": null,
+            "label": null,
+            "rateable": false,
+            "downloadable": false,
+            "titles": {
+                  "en": "Sensation - first draft before Suno",
+                  "fr": "Sensation - first draft before Suno",
+                  "it": "Sensation - first draft before Suno",
+                  "de": "Sensation - first draft before Suno",
+                  "es": "Sensation - first draft before Suno"
+            }
+      }
+];
+    const TRACKS_BY_KEY = Object.fromEntries(TRACKS.map(t => [t.key, t]));
+
+    // Tracks from this one onward were made with a paid Suno Pro subscription
+    // rather than the free tier. Not displayed anywhere yet.
+    const SUNO_PRO_SINCE = { key: 'bossa-nova', date: '2026-09-26' };
+
+    function buildSectionBreak(labels) {
+      const li = document.createElement('li');
+      li.className = 'section-divider d-flex align-items-center gap-3';
+      li.innerHTML = '<hr class="flex-grow-1"><span class="small text-body-secondary text-nowrap section-divider-label"></span><hr class="flex-grow-1">';
+      li.querySelector('.section-divider-label').dataset.labels = JSON.stringify(labels);
+      return li;
+    }
+
+    function updateSectionBreaks(lang) {
+      document.querySelectorAll('.section-divider-label').forEach(span => {
+        const labels = JSON.parse(span.dataset.labels);
+        span.textContent = labels[lang] || labels.en;
+      });
+    }
+
+    function buildVoteSection() {
+      const li = document.createElement('li');
+      li.className = 'd-flex justify-content-center align-items-center gap-3 flex-wrap';
+      li.innerHTML = `
+        <a id="sendAll" class="btn btn-outline-success btn-sm rounded-pill disabled d-inline-flex align-items-center gap-1" href="#" target="_blank" rel="noopener" aria-disabled="true" tabindex="-1">
+          <span id="sendAllLabel">Vote via</span>
+          <svg viewBox="0 0 24 24" width="14" height="14">
+            <circle cx="12" cy="12" r="11" fill="#25D366"></circle>
+            <path d="M7 10.5a5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5H9l-2.5 1.5.5-2A5 5 0 0 1 7 10.5z" fill="#fff"></path>
+          </svg>
+        </a>
+        <button type="button" id="clearAll" class="btn btn-outline-secondary btn-sm rounded-pill">Effacer mes votes</button>
+      `;
+      return li;
+    }
+
+    function renderTracks() {
+      const template = document.getElementById('track-template');
+      const list = document.getElementById('trackList');
+      TRACKS.forEach((t, index) => {
+        if (t.sectionBreak) {
+          list.appendChild(buildVoteSection());
+          list.appendChild(buildSectionBreak(t.sectionBreak));
+        }
+        const node = template.content.cloneNode(true);
+        const li = node.querySelector('li');
+        li.dataset.key = t.key;
+        const hue = Math.round((index / TRACKS.length) * 360);
+        node.querySelector('.card').style.setProperty('--track-hue', hue);
+
+        const badgeEl = node.querySelector('.track-badge');
+        if (t.badge != null) {
+          badgeEl.textContent = t.badge;
+        } else {
+          badgeEl.remove();
+        }
+
+        node.querySelector('.track-audio').src = t.src;
+
+        const VOICE_SYMBOLS = { m: '♂', f: '♀', mf: '♂♀' };
+        const VOICE_LABELS = { m: 'Male vocal', f: 'Female vocal', mf: 'Male & female vocals' };
+        const voiceEl = node.querySelector('.track-voice');
+        if (t.voice) {
+          voiceEl.textContent = VOICE_SYMBOLS[t.voice];
+          voiceEl.title = VOICE_LABELS[t.voice];
+        } else {
+          voiceEl.remove();
+        }
+
+        const downloadLink = node.querySelector('.track-download');
+        if (t.downloadable === false || t.suno) {
+          downloadLink.remove();
+        } else {
+          downloadLink.href = t.src;
+          downloadLink.addEventListener('click', () => {
+            if (typeof gtag === 'function') {
+              gtag('event', 'track_download', {
+                track_key: t.key,
+                track_title: t.titles.en
+              });
+            }
+          });
+        }
+
+        if (t.rateable === false) {
+          node.querySelector('.stars').remove();
+          node.querySelector('.track-vote-link').remove();
+        }
+
+        const sunoLink = node.querySelector('.track-suno-link');
+        if (t.suno) {
+          sunoLink.href = t.suno;
+          if (t.sunoApprox) {
+            const label = 'Écouter sur Suno (version proche, pas la génération exacte)';
+            sunoLink.title = label;
+            sunoLink.setAttribute('aria-label', label);
+            sunoLink.querySelector('img').style.opacity = '0.55';
+            sunoLink.querySelector('.track-suno-approx-badge').classList.remove('d-none');
+          }
+        } else {
+          sunoLink.remove();
+        }
+
+        const link = node.querySelector('.track-lyrics-link');
+        if (t.code) {
+          link.href = 'paroles.html#' + t.code;
+          link.setAttribute('aria-label', 'Paroles (' + t.label + ')');
+          node.querySelector('.track-lyrics-label').textContent = t.label;
+          link.addEventListener('click', e => {
+            e.preventDefault();
+            openOrFocusNamed(link.href, 'alerte-paroles');
+          });
+        } else {
+          link.remove();
+        }
+
+        list.appendChild(node);
+      });
+    }
+
+    renderTracks();
+
+    document.getElementById('aboutModal').addEventListener('show.bs.modal', () => {
+      const row = document.querySelector('#aboutModal .row');
+      const cols = Array.from(row.children);
+      for (let i = cols.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cols[i], cols[j]] = [cols[j], cols[i]];
+      }
+      cols.forEach(col => row.appendChild(col));
+    });
+
+    document.getElementById('pageNavLink').addEventListener('click', e => {
+      e.preventDefault();
+      openOrFocusNamed(e.currentTarget.href, 'alerte-paroles');
+    });
+
+    // Shuffle is no longer a standing preference: it's set true only by the
+    // shuffle-play button, and reset to false by the plain play button or by
+    // starting a track directly from its own native control. Auto-chaining
+    // on 'ended' preserves whatever mode is currently active.
+    let shuffled = false;
+    let suppressShuffleReset = false;
+
+    function startPlayback(audio) {
+      suppressShuffleReset = true;
+      audio.play();
+      Promise.resolve().then(() => { suppressShuffleReset = false; });
+    }
+
+    const allAudios = Array.from(document.querySelectorAll('audio'));
+    const alerteAudios = allAudios.filter(audio => {
+      const t = TRACKS_BY_KEY[audio.closest('li[data-key]').dataset.key];
+      return t && t.rateable !== false;
+    });
+    allAudios.forEach(audio => {
+      audio.addEventListener('play', () => {
+        if (!suppressShuffleReset) {
+          shuffled = false;
+        }
+        allAudios.forEach(other => {
+          if (other !== audio && !other.paused) other.pause();
+        });
+        updatePlaylistStartButton();
+        updateNowPlaying();
+      });
+      audio.addEventListener('pause', () => {
+        updatePlaylistStartButton();
+        updateNowPlaying();
+      });
+      audio.addEventListener('ended', () => {
+        const next = shuffled
+          ? allAudios[Math.floor(Math.random() * allAudios.length)]
+          : allAudios[(allAudios.indexOf(audio) + 1) % allAudios.length];
+        startPlayback(next);
+      });
+    });
+
+    const shufflePlayBtn = document.getElementById('shufflePlayBtn');
+    const playlistStartBtn = document.getElementById('playlistStartBtn');
+    const playlistStartIcon = document.getElementById('playlistStartIcon');
+    const PLAY_ICON = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+    const STOP_ICON = '<rect x="5" y="5" width="14" height="14"></rect>';
+
+    function updatePlaylistStartButton() {
+      const isPlaying = allAudios.some(a => !a.paused);
+      playlistStartIcon.innerHTML = isPlaying ? STOP_ICON : PLAY_ICON;
+      const label = buttonLabelsByLang[currentLang][isPlaying ? 'stop' : 'play'];
+      playlistStartBtn.title = label;
+      playlistStartBtn.setAttribute('aria-label', label);
+    }
+
+    shufflePlayBtn.addEventListener('click', () => {
+      shuffled = true;
+      const pick = alerteAudios[Math.floor(Math.random() * alerteAudios.length)];
+      startPlayback(pick);
+    });
+
+    const nowPlayingWrap = document.getElementById('nowPlayingWrap');
+    const nowPlayingText = document.getElementById('nowPlayingText');
+    const nowPlayingLink = document.getElementById('nowPlayingLink');
+    let nowPlayingKey = null;
+
+    function updateNowPlaying() {
+      const playing = allAudios.find(a => !a.paused);
+      document.querySelectorAll('.card.track-playing').forEach(card => card.classList.remove('track-playing'));
+      if (playing) {
+        const li = playing.closest('li[data-key]');
+        const card = li.querySelector('.card');
+        nowPlayingKey = li.dataset.key;
+        nowPlayingText.textContent = li.querySelector('h2').textContent;
+        nowPlayingWrap.classList.remove('invisible');
+        nowPlayingWrap.style.setProperty('--track-hue', card.style.getPropertyValue('--track-hue'));
+        card.classList.add('track-playing');
+      } else {
+        nowPlayingKey = null;
+        nowPlayingWrap.classList.add('invisible');
+      }
+    }
+
+    nowPlayingLink.addEventListener('click', e => {
+      e.preventDefault();
+      if (!nowPlayingKey) return;
+      document.querySelector(`li[data-key="${nowPlayingKey}"]`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Reveal the Suno-Pro-switch answer only while the mouse button is held
+    // down on the button; hide it again on release or if the pointer leaves
+    // the button while still held.
+    document.querySelectorAll('.answer-reveal-btn').forEach(btn => {
+      const badge = btn.nextElementSibling;
+      btn.addEventListener('mousedown', e => {
+        if (e.button !== 0) return;
+        badge.classList.remove('invisible');
+      });
+      btn.addEventListener('mouseup', () => badge.classList.add('invisible'));
+      btn.addEventListener('mouseleave', () => badge.classList.add('invisible'));
+    });
+
+    playlistStartBtn.addEventListener('click', () => {
+      if (allAudios.some(a => !a.paused)) {
+        allAudios.forEach(a => a.pause());
+      } else {
+        shuffled = false;
+        startPlayback(alerteAudios[0]);
+      }
+    });
+
+    const langButtons = document.querySelectorAll('.note-langs button');
+    const availableLangs = ALERTE_AVAILABLE_LANGS;
+
+    const WHATSAPP_NUMBER = '393755042951';
+    const sendAllBtn = document.getElementById('sendAll');
+    const clearAllBtn = document.getElementById('clearAll');
+    const ratings = {};
+    let currentLang = 'en';
+
+    function storageKey(key) {
+      return 'alerte-rating-' + key;
+    }
+
+    let STYLE_DESCRIPTIONS = {};
+
+    const styleSummaryByLang = ALERTE_STYLE_SUMMARY_BY_LANG;
+    const introByLang = ALERTE_RATINGS_INTRO_BY_LANG;
+    const buttonLabelsByLang = ALERTE_BUTTON_LABELS_BY_LANG;
+    const subtitleByLang = ALERTE_SUBTITLE_BY_LANG;
+
+    function updateSendAllButton() {
+      const lines = [];
+      document.querySelectorAll('li[data-key]').forEach(track => {
+        const value = ratings[track.dataset.key];
+        if (value > 0) {
+          const title = track.querySelector('h2').textContent.trim();
+          const stars = '★'.repeat(value) + '☆'.repeat(5 - value);
+          lines.push(`${title} : ${stars} (${value}/5)`);
+        }
+      });
+
+      if (lines.length === 0) {
+        sendAllBtn.classList.add('disabled');
+        sendAllBtn.setAttribute('aria-disabled', 'true');
+        sendAllBtn.setAttribute('tabindex', '-1');
+        sendAllBtn.href = '#';
+        return;
+      }
+
+      const message = `${introByLang[currentLang]}\n${lines.join('\n')}`;
+      sendAllBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      sendAllBtn.classList.remove('disabled');
+      sendAllBtn.removeAttribute('aria-disabled');
+      sendAllBtn.removeAttribute('tabindex');
+    }
+
+    sendAllBtn.addEventListener('click', e => {
+      if (sendAllBtn.classList.contains('disabled')) e.preventDefault();
+    });
+
+    function applyStyleDescriptions() {
+      document.querySelectorAll('li[data-key]').forEach(track => {
+        const desc = STYLE_DESCRIPTIONS[track.dataset.key];
+        if (!desc) return;
+
+        const cardBody = track.querySelector('.card-body');
+        const playerRow = track.querySelector('.player-row');
+        let collapseEl = track.querySelector('.style-collapse');
+        let toggleBtn = track.querySelector('.chevron-btn');
+
+        if (!collapseEl) {
+          const collapseId = 'style-collapse-' + track.dataset.key;
+
+          toggleBtn = document.createElement('button');
+          toggleBtn.type = 'button';
+          toggleBtn.className = 'chevron-btn btn btn-sm btn-link ms-auto p-0';
+          toggleBtn.setAttribute('data-bs-toggle', 'collapse');
+          toggleBtn.setAttribute('data-bs-target', '#' + collapseId);
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          toggleBtn.setAttribute('aria-controls', collapseId);
+          toggleBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+          playerRow.appendChild(toggleBtn);
+
+          collapseEl = document.createElement('div');
+          collapseEl.className = 'collapse style-collapse mt-2';
+          collapseEl.id = collapseId;
+          collapseEl.setAttribute('data-bs-parent', '#trackList');
+
+          const text = document.createElement('p');
+          text.className = 'style-text small text-body-secondary mb-0';
+          collapseEl.appendChild(text);
+
+          cardBody.appendChild(collapseEl);
+        }
+
+        toggleBtn.setAttribute('aria-label', styleSummaryByLang[currentLang]);
+        collapseEl.querySelector('.style-text').textContent = desc[currentLang] || desc.fr || desc.en;
+      });
+    }
+
+    fetch('suno-styles.json')
+      .then(res => (res.ok ? res.json() : {}))
+      .then(data => {
+        STYLE_DESCRIPTIONS = data;
+        applyStyleDescriptions();
+      })
+      .catch(() => { /* style descriptions are optional */ });
+
+    function setLang(lang) {
+      currentLang = lang;
+      langButtons.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+      document.getElementById('noteIntro').innerHTML = ALERTE_NOTES_BY_LANG.intro[lang];
+      document.getElementById('noteAddendumLabel').textContent = ALERTE_NOTES_BY_LANG.addendumLabel[lang];
+      document.getElementById('noteAddendumText').textContent = ALERTE_NOTES_BY_LANG.addendumText[lang];
+      document.getElementById('noteTranslated').innerHTML = ALERTE_NOTES_BY_LANG.translated[lang];
+      document.getElementById('noteStage').innerHTML = ALERTE_NOTES_BY_LANG.stage[lang];
+      document.getElementById('authorCreditHeading').textContent = ALERTE_AUTHOR_BY_LANG[lang].heading;
+      document.getElementById('authorCreditMugnier').textContent = ALERTE_AUTHOR_BY_LANG[lang].mugnier;
+      document.getElementById('authorCreditThiebaud').textContent = ALERTE_AUTHOR_BY_LANG[lang].thiebaud;
+      document.getElementById('lastUpdated').textContent = ALERTE_LAST_UPDATED_BY_LANG[lang];
+      document.getElementById('aboutTriggerBtn').title = ALERTE_ABOUT_LABELS[lang].trigger;
+      document.getElementById('aboutTriggerBtn').setAttribute('aria-label', ALERTE_ABOUT_LABELS[lang].trigger);
+      document.querySelectorAll('.about-then-label').forEach(el => el.textContent = ALERTE_ABOUT_LABELS[lang].then);
+      document.querySelectorAll('.about-now-label').forEach(el => el.textContent = ALERTE_ABOUT_LABELS[lang].now);
+      updateSectionBreaks(lang);
+      document.getElementById('sendAllLabel').textContent = buttonLabelsByLang[lang].send;
+      clearAllBtn.textContent = buttonLabelsByLang[lang].clear;
+      shufflePlayBtn.title = buttonLabelsByLang[lang].shuffle;
+      shufflePlayBtn.setAttribute('aria-label', buttonLabelsByLang[lang].shuffle);
+      document.querySelectorAll('.answer-reveal-btn').forEach(btn => {
+        btn.title = buttonLabelsByLang[lang].reveal;
+        btn.setAttribute('aria-label', buttonLabelsByLang[lang].reveal);
+      });
+      updatePlaylistStartButton();
+      document.getElementById('subtitleText').textContent = subtitleByLang[lang];
+      document.getElementById('subtitleLink').href = ALERTE_SUBTITLE_LINK_BY_LANG[lang];
+      document.getElementById('subtitleCount').textContent = ALERTE_SUBTITLE_COUNT_BY_LANG[lang];
+      document.getElementById('pageNavLink').textContent = ALERTE_NAV_LABELS.lyrics[lang];
+      document.querySelectorAll('li[data-key]').forEach(track => {
+        const t = TRACKS_BY_KEY[track.dataset.key];
+        if (t) track.querySelector('h2').textContent = t.titles[lang] || t.titles.fr;
+        updateTrackVoteButton(track);
+      });
+      applyStyleDescriptions();
+      updateSendAllButton();
+      updateNowPlaying();
+    }
+
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', () => setLang(btn.dataset.lang));
+    });
+
+    setLang(detectAlerteLang());
+
+    function updateTrackVoteButton(track) {
+      const key = track.dataset.key;
+      const link = track.querySelector('.track-vote-link');
+      if (!link) return;
+      const value = ratings[key];
+      if (!value) {
+        link.classList.add('disabled');
+        link.setAttribute('aria-disabled', 'true');
+        link.setAttribute('tabindex', '-1');
+        link.href = '#';
+        return;
+      }
+      const title = track.querySelector('h2').textContent.trim();
+      const stars = '★'.repeat(value) + '☆'.repeat(5 - value);
+      const message = `${introByLang[currentLang]}\n${title} : ${stars} (${value}/5)`;
+      link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      link.classList.remove('disabled');
+      link.removeAttribute('aria-disabled');
+      link.removeAttribute('tabindex');
+    }
+
+    document.querySelectorAll('.track-vote-link').forEach(link => {
+      link.addEventListener('click', e => {
+        if (link.classList.contains('disabled')) e.preventDefault();
+      });
+    });
+
+    clearAllBtn.addEventListener('click', () => {
+      document.querySelectorAll('li[data-key]').forEach(track => {
+        const key = track.dataset.key;
+        delete ratings[key];
+        try { localStorage.removeItem(storageKey(key)); } catch (e) { /* ignore */ }
+        track.querySelectorAll('.stars button').forEach(b => b.classList.remove('filled'));
+        updateTrackVoteButton(track);
+      });
+      updateSendAllButton();
+    });
+
+    document.querySelectorAll('li[data-key]').forEach(track => {
+      const key = track.dataset.key;
+      const starsContainer = track.querySelector('.stars');
+      if (!starsContainer) return;
+      const starButtons = track.querySelectorAll('.stars button');
+
+      function paint(value) {
+        starButtons.forEach(b => b.classList.toggle('filled', Number(b.dataset.value) <= value));
+      }
+
+      function setRating(value) {
+        ratings[key] = value;
+        paint(value);
+        try { localStorage.setItem(storageKey(key), String(value)); } catch (e) { /* ignore */ }
+        updateSendAllButton();
+        updateTrackVoteButton(track);
+      }
+
+      starButtons.forEach(btn => {
+        btn.addEventListener('click', () => setRating(Number(btn.dataset.value)));
+        btn.addEventListener('mouseenter', () => paint(Number(btn.dataset.value)));
+      });
+
+      starsContainer.addEventListener('mouseleave', () => paint(ratings[key] || 0));
+
+      let saved = 0;
+      try { saved = Number(localStorage.getItem(storageKey(key))) || 0; } catch (e) { /* ignore */ }
+      if (saved > 0) setRating(saved);
+    });
+
+    updateSendAllButton();
+  </script>
+</body>
+
+</html>
