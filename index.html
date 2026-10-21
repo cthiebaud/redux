@@ -1137,9 +1137,11 @@
       document.querySelector(`li[data-key="${nowPlayingKey}"]`).scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
-    // Reveal the Suno-Pro-switch answer only while the mouse button is held
-    // down on the button; hide it again on release or if the pointer leaves
-    // the button while still held.
+    // Reveal the Suno-Pro-switch answer only while the mouse button (or a
+    // touch, on mobile) is held down on the button; hide it again on
+    // release or if the pointer/touch leaves the button while still held.
+    // preventDefault on touchstart stops the browser's own long-press
+    // gesture (selection callout, haptic buzz) from firing instead.
     document.querySelectorAll('.answer-reveal-btn').forEach(btn => {
       const badge = btn.nextElementSibling;
       btn.addEventListener('mousedown', e => {
@@ -1148,6 +1150,12 @@
       });
       btn.addEventListener('mouseup', () => badge.classList.add('invisible'));
       btn.addEventListener('mouseleave', () => badge.classList.add('invisible'));
+      btn.addEventListener('touchstart', e => {
+        e.preventDefault();
+        badge.classList.remove('invisible');
+      }, { passive: false });
+      btn.addEventListener('touchend', () => badge.classList.add('invisible'));
+      btn.addEventListener('touchcancel', () => badge.classList.add('invisible'));
     });
 
     playlistStartBtn.addEventListener('click', () => {
