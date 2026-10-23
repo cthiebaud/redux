@@ -35,28 +35,19 @@ I'd be with a woman.
 [Instrumental: gradual build, layered synths, filter opening]
 
 [Verse 3: female vocal]
-In blue summer twilights,
-I'll go along the paths,
-Tickled by wheat, I'll tread
-the slender blades of grass.
+Par les soirs bleus d’été, j’irai dans les sentiers,  
+Picoté par les blés, fouler l’herbe menue :  
 [male vocal]
-A dreamer, I will feel
-the coolness at my feet.
-I'll leave the wind to bathe
-my head, bare to the sky.
+Rêveur, j’en sentirai la fraîcheur à mes pieds.  
+Je laisserai le vent baigner ma tête nue.
 
 [Instrumental: gradual build, full groove]
 
-[Verse 4: male and female vocals in unison, same melody as Verse 1]
-I will not speak a word,
-I will think of nothing...
-But an infinite love
-will rise up in my soul,
-[Instrumental: one bar, held chord]
-And I'll go far, so far,
-just like a vagabond,
-Through Nature, happy as
-I'd be with a woman.
+[Verse 4: male and female vocals in unison]
+Je ne parlerai pas, je ne penserai rien :  
+Mais l’amour infini me montera dans l’âme,  
+Et j’irai loin, bien loin, comme un bohémien,  
+Par la Nature, – heureux comme avec une femme.
 
 [Outro: quick fade-out]
 [End]
