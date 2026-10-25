@@ -1,6 +1,6 @@
 # Style
 
-progressive house, 130 BPM, four-on-the-floor kick, deep rolling bassline, evolving arpeggiated synths, layered pads, slow gradual build, emotional chord progressions, warm melodic lead, male and female vocals alternating, spacious reverb, cinematic, hypnotic
+progressive house, 128 BPM, four-on-the-floor kick, deep rolling bassline, evolving arpeggiated synths, layered pads, slow gradual build, emotional chord progressions, warm melodic lead, male and female vocals alternating, spacious reverb, cinematic, hypnotic
 
 # Exclude Styles
 
@@ -20,7 +20,7 @@ the coolness at my feet.
 I'll leave the wind to bathe
 my head, bare to the sky.
 
-[Interlude after verse 1: rhythm and chords]
+[Interlude: rhythm and chords]
 
 [Verse 2: female vocal, soulful, bass and drums only, no chords, no pads, no synths]
 I will not speak a word,
@@ -36,7 +36,7 @@ I'd be with a woman.
 
 [Instrumental: gradual build, layered synths, filter opening]
 
-[Verse 3: female vocal]
+[female vocal]
 Par les soirs bleus d’été, j’irai dans les sentiers,  
 Picoté par les blés, fouler l’herbe menue :  
 [male vocal]
@@ -71,7 +71,7 @@ the coolness at my feet.
 I'll leave the wind to bathe
 my head, bare to the sky.
 
-[Interlude after verse 1: rhythm and chords]
+[Interlude: rhythm and chords]
 
 [Verse 2: female vocal, soulful, bass and drums only, no chords, no pads, no synths]
 I will not speak a word,
@@ -83,15 +83,15 @@ just like a vagabond,
 Through Nature, happy as
 I'd be with a woman.
 
-[Interlude after verse 2: rhythm and chords]
+[Interlude after verse 2: rhythm and chords, modulation to C major]
 
 [Instrumental: gradual build, layered synths, filter opening]
 
-[Verse 3: female vocal]
+[female vocal]
 Par les soirs bleus d’été, nous irons dans les sentiers,
 Picotés par les blés, fouler l’herbe menue :
 [male vocal]
-Rêveurs, nous sentirons la fraîcheur à nos pieds.
+Rêveurs, nous en sentirons la fraîcheur à nos pieds.
 Nous laisserons le vent baigner nos têtes nues.
 
 [Instrumental: gradual build, full groove]
@@ -100,7 +100,7 @@ Nous laisserons le vent baigner nos têtes nues.
 Nous ne parlerons pas, nous ne penserons rien :
 Mais l’amour infini nous montera dans l’âme,
 [Instrumental: one bar, held chord]
-Et nous irons loin, bien loin, comme des bohémiens,
+Nous irons loin, bien loin, comme des bohémiens,
 Par la Nature, – heureux comme avec une femme.
 
 [Outro: quick fade-out]
