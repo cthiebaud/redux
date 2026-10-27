@@ -2,6 +2,8 @@
 
 progressive house, 128 BPM, four-on-the-floor kick, deep rolling bassline, evolving arpeggiated synths, layered pads, slow gradual build, emotional chord progressions, warm melodic lead, male and female vocals alternating, spacious reverb, cinematic, hypnotic
 
+uplifting trance, 128 BPM, driving four-on-the-floor kick, rolling offbeat bassline, supersaw lead, arpeggiated synths, long build-ups with snare rolls and risers, big euphoric drop, emotional breakdown with lush pads, male and female vocals alternating, ethereal reverb, melodic, cinematic, festival anthem
+
 # Exclude Styles
 
 lounge, elevator music, muzak, easy listening, smooth jazz, cinematic, orchestral, string section, violins, choir, backing vocals, vocal harmonies, pop ballad, sentimental, lush chords, vibrato, shouting, rock guitars, dubstep, hardstyle, rock, acoustic, lo-fi, big drop, snare roll
