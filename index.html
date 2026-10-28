@@ -902,11 +902,11 @@
             "rateable": false,
             "downloadable": false,
             "titles": {
-                  "en": "Sensation - first draft before Suno",
-                  "fr": "Sensation - first draft before Suno",
-                  "it": "Sensation - first draft before Suno",
-                  "de": "Sensation - first draft before Suno",
-                  "es": "Sensation - first draft before Suno"
+                  "en": "Sensation -",
+                  "fr": "Sensation -",
+                  "it": "Sensation -",
+                  "de": "Sensation -",
+                  "es": "Sensation -"
             }
       }
 ];
@@ -917,6 +917,7 @@
     // draft over the last mp3 committed to the repo.
     const NGROK_SENSATION_URL = 'https://steep-refurbish-verbalize.ngrok-free.dev/sensation/current-draft.mp3';
     const NGROK_FETCH_TIMEOUT_MS = 6000;
+    let sensationLiveDraftActive = false;
 
     // Plain <audio src> requests can't carry custom headers, and ngrok's free
     // tier serves an HTML warning page instead of the file unless this header
@@ -1001,23 +1002,10 @@
         const audioEl = node.querySelector('.track-audio');
         audioEl.src = t.src;
         if (t.key === 'sensation') {
-          const sourceBadge = document.createElement('span');
-          sourceBadge.className = 'badge rounded-pill text-bg-secondary track-source-badge';
-          sourceBadge.textContent = 'checking…';
-          sourceBadge.title = 'Where this track\'s audio is currently served from';
-          audioEl.insertAdjacentElement('beforebegin', sourceBadge);
-
           fetchLiveDraft(NGROK_SENSATION_URL, NGROK_FETCH_TIMEOUT_MS).then(blobUrl => {
-            if (blobUrl) {
-              audioEl.src = blobUrl;
-              sourceBadge.textContent = '🟢 live draft';
-              sourceBadge.className = 'badge rounded-pill text-bg-success track-source-badge';
-              sourceBadge.title = 'Streaming the in-progress draft straight from the Mac';
-            } else {
-              sourceBadge.textContent = '🐙 GitHub';
-              sourceBadge.className = 'badge rounded-pill text-bg-secondary track-source-badge';
-              sourceBadge.title = 'Live draft unavailable — playing the last version committed to GitHub';
-            }
+            sensationLiveDraftActive = !!blobUrl;
+            if (blobUrl) audioEl.src = blobUrl;
+            setLang(currentLang);
           });
         }
 
@@ -1348,7 +1336,18 @@
       document.getElementById('pageNavLink').textContent = ALERTE_NAV_LABELS.lyrics[lang];
       document.querySelectorAll('li[data-key]').forEach(track => {
         const t = TRACKS_BY_KEY[track.dataset.key];
-        if (t) track.querySelector('h2').textContent = t.titles[lang] || t.titles.fr;
+        if (t) {
+          const h2 = track.querySelector('h2');
+          const base = t.titles[lang] || t.titles.fr;
+          if (t.key === 'sensation') {
+            const liveBadge = sensationLiveDraftActive
+              ? '<span class="badge rounded-pill text-bg-success track-source-badge" title="Streaming the in-progress draft straight from the Mac">🟢 live draft</span> '
+              : '';
+            h2.innerHTML = `${base} ${liveBadge}♂♀`;
+          } else {
+            h2.textContent = base;
+          }
+        }
         updateTrackVoteButton(track);
       });
       applyStyleDescriptions();
