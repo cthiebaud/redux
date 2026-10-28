@@ -7,3 +7,4 @@ __pycache__/
 *.humanized*.ustx
 .claude/
 .DS_Store
+sensation/current-draft.mp3

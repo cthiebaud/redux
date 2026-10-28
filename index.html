@@ -912,6 +912,24 @@
 ];
     const TRACKS_BY_KEY = Object.fromEntries(TRACKS.map(t => [t.key, t]));
 
+    // "sensation" is still in active Suno drafting: when this Mac's local
+    // server is reachable through this ngrok domain, prefer the in-progress
+    // draft over the last mp3 committed to the repo.
+    const NGROK_SENSATION_URL = 'https://steep-refurbish-verbalize.ngrok-free.dev/sensation/current-draft.mp3';
+    const NGROK_CHECK_TIMEOUT_MS = 1500;
+
+    async function isReachable(url, timeoutMs) {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        await fetch(url, { method: 'HEAD', mode: 'no-cors', cache: 'no-store', signal: controller.signal });
+        clearTimeout(timer);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
     // Tracks from this one onward were made with a paid Suno Pro subscription
     // rather than the free tier. Not displayed anywhere yet.
     const SUNO_PRO_SINCE = { key: 'bossa-nova', date: '2026-09-26' };
@@ -968,7 +986,18 @@
           badgeEl.remove();
         }
 
-        node.querySelector('.track-audio').src = t.src;
+        const audioEl = node.querySelector('.track-audio');
+        audioEl.src = t.src;
+        if (t.key === 'sensation') {
+          isReachable(NGROK_SENSATION_URL, NGROK_CHECK_TIMEOUT_MS).then(ok => {
+            if (!ok) return;
+            audioEl.addEventListener('error', () => {
+              audioEl.src = t.src;
+              audioEl.load();
+            }, { once: true });
+            audioEl.src = NGROK_SENSATION_URL;
+          });
+        }
 
         const VOICE_SYMBOLS = { m: '♂', f: '♀', mf: '♂♀' };
         const VOICE_LABELS = { m: 'Male vocal', f: 'Female vocal', mf: 'Male & female vocals' };
