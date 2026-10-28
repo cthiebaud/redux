@@ -916,17 +916,29 @@
     // server is reachable through this ngrok domain, prefer the in-progress
     // draft over the last mp3 committed to the repo.
     const NGROK_SENSATION_URL = 'https://steep-refurbish-verbalize.ngrok-free.dev/sensation/current-draft.mp3';
-    const NGROK_CHECK_TIMEOUT_MS = 1500;
+    const NGROK_FETCH_TIMEOUT_MS = 6000;
 
-    async function isReachable(url, timeoutMs) {
+    // Plain <audio src> requests can't carry custom headers, and ngrok's free
+    // tier serves an HTML warning page instead of the file unless this header
+    // is present — so we fetch the bytes ourselves and hand the audio element
+    // a blob: URL. This also doubles as the availability check: a resolved
+    // blob URL with an audio/* content-type means the draft is really there.
+    async function fetchLiveDraft(url, timeoutMs) {
       try {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
-        await fetch(url, { method: 'HEAD', mode: 'no-cors', cache: 'no-store', signal: controller.signal });
+        const res = await fetch(url, {
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+          cache: 'no-store',
+          signal: controller.signal
+        });
         clearTimeout(timer);
-        return true;
+        if (!res.ok) return null;
+        if (!(res.headers.get('content-type') || '').startsWith('audio/')) return null;
+        const blob = await res.blob();
+        return URL.createObjectURL(blob);
       } catch {
-        return false;
+        return null;
       }
     }
 
@@ -989,13 +1001,23 @@
         const audioEl = node.querySelector('.track-audio');
         audioEl.src = t.src;
         if (t.key === 'sensation') {
-          isReachable(NGROK_SENSATION_URL, NGROK_CHECK_TIMEOUT_MS).then(ok => {
-            if (!ok) return;
-            audioEl.addEventListener('error', () => {
-              audioEl.src = t.src;
-              audioEl.load();
-            }, { once: true });
-            audioEl.src = NGROK_SENSATION_URL;
+          const sourceBadge = document.createElement('span');
+          sourceBadge.className = 'badge rounded-pill text-bg-secondary track-source-badge';
+          sourceBadge.textContent = 'checking…';
+          sourceBadge.title = 'Where this track\'s audio is currently served from';
+          audioEl.insertAdjacentElement('beforebegin', sourceBadge);
+
+          fetchLiveDraft(NGROK_SENSATION_URL, NGROK_FETCH_TIMEOUT_MS).then(blobUrl => {
+            if (blobUrl) {
+              audioEl.src = blobUrl;
+              sourceBadge.textContent = '🟢 live draft';
+              sourceBadge.className = 'badge rounded-pill text-bg-success track-source-badge';
+              sourceBadge.title = 'Streaming the in-progress draft straight from the Mac';
+            } else {
+              sourceBadge.textContent = '🐙 GitHub';
+              sourceBadge.className = 'badge rounded-pill text-bg-secondary track-source-badge';
+              sourceBadge.title = 'Live draft unavailable — playing the last version committed to GitHub';
+            }
           });
         }
 
