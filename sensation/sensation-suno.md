@@ -102,7 +102,7 @@ Nous laisserons le vent baigner nos têtes nues.
 Nous ne parlerons pas, nous ne penserons rien :
 Mais l’amour infini nous montera dans l’âme,
 [Instrumental: one bar, held chord]
-Nous irons loin, bien loin, comme des bohémiens,
+Et nous irons loin, bien loin, comme des bohémiens,
 Par la Nature, – heureux comme avec une femme.
 
 [Outro: quick fade-out]
