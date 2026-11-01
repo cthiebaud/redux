@@ -4,9 +4,14 @@ progressive house, 128 BPM, four-on-the-floor kick, deep rolling bassline, evolv
 
 uplifting trance, 128 BPM, driving four-on-the-floor kick, rolling offbeat bassline, supersaw lead, arpeggiated synths, long build-ups with snare rolls and risers, big euphoric drop, emotional breakdown with lush pads, male and female vocals alternating, ethereal reverb, melodic, cinematic, festival anthem
 
+
+Melodic house, 128 BPM, four-on-the-floor kick, rolling sub bass, plucky analog synth arpeggios, warm evolving pads, cinematic risers, shuffled hi-hats, light Afro-house percussion, minor key, bittersweet, polished wide club mix; English vocals. Verse 1: male baritone, comfortable mid register, calm, serene, restrained, breathy, stating the main melody over a sparse, intimate groove. Verse 2: female alto, same melody a minor third higher, warm husky soulful gospel-tinged tone, more urgent but controlled, never shouting, groove opening up. Verse 3: female, completely new celestial melody, ethereal, airy, over shimmering high pads. Final verse: male and female together, calm, serene and gentle, while the music reaches a full climax: full drums, soaring synth leads, strings, heavy bassline. Abrupt end on held strings, quick fade-out
+
 # Exclude Styles
 
 lounge, elevator music, muzak, easy listening, smooth jazz, cinematic, orchestral, string section, violins, choir, backing vocals, vocal harmonies, pop ballad, sentimental, lush chords, vibrato, shouting, rock guitars, dubstep, hardstyle, rock, acoustic, lo-fi, big drop, snare roll
+
+screaming, shouting, belting, harsh vocals, growl, rap, distorted guitars, dubstep, hardstyle, harmony, backing vocals
 
 # Lyrics 
 
