@@ -203,7 +203,7 @@
         <div class="card">
           <div class="card-body">
             <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
-              <div class="d-flex align-items-center gap-2">
+              <div class="d-flex align-items-center gap-2 flex-wrap track-title-row">
                 <span class="badge rounded-pill text-bg-light border track-badge"></span>
                 <h2 class="h6 mb-0 track-title"></h2>
                 <span class="track-voice text-body-secondary" style="font-size: 0.8rem;"></span>
@@ -1283,7 +1283,7 @@
         if (!desc) return;
 
         const cardBody = track.querySelector('.card-body');
-        const playerRow = track.querySelector('.player-row');
+        const titleRow = track.querySelector('.track-title-row');
         let collapseEl = track.querySelector('.style-collapse');
         let toggleBtn = track.querySelector('.chevron-btn');
 
@@ -1292,13 +1292,13 @@
 
           toggleBtn = document.createElement('button');
           toggleBtn.type = 'button';
-          toggleBtn.className = 'chevron-btn btn btn-sm btn-link ms-auto p-0';
+          toggleBtn.className = 'chevron-btn btn btn-sm btn-link p-0';
           toggleBtn.setAttribute('data-bs-toggle', 'collapse');
           toggleBtn.setAttribute('data-bs-target', '#' + collapseId);
           toggleBtn.setAttribute('aria-expanded', 'false');
           toggleBtn.setAttribute('aria-controls', collapseId);
           toggleBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="6 9 12 15 18 9"></polyline></svg>';
-          playerRow.appendChild(toggleBtn);
+          titleRow.appendChild(toggleBtn);
 
           collapseEl = document.createElement('div');
           collapseEl.className = 'collapse style-collapse mt-2';
@@ -1317,13 +1317,14 @@
       });
     }
 
-    // Placed after the genre/style chevron (when one exists for that track)
-    // so all the little per-track status indicators line up in one row.
+    // Appended to the title row, after the genre/style chevron when one
+    // exists for that track — relies on always running after
+    // applyStyleDescriptions() so the chevron (if any) is already there.
     function updateLiveDraftBadges() {
       document.querySelectorAll('li[data-key]').forEach(track => {
         const t = TRACKS_BY_KEY[track.dataset.key];
-        const playerRow = track.querySelector('.player-row');
-        let badge = playerRow.querySelector('.track-source-badge');
+        const titleRow = track.querySelector('.track-title-row');
+        let badge = titleRow.querySelector('.track-source-badge');
         if (!t || !LIVE_DRAFT_TRACKS[t.key] || !liveDraftActive[t.key]) {
           if (badge) badge.remove();
           return;
@@ -1334,12 +1335,7 @@
           badge.title = 'Streaming the in-progress draft straight from the Mac';
           badge.textContent = '🟢 live draft';
         }
-        const chevron = playerRow.querySelector('.chevron-btn');
-        if (chevron) {
-          chevron.insertAdjacentElement('afterend', badge);
-        } else {
-          playerRow.appendChild(badge);
-        }
+        titleRow.appendChild(badge);
       });
     }
 
