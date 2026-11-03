@@ -908,16 +908,36 @@
                   "de": "Sensation",
                   "es": "Sensation"
             }
+      },
+      {
+            "key": "sensation-canon",
+            "badge": null,
+            "src": "sensation/sensation-canon.mp3",
+            "code": null,
+            "label": null,
+            "rateable": false,
+            "downloadable": false,
+            "titles": {
+                  "en": "Sensation Canon",
+                  "fr": "Sensation Canon",
+                  "it": "Sensation Canon",
+                  "de": "Sensation Canon",
+                  "es": "Sensation Canon"
+            }
       }
 ];
     const TRACKS_BY_KEY = Object.fromEntries(TRACKS.map(t => [t.key, t]));
 
-    // "sensation" is still in active Suno drafting: when this Mac's local
+    // These tracks are still in active Suno drafting: when this Mac's local
     // server is reachable through this ngrok domain, prefer the in-progress
     // draft over the last mp3 committed to the repo.
-    const NGROK_SENSATION_URL = 'https://steep-refurbish-verbalize.ngrok-free.dev/sensation/current-draft.mp3';
+    const NGROK_BASE_URL = 'https://steep-refurbish-verbalize.ngrok-free.dev';
+    const LIVE_DRAFT_TRACKS = {
+      'sensation': 'sensation/current-draft.mp3',
+      'sensation-canon': 'sensation/canon-current-draft.mp3',
+    };
     const NGROK_FETCH_TIMEOUT_MS = 6000;
-    let sensationLiveDraftActive = false;
+    const liveDraftActive = {};
 
     // Plain <audio src> requests can't carry custom headers, and ngrok's free
     // tier serves an HTML warning page instead of the file unless this header
@@ -1001,9 +1021,10 @@
 
         const audioEl = node.querySelector('.track-audio');
         audioEl.src = t.src;
-        if (t.key === 'sensation') {
-          fetchLiveDraft(NGROK_SENSATION_URL, NGROK_FETCH_TIMEOUT_MS).then(blobUrl => {
-            sensationLiveDraftActive = !!blobUrl;
+        if (LIVE_DRAFT_TRACKS[t.key]) {
+          const liveDraftUrl = `${NGROK_BASE_URL}/${LIVE_DRAFT_TRACKS[t.key]}`;
+          fetchLiveDraft(liveDraftUrl, NGROK_FETCH_TIMEOUT_MS).then(blobUrl => {
+            liveDraftActive[t.key] = !!blobUrl;
             if (blobUrl) audioEl.src = blobUrl;
             setLang(currentLang);
           });
@@ -1296,11 +1317,38 @@
       });
     }
 
+    // Placed after the genre/style chevron (when one exists for that track)
+    // so all the little per-track status indicators line up in one row.
+    function updateLiveDraftBadges() {
+      document.querySelectorAll('li[data-key]').forEach(track => {
+        const t = TRACKS_BY_KEY[track.dataset.key];
+        const playerRow = track.querySelector('.player-row');
+        let badge = playerRow.querySelector('.track-source-badge');
+        if (!t || !LIVE_DRAFT_TRACKS[t.key] || !liveDraftActive[t.key]) {
+          if (badge) badge.remove();
+          return;
+        }
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'badge rounded-pill text-bg-success track-source-badge';
+          badge.title = 'Streaming the in-progress draft straight from the Mac';
+          badge.textContent = '🟢 live draft';
+        }
+        const chevron = playerRow.querySelector('.chevron-btn');
+        if (chevron) {
+          chevron.insertAdjacentElement('afterend', badge);
+        } else {
+          playerRow.appendChild(badge);
+        }
+      });
+    }
+
     fetch('suno-styles.json')
       .then(res => (res.ok ? res.json() : {}))
       .then(data => {
         STYLE_DESCRIPTIONS = data;
         applyStyleDescriptions();
+        updateLiveDraftBadges();
       })
       .catch(() => { /* style descriptions are optional */ });
 
@@ -1340,10 +1388,7 @@
           const h2 = track.querySelector('h2');
           const base = t.titles[lang] || t.titles.fr;
           if (t.key === 'sensation') {
-            const liveBadge = sensationLiveDraftActive
-              ? '<span class="badge rounded-pill text-bg-success track-source-badge" title="Streaming the in-progress draft straight from the Mac">🟢 live draft</span> '
-              : '';
-            h2.innerHTML = `${base} ${liveBadge}♂♀`;
+            h2.innerHTML = `${base} ♂♀`;
           } else {
             h2.textContent = base;
           }
@@ -1351,6 +1396,7 @@
         updateTrackVoteButton(track);
       });
       applyStyleDescriptions();
+      updateLiveDraftBadges();
       updateSendAllButton();
       updateNowPlaying();
     }
