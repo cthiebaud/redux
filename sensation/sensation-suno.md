@@ -112,3 +112,16 @@ Par la Nature, – heureux comme avec une femme.
 
 [Outro: quick fade-out]
 [End]
+
+
+Au plus fort de la nuit, j'irai chez les rentiers
+Dévorés par l'ennui, séduire des inconnues :
+Trompeur, je mentirai sur l'odeur de mes pieds,
+Et laisserai le vin baigner mes fesses nues.
+
+Je ne toucherai à rien, pas même à la vaisselle,
+Et la mélancolie me montera dans l'âme :
+Et j’irai loin, bien loin, tel un romanichel,
+Par la Nature, – Heureux comme avec une dame
+
+[Vers d'autres aventures et d'autres mélodrames.]
