@@ -1,6 +1,6 @@
 # Style
 
-progressive house, 128 BPM, four-on-the-floor kick, deep rolling bassline, evolving arpeggiated synths, layered pads, slow gradual build, emotional chord progressions, warm melodic lead, male and female vocals alternating, spacious reverb, cinematic, hypnotic
+progressive house, 128 BPM, four-on-the-floor kick, deep rolling bassline, layered pads, slow gradual build, emotional chord progressions, warm melodic lead, male and female vocals alternating, spacious reverb, cinematic, hypnotic
 
 uplifting trance, 128 BPM, driving four-on-the-floor kick, rolling offbeat bassline, supersaw lead, arpeggiated synths, long build-ups with snare rolls and risers, big euphoric drop, emotional breakdown with lush pads, male and female vocals alternating, ethereal reverb, melodic, cinematic, festival anthem
 
@@ -62,7 +62,66 @@ Par la Nature, – heureux comme avec une femme.
 [Outro: quick fade-out]
 [End]
 
---- VERSION 2 - because copyright !?!?
+
+--- VERSION 2 - full ENGLISH because copyright !?!?
+
+
+[Intro: deep bass, evolving pads]
+
+[Verse 1: male vocal]
+In blue summer twilights,
+I'll go along the paths,
+Tickled by wheat, I'll tread
+the slender blades of grass.
+A dreamer, I will feel
+the coolness at my feet.
+I'll leave the wind to bathe
+my head, bare to the sky.
+
+[Interlude: rhythm and chords]
+
+[Verse 2: female vocal, soulful, bass and drums only, no chords, no pads, no synths]
+I will not speak a word,
+I will think of nothing...
+But an infinite love
+will rise up in my soul,
+And I'll go far, so far,
+just like a vagabond,
+Through Nature, happy as
+I'd be with a woman.
+
+[Interlude after verse 2: rhythm and chords]
+
+[Instrumental: gradual build, layered synths, filter opening]
+
+[female vocal]
+In blue summer twilights,
+I'll go along the paths,
+Tickled by wheat, I'll tread
+the slender blades of grass.
+[male vocal]
+A dreamer, I will feel
+the coolness at my feet.
+I'll leave the wind to bathe
+my head, bare to the sky.
+
+[Instrumental: gradual build, full groove]
+
+[Verse 3: male and female vocals in unison, same melody as Verse 1]
+I will not speak a word,
+I will think of nothing...
+But an infinite love
+will rise up in my soul,
+And I'll go far, so far,
+just like a vagabond,
+Through Nature, happy as
+I'd be with a woman.
+
+[Outro: quick fade-out]
+[End]
+
+
+--- VERSION 3 - because copyright !?!?
 
 # Lyrics 
 
