@@ -925,6 +925,23 @@
                   "de": "Le Bateau ivre",
                   "es": "Le Bateau ivre"
             }
+      },
+      {
+            "key": "larme",
+            "badge": null,
+            "src": "larme/03_Larme_mai_2016_re-mastered.mp3",
+            "voice": "m",
+            "code": null,
+            "label": null,
+            "rateable": false,
+            "downloadable": false,
+            "titles": {
+                  "en": "Larme",
+                  "fr": "Larme",
+                  "it": "Larme",
+                  "de": "Larme",
+                  "es": "Larme"
+            }
       }
 ];
     const TRACKS_BY_KEY = Object.fromEntries(TRACKS.map(t => [t.key, t]));
@@ -936,6 +953,7 @@
     const LIVE_DRAFT_TRACKS = {
       'sensation': 'sensation/current-draft.mp3',
       'bateau': 'bateau/current-draft.mp3',
+      'larme': 'larme/current-draft.mp3',
     };
     const NGROK_FETCH_TIMEOUT_MS = 6000;
     const liveDraftActive = {};
