@@ -304,7 +304,12 @@
         sections.forEach((section, i) => {
           const base = getLangCode(section.title, i);
           const id = slug ? slug + '-' + base : base;
-          entries.push({ groupTitle: title, section, id });
+          // "(original)" only matters to disambiguate from translations;
+          // with a single language there's nothing to disambiguate from.
+          const displayTitle = sections.length === 1
+            ? section.title.replace(/\s*\(original\)\s*$/i, '')
+            : section.title;
+          entries.push({ groupTitle: title, section, id, displayTitle });
         });
       });
 
@@ -332,7 +337,7 @@
       });
 
       let lastGroupTitle = null;
-      entries.forEach(({ groupTitle, section, id }) => {
+      entries.forEach(({ groupTitle, section, id, displayTitle }) => {
         const isActive = id === activeId;
 
         if (groupTitle !== lastGroupTitle) {
@@ -353,8 +358,8 @@
         // Only disambiguate with the group name when it isn't the default
         // (Alerte) song, so the common case stays exactly as short as before.
         const btnLabel = groupTitle === groups[0].title
-          ? section.title
-          : groupTitle + ' — ' + section.title;
+          ? displayTitle
+          : groupTitle + ' — ' + displayTitle;
 
         const li = document.createElement('li');
 
@@ -363,7 +368,7 @@
         item.href = '#';
         item.dataset.langId = id;
         item.dataset.btnLabel = btnLabel;
-        item.textContent = section.title;
+        item.textContent = displayTitle;
         item.addEventListener('click', e => {
           e.preventDefault();
           activatePane(id);
