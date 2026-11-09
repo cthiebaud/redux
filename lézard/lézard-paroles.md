@@ -15,9 +15,9 @@ Je suis un lézard vert, même si j'en ai pas l'air
 Même si ça paraît louche, j'adore gober les mouches  
 
 [Chorus]  
-Je suis un lézard vert
-Je suis un lézard vert
-Je suis un lézard vert
+Je suis un lézard vert  
+Je suis un lézard vert  
+Je suis un lézard vert  
 Je suis un lézard vert
 
 [Verse 2]  
@@ -31,9 +31,9 @@ Je suis un lézard vert, même si j'en ai pas l'air
 Même si ça paraît louche, j'adore gober les mouches  
 
 [Chorus]  
-Je suis un lézard vert
-Je suis un lézard vert
-Je suis un lézard vert
+Je suis un lézard vert  
+Je suis un lézard vert  
+Je suis un lézard vert  
 Je suis un lézard vert
 
 [Instrumental: guitar solo]
@@ -49,9 +49,9 @@ Je suis un lézard vert, même si j'en ai pas l'air
 Même si ça paraît louche, j'adore gober les mouches  
 
 [Chorus]  
-Je suis un lézard vert
-Je suis un lézard vert
-Je suis un lézard vert
+Je suis un lézard vert  
+Je suis un lézard vert  
+Je suis un lézard vert  
 Je suis un lézard vert
 
 [Outro]
