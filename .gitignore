@@ -8,6 +8,5 @@ __pycache__/
 .claude/
 .DS_Store
 sensation/current-draft.mp3
-bateau/current-draft.mp3
-larme/current-draft.mp3
 larme/*.wav
+lézard/*.wav
