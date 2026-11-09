@@ -37,38 +37,48 @@ const ALERTE_SUBTITLE_COUNT_BY_LANG = {
 const ALERTE_AUTHOR_BY_LANG = {
   en: {
     heading: 'Authors',
-    mugnier: 'Éric Mugnier: lyrics 100%, music 98%.',
-    thiebaud: 'Christophe Thiebaud: music 2%, production 100%.'
+    mugnier: 'Éric Mugnier: lyrics, music.',
+    thiebaud: 'Christophe Thiebaud: music, production.',
+    piscopo: 'Flavio Piscopo: percussion on Larme.',
+    rimbaud: 'Sensation, Le Bateau ivre, and Larme are poems by Arthur Rimbaud.'
   },
   fr: {
     heading: 'Auteurs',
-    mugnier: 'Éric Mugnier : paroles 100 %, musique 98 %.',
-    thiebaud: 'Christophe Thiebaud : musique 2 %, production 100 %.'
+    mugnier: 'Éric Mugnier : paroles, musiques.',
+    thiebaud: 'Christophe Thiebaud : musiques, production.',
+    piscopo: 'Flavio Piscopo : percussions sur Larme.',
+    rimbaud: "Sensation, Le Bateau ivre et Larme sont des poèmes d'Arthur Rimbaud."
   },
   it: {
     heading: 'Autori',
-    mugnier: 'Éric Mugnier: testo 100%, musica 98%.',
-    thiebaud: 'Christophe Thiebaud: musica 2%, produzione 100%.'
+    mugnier: 'Éric Mugnier: testo, musica.',
+    thiebaud: 'Christophe Thiebaud: musica, produzione.',
+    piscopo: 'Flavio Piscopo: percussioni su Larme.',
+    rimbaud: 'Sensation, Le Bateau ivre e Larme sono poesie di Arthur Rimbaud.'
   },
   de: {
     heading: 'Autoren',
-    mugnier: 'Éric Mugnier: Text 100 %, Musik 98 %.',
-    thiebaud: 'Christophe Thiebaud: Musik 2 %, Produktion 100 %.'
+    mugnier: 'Éric Mugnier: Text, Musik.',
+    thiebaud: 'Christophe Thiebaud: Musik, Produktion.',
+    piscopo: 'Flavio Piscopo: Perkussion bei Larme.',
+    rimbaud: 'Sensation, Le Bateau ivre und Larme sind Gedichte von Arthur Rimbaud.'
   },
   es: {
     heading: 'Autores',
-    mugnier: 'Éric Mugnier: letra 100%, música 98%.',
-    thiebaud: 'Christophe Thiebaud: música 2%, producción 100%.'
+    mugnier: 'Éric Mugnier: letra, música.',
+    thiebaud: 'Christophe Thiebaud: música, producción.',
+    piscopo: 'Flavio Piscopo: percusión en Larme.',
+    rimbaud: 'Sensation, Le Bateau ivre y Larme son poemas de Arthur Rimbaud.'
   }
 };
 
 // Update by hand whenever a substantive change is made to the page.
 const ALERTE_LAST_UPDATED_BY_LANG = {
-  en: 'Last updated: October 10, 2026.',
-  fr: 'Dernière mise à jour : 10 octobre 2026.',
-  it: 'Ultimo aggiornamento: 10 ottobre 2026.',
-  de: 'Letzte Aktualisierung: 10. Oktober 2026.',
-  es: 'Última actualización: 10 de octubre de 2026.'
+  en: 'Last updated: November 9, 2026.',
+  fr: 'Dernière mise à jour : 9 novembre 2026.',
+  it: 'Ultimo aggiornamento: 9 novembre 2026.',
+  de: 'Letzte Aktualisierung: 9. November 2026.',
+  es: 'Última actualización: 9 de noviembre de 2026.'
 };
 
 const ALERTE_ABOUT_LABELS = {

@@ -260,43 +260,12 @@
       </li>
     </template>
 
-    <footer>
-      <div class="card border-0">
-        <div class="card-body">
-          <!-- Flags from lipis/flag-icons (MIT License), https://github.com/lipis/flag-icons -->
-          <div class="btn-group-vertical btn-group-sm note-langs float-end ms-3 mb-2" role="group" aria-label="Language">
-            <button type="button" class="btn btn-outline-secondary active d-inline-flex align-items-center" data-lang="en" aria-label="English" title="English">
-              <img src="_images/flags/gb.svg" width="20" height="14" alt="" aria-hidden="true">
-            </button>
-            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="fr" aria-label="Français" title="Français">
-              <img src="_images/flags/fr.svg" width="20" height="14" alt="" aria-hidden="true">
-            </button>
-            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="it" aria-label="Italiano" title="Italiano">
-              <img src="_images/flags/it.svg" width="20" height="14" alt="" aria-hidden="true">
-            </button>
-            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="de" aria-label="Deutsch" title="Deutsch">
-              <img src="_images/flags/de.svg" width="20" height="14" alt="" aria-hidden="true">
-            </button>
-            <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="es" aria-label="Español" title="Español">
-              <img src="_images/flags/es.svg" width="20" height="14" alt="" aria-hidden="true">
-            </button>
-          </div>
-          <p class="note-text small text-body-secondary mb-2" id="noteIntro"></p>
-          <p class="note-text small text-body-secondary mb-2">
-            <em id="noteAddendumLabel"></em>
-            <span id="noteAddendumText"></span>
-            <button type="button" class="btn btn-link border-0 p-0 answer-reveal-btn d-inline-flex align-items-center justify-content-center" style="width: 1.75rem; height: 1.75rem;" aria-label="Reveal answer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button> <span class="badge text-bg-info answer-reveal-badge invisible">16</span>
-          </p>
-          <p class="note-text small text-body-secondary mb-2" id="noteTranslated"></p>
-          <p class="note-text small text-body-secondary mb-0" id="noteStage"></p>
-        </div>
-      </div>
-    </footer>
-
     <div class="text-center text-body-secondary small mt-3" id="authorCredit">
       <div class="fw-semibold" id="authorCreditHeading">Authors</div>
-      <div id="authorCreditMugnier">Éric Mugnier: lyrics 100%, music 98%.</div>
-      <div id="authorCreditThiebaud">Christophe Thiebaud: music 2%, production 100%.</div>
+      <div id="authorCreditMugnier">Éric Mugnier: lyrics, music.</div>
+      <div id="authorCreditThiebaud">Christophe Thiebaud: music, production.</div>
+      <div id="authorCreditPiscopo">Flavio Piscopo: percussion on Larme.</div>
+      <div id="authorCreditRimbaud">Sensation, Le Bateau ivre, and Larme are poems by Arthur Rimbaud.</div>
     </div>
 
     <p class="text-center text-body-secondary small mb-0" id="pageMeta">
@@ -1041,12 +1010,46 @@
       return li;
     }
 
+    function buildNotesSection() {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <!-- Flags from lipis/flag-icons (MIT License), https://github.com/lipis/flag-icons -->
+        <div class="btn-group-vertical btn-group-sm note-langs float-end ms-3 mb-2" role="group" aria-label="Language">
+          <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="en" aria-label="English" title="English">
+            <img src="_images/flags/gb.svg" width="20" height="14" alt="" aria-hidden="true">
+          </button>
+          <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="fr" aria-label="Français" title="Français">
+            <img src="_images/flags/fr.svg" width="20" height="14" alt="" aria-hidden="true">
+          </button>
+          <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="it" aria-label="Italiano" title="Italiano">
+            <img src="_images/flags/it.svg" width="20" height="14" alt="" aria-hidden="true">
+          </button>
+          <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="de" aria-label="Deutsch" title="Deutsch">
+            <img src="_images/flags/de.svg" width="20" height="14" alt="" aria-hidden="true">
+          </button>
+          <button type="button" class="btn btn-outline-secondary d-inline-flex align-items-center" data-lang="es" aria-label="Español" title="Español">
+            <img src="_images/flags/es.svg" width="20" height="14" alt="" aria-hidden="true">
+          </button>
+        </div>
+        <p class="note-text small text-body-secondary mb-2" id="noteIntro"></p>
+        <p class="note-text small text-body-secondary mb-2">
+          <em id="noteAddendumLabel"></em>
+          <span id="noteAddendumText"></span>
+          <button type="button" class="btn btn-link border-0 p-0 answer-reveal-btn d-inline-flex align-items-center justify-content-center" style="width: 1.75rem; height: 1.75rem;" aria-label="Reveal answer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"></path><circle cx="12" cy="12" r="3"></circle></svg></button> <span class="badge text-bg-info answer-reveal-badge invisible">16</span>
+        </p>
+        <p class="note-text small text-body-secondary mb-2" id="noteTranslated"></p>
+        <p class="note-text small text-body-secondary mb-0" id="noteStage"></p>
+      `;
+      return li;
+    }
+
     function renderTracks() {
       const template = document.getElementById('track-template');
       const list = document.getElementById('trackList');
       TRACKS.forEach((t, index) => {
         if (t.sectionBreak) {
           list.appendChild(buildVoteSection());
+          list.appendChild(buildNotesSection());
           list.appendChild(buildSectionBreak(t.sectionBreak));
         }
         const node = template.content.cloneNode(true);
@@ -1404,6 +1407,8 @@
       document.getElementById('authorCreditHeading').textContent = ALERTE_AUTHOR_BY_LANG[lang].heading;
       document.getElementById('authorCreditMugnier').textContent = ALERTE_AUTHOR_BY_LANG[lang].mugnier;
       document.getElementById('authorCreditThiebaud').textContent = ALERTE_AUTHOR_BY_LANG[lang].thiebaud;
+      document.getElementById('authorCreditPiscopo').textContent = ALERTE_AUTHOR_BY_LANG[lang].piscopo;
+      document.getElementById('authorCreditRimbaud').textContent = ALERTE_AUTHOR_BY_LANG[lang].rimbaud;
       document.getElementById('lastUpdated').textContent = ALERTE_LAST_UPDATED_BY_LANG[lang];
       document.getElementById('aboutTriggerBtn').title = ALERTE_ABOUT_LABELS[lang].trigger;
       document.getElementById('aboutTriggerBtn').setAttribute('aria-label', ALERTE_ABOUT_LABELS[lang].trigger);
