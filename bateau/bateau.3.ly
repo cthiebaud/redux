@@ -90,6 +90,13 @@ introEcho = {
   | r1
 }
 
+introChordNames = \chordmode {
+  | d1:7
+  | g4.:7  c4.:9sus4 s4
+  | d1:7
+  | g4.:7  c4.:9sus4 s4
+}
+
 % vamp
 
 vampBasse = {
@@ -100,8 +107,14 @@ vampBasse = {
 
 vamp = {
   \voiceOne
-  | <fis' c'' d''>1 
+  | <fis' c'' d''>1
   | <f'   b' d''~>2 <e' bes' d''>2
+}
+
+% Reused for both the x2 and x4 Vamp -- same chords as vampBasse/vamp.
+vampChordNames = \chordmode {
+  | d1:7
+  | g2:7/d  c:7/d
 }
 
 % sequence
@@ -169,6 +182,26 @@ sequenceBasse = {
   | g2   c'
 }
 
+sequenceChordNames = \chordmode {
+  | g1:m7
+  | c:7.9+
+  | f:7+.5+
+  | bes:7+
+  | e:m7.5-.9
+  | a:7.9-
+  | aes:7.5-
+  | g:7.9
+
+  | g:m7.9
+  | c:7.9+.13-
+  | f:7+.5+.9
+  | bes:7+.5+
+  | e:7sus4.5-.9-
+  | a2:7sus4     a:7
+  | aes1:7.9.11+
+  | g2:9         c:9sus4
+}
+
 % climax
 
 climaxBasse = {
@@ -187,6 +220,17 @@ climaxBasse = {
   | d1
 }
 
+climaxChordNames = \chordmode {
+  \repeat volta 2 {
+    | d1
+    | bes/f
+  }
+  | b:m
+  | a
+  | d
+  | d
+}
+
 climax = {
   \voiceOne
   \repeat volta 2 {
@@ -203,33 +247,94 @@ climax = {
 
 outroBasse = {
   \voiceTwo
-  | d'1
-  | d'1
-  | d'1
-  | d'1
+  | d,1
+  | d,1
+  | d,2.. d,8~
+  | d,1
 }
 
 outro = {
   \voiceOne
-  | s1
-  | s1
-  | s1
-  | s1
+  | <gis>1
+  | <gis>
+  | <gis>2.. <gis>8~
+  | <gis>1
 }
 
 outroLeadGuitar = {
   \voiceOne
-  | s1
-  | s1
-  | s1
-  | s1
+  | d'2. g'16 f'16 g'16 a'16
+  | \acciaccatura f'8 g'8 f'16 d'16~ d'4 r4 
+  fis'16 f'16 c'8
+  | d'2.. d'8~
+  | d'1
 }
 
 outroEcho = {
-  | s1
-  | s1
-  | s1
-  | s1
+  | r4 c'8.\glissando d'16~d'2
+  | r4 c'8.\glissando d'16~d'2
+  | r4 c'8.\glissando d'16~d'4. d'8~
+  | d'1
+}
+
+% The Outro is a fully independent piece: its own StaffGroup, its own
+% fresh timing starting at bar 1, no relation to pieceMusic. It's placed
+% after the poem continuation in the file so it prints after it too.
+outroMusic = {
+  \new StaffGroup { <<
+    \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
+    \new Staff = "outroMelody" \with {
+      \RemoveEmptyStaves
+    } {
+      \clef "treble_8"
+      \key g \major
+      \partial 2
+      r16 a16 d'16 a'16 g'16 f'16 d'16 c'16
+      \outroLeadGuitar
+      \bar "|."
+    }
+    \new Staff = "outroEcho" \with {
+      \RemoveEmptyStaves
+    } {
+      \set Staff.midiInstrument = "vibraphone"
+      \clef "treble_8"
+      \key g \major
+      \partial 2
+      r2
+      \outroEcho
+      \bar "|."
+    }
+    \new Staff = "outroMain" {
+      \set Staff.midiInstrument = "acoustic guitar (nylon)"
+      <<
+        \new ChordNames \with {
+          alignAboveContext = "outroMain"
+        } {
+          \chordmode {
+            \partial 2
+            s2
+            % TODO: outro chords
+            s1 s1 s1 s1
+          }
+        }
+        \new Voice = "outroBasseVoice" {
+          \key g \major
+          \section \sectionLine "Outro"
+          \partial 2
+          r2
+          \voiceTwo
+          \outroBasse
+        }
+        \new Voice = "outroAccordsVoice" {
+          \partial 2
+          s2
+          \voiceOne
+          \outro
+        }
+      >>
+    }
+  >>
+  }
 }
 
 
@@ -273,14 +378,6 @@ pieceMusic = \transpose c' c {
       d''2_\markup \small \italic \with-color #darkGray \wordwrap {
         After the intro, the guitar continues as an improvised obbligato: a constant voice, not a series of solos.
       }
-      %%% % Skip to the Outro: after the pickup (2q) + 4-bar intro (16q) + the
-      %%% % d''2 above (2q) we're at absolute quarter 20. The Outro starts after
-      %%% % Vamp(x2, 4 bars) + Sequence (16 bars) + Climax (8 bars) + Vamp(x4, 8
-      %%% % bars) = bar 40's end = quarter 162. Remaining: 142q = 35 bars + a half.
-      %%% % Recompute this if the bar counts above change.
-      %%% s1*35 s2
-      %%% \outroLeadGuitar
-      %%% \bar "|."
     }
     \new Staff = "introEcho" \with {
       \consists "Timing_translator"
@@ -293,9 +390,6 @@ pieceMusic = \transpose c' c {
       \introEcho
       \bar "|"
       r2
-      %%% s1*35 s2
-      %%% \outroEcho
-      %%% \bar "|."
     }
     \new Staff = "main" {
 
@@ -308,53 +402,13 @@ pieceMusic = \transpose c' c {
       \new ChordNames \with {
         alignAboveContext = "main"
       } {
-        \chordmode {
-          \partial 2
-          s2
-          | d1:7 
-          | g4.:7  c4.:9sus4 s4
-          | d1:7
-          | g4.:7  c4.:9sus4 s4
-
-          \repeat volta 2 {
-            | d1:7
-            | g2:7/d  c:7/d
-          }
-
-          | g1:m7
-          | c:7.9+
-          | f:7+.5+
-          | bes:7+
-          | e:m7.5-.9
-          | a:7.9-
-          | aes:7.5-
-          | g:7.9
-
-          | g:m7.9
-          | c:7.9+.13-
-          | f:7+.5+.9
-          | bes:7+.5+
-          | e:7sus4.5-.9-
-          | a2:7sus4     a:7
-          | aes1:7.9.11+
-          | g2:9         c:9sus4
-
-          {
-            \repeat volta 2 {
-              | d1
-              | bes/f
-            }
-            | b:m
-            | a
-            | d
-            | d
-          }
-
-          \repeat volta 4 {
-            | d1:7
-            | g2:7/d  c:7/d
-          }
-        }
+        \partial 2
+        s2
+        \introChordNames
+        \repeat volta 2 \vampChordNames
+        \sequenceChordNames
+        \climaxChordNames
+        \repeat volta 4 \vampChordNames
       }
       %}
       {
@@ -403,11 +457,6 @@ pieceMusic = \transpose c' c {
         \textMark \markup { \tiny "4x" }
         \bar ".|:"
         \repeat volta 4 \vampBasse
-
-        %%% \key g \major
-        %%% \section \sectionLine "Outro"
-        %%% \outroBasse
-        %%% \bar "|."
       }
       }
       \new Voice = "accordsI" {
@@ -423,9 +472,6 @@ pieceMusic = \transpose c' c {
         \climax
 
         \repeat volta 4 \vamp
-
-        %%% \outro
-        %%% \bar "|."
       }
       \new Lyrics \lyricsto "basseI" {
         \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1
@@ -494,6 +540,25 @@ pieceMusic = \transpose c' c {
 }
 
 \include "bateau_poem_continuation.ily"
+
+\markup {
+  \vspace #4
+}
+
+\score {
+  \outroMusic
+
+  \layout {
+    \clef "treble_8"
+    \time 4/4
+    indent = #0
+    short-indent = #0
+    \context {
+      \Score
+      \override SectionLabel.padding = #2
+    }
+  }
+}
 
 \score {
   \unfoldRepeats \keepWithTag #'midi \pieceMusic
