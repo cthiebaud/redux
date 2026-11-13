@@ -1,6 +1,7 @@
 - section: Vamp
   strophes:
     - strophe: 1
+      symbole: "①"
       vers:
         - "Comme je descendais des Fleuves impassibles,"
         - "Je ne me sentis plus guidé par les haleurs :"
@@ -10,24 +11,28 @@
 - section: Sequence
   strophes:
     - strophe: 2
+      symbole: "②"
       vers:
         - "J’étais insoucieux de tous les équipages,"
         - "Porteur de blés flamands ou de cotons anglais."
         - "Quand avec mes haleurs ont fini ces tapages,"
         - "Les Fleuves m’ont laissé descendre où je voulais."
     - strophe: 3
+      symbole: "③"
       vers:
         - "Dans les clapotements furieux des marées,"
         - "Moi, l’autre hiver, plus sourd que les cerveaux d’enfants,"
         - "Je courus ! Et les Péninsules démarrées"
         - "N’ont pas subi tohu-bohus plus triomphants."
     - strophe: 4
+      symbole: "④"
       vers:
         - "La tempête a béni mes éveils maritimes."
         - "Plus léger qu’un bouchon j’ai dansé sur les flots"
         - "Qu’on appelle rouleurs éternels de victimes,"
         - "Dix nuits, sans regretter l’œil niais des falots !"
     - strophe: 5
+      symbole: "⑤"
       vers:
         - "Plus douce qu’aux enfants la chair des pommes sures,"
         - "L’eau verte pénétra ma coque de sapin"
@@ -37,12 +42,14 @@
 - section: Climax
   strophes:
     - strophe: 6
+      symbole: "⑥"
       vers:
         - "Et dès lors, je me suis baigné dans le Poème"
         - "De la Mer, infusé d’astres, et lactescent,"
         - "Dévorant les azurs verts ; où, flottaison blême"
         - "Et ravie, un noyé pensif parfois descend ;"
     - strophe: 7
+      symbole: "⑦"
       vers:
         - "Où, teignant tout à coup les bleuités, délires"
         - "Et rythmes lents sous les rutilements du jour,"
@@ -52,12 +59,14 @@
 - section: Vamp # re-vamp
   strophes:
     - strophe: 8
+      symbole: "⑧"
       vers:
         - "Je sais les cieux crevant en éclairs, et les trombes"
         - "Et les ressacs, et les courants : je sais le soir,"
         - "L’Aube exaltée ainsi qu’un peuple de colombes,"
         - "Et j’ai vu quelquefois ce que l’homme a cru voir !"
     - strophe: 9
+      symbole: "⑨"
       vers:
         - "J’ai vu le soleil bas, taché d’horreurs mystiques,"
         - "Illuminant de longs figements violets,"
@@ -67,6 +76,7 @@
 - section: Sequence
   strophes:
     - strophe: 10
+      symbole: "⑩"
       vers:
         - "J’ai rêvé la nuit verte aux neiges éblouies,"
         - "Baisers montant aux yeux des mers avec lenteurs,"
@@ -74,6 +84,7 @@
         - "Et l’éveil jaune et bleu des phosphores chanteurs !"
 
     - strophe: 11
+      symbole: "⑪"
       vers:
         - "J’ai suivi, des mois pleins, pareille aux vacheries"
         - "Hystériques, la houle à l’assaut des récifs,"
@@ -81,6 +92,7 @@
         - "Pussent forcer le mufle aux Océans poussifs !"
 
     - strophe: 12
+      symbole: "⑫"
       vers:
         - "J’ai heurté, savez-vous, d’incroyables Florides"
         - "Mêlant aux fleurs des yeux de panthères à peaux"
@@ -88,6 +100,7 @@
         - "Sous l’horizon des mers, à de glauques troupeaux !"
 
     - strophe: 13
+      symbole: "⑬"
       vers:
         - "J’ai vu fermenter les marais énormes, nasses"
         - "Où pourrit dans les joncs tout un Léviathan !"
@@ -97,6 +110,7 @@
 - section: Climax
   strophes:
     - strophe: 14
+      symbole: "⑭"
       vers:
         - "Glaciers, soleils d’argent, flots nacreux, cieux de braises !"
         - "Échouages hideux au fond des golfes bruns"
@@ -104,6 +118,7 @@
         - "Choient, des arbres tordus, avec de noirs parfums !"
 
     - strophe: 15
+      symbole: "⑮"
       vers:
         - "J’aurais voulu montrer aux enfants ces dorades"
         - "Du flot bleu, ces poissons d’or, ces poissons chantants."
@@ -113,6 +128,7 @@
 - section: Vamp
   strophes:
     - strophe: 16
+      symbole: "⑯"
       vers:
         - "Parfois, martyr lassé des pôles et des zones,"
         - "La mer dont le sanglot faisait mon roulis doux"
@@ -120,6 +136,7 @@
         - "Et je restais, ainsi qu’une femme à genoux…"
 
     - strophe: 17
+      symbole: "⑰"
       vers:
         - "Presque île, ballottant sur mes bords les querelles"
         - "Et les fientes d’oiseaux clabaudeurs aux yeux blonds."
@@ -129,6 +146,7 @@
 - section: Sequence
   strophes:
     - strophe: 18
+      symbole: "⑱"
       vers:
         - "Or moi, bateau perdu sous les cheveux des anses,"
         - "Jeté par l’ouragan dans l’éther sans oiseau,"
@@ -136,6 +154,7 @@
         - "N’auraient pas repêché la carcasse ivre d’eau ;"
 
     - strophe: 19
+      symbole: "⑲"
       vers:
         - "Libre, fumant, monté de brumes violettes,"
         - "Moi qui trouais le ciel rougeoyant comme un mur"
@@ -143,6 +162,7 @@
         - "Des lichens de soleil et des morves d’azur ;"
 
     - strophe: 20
+      symbole: "⑳"
       vers:
         - "Qui courais, taché de lunules électriques,"
         - "Planche folle, escorté des hippocampes noirs,"
@@ -150,6 +170,7 @@
         - "Les cieux ultramarins aux ardents entonnoirs ;"
 
     - strophe: 21
+      symbole: "㉑"
       vers:
         - "Moi qui tremblais, sentant geindre à cinquante lieues"
         - "Le rut des Béhémots et les Maelstroms épais,"
@@ -159,6 +180,7 @@
 - section: Climax
   strophes:
     - strophe: 22
+      symbole: "㉒"
       vers:
         - "J’ai vu des archipels sidéraux ! Et des îles"
         - "Dont les cieux délirants sont ouverts au vogueur :"
@@ -166,6 +188,7 @@
         - "Million d’oiseaux d’or, ô future Vigueur ?"
 
     - strophe: 23
+      symbole: "㉓"
       vers:
         - "Mais, vrai, j’ai trop pleuré ! Les Aubes sont navrantes."
         - "Toute lune est atroce et tout soleil amer :"
@@ -175,6 +198,7 @@
 - section: Vamp
   strophes:
     - strophe: 24
+      symbole: "㉔"
       vers:
         - "Si je désire une eau d’Europe, c’est la flache"
         - "Noire et froide où vers le crépuscule embaumé"
@@ -182,6 +206,7 @@
         - "Un bateau frêle comme un papillon de mai."
 
     - strophe: 25
+      symbole: "㉕"
       vers:
         - "Je ne puis plus, baigné de vos langueurs, ô lames,"
         - "Enlever leur sillage aux porteurs de cotons,"

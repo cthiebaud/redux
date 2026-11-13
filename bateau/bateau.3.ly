@@ -46,69 +46,10 @@ offsetLeft =
 
 offsetLeftSmall = \tweak extra-offset #'(-3.5 . 0) \etc
 
-% VAMP
-textOne = \lyricmode {
-  \offsetLeft "① Comme je descendais des Fleuves impassibles,"
-  \offsetLeftSmall "Je ne me sentis plus guidé par les haleurs :"
-} textOneAndAHalf = \lyricmode {
-  \offsetLeft "Des Peaux-Rouges criards les avaient pris pour cibles,"
-  \offsetLeftSmall "Les ayant cloués nus aux poteaux de couleurs"
-}
-
-% SEQUENCE
-textTwoThreeFourFive = \lyricmode {
-  \offsetLeft "② J’étais insoucieux de tous les équipages,"
-  \offsetLeftSmall "Porteur de blés flamands ou de cotons anglais."
-  \offsetLeft "Quand avec mes haleurs ont fini ces tapages,"
-  \offsetLeftSmall "Les Fleuves m’ont laissé descendre où je voulais."
-
-  \offsetLeft "③ Dans les clapotements furieux des marées,"
-  \offsetLeftSmall "Moi, l’autre hiver, plus sourd que les cerveaux d’enfants,"
-  \offsetLeft "Je courus ! Et les Péninsules démarrées"
-  \offsetLeftSmall "N’ont pas subi tohu-bohus plus triomphants."
-
-  \offsetLeft "④ La tempête a béni mes éveils maritimes."
-  \offsetLeftSmall "Plus léger qu’un bouchon j’ai dansé sur les flots"
-  \offsetLeft "Qu’on appelle rouleurs éternels de victimes,"
-  \offsetLeftSmall "Dix nuits, sans regretter l’œil niais des falots !"
-
-  \offsetLeft "⑤ Plus douce qu’aux enfants la chair des pommes sures,"
-  \offsetLeftSmall "L’eau verte pénétra ma coque de sapin"
-  \offsetLeft "Et des taches de vins bleus et des vomissures"
-  \offsetLeftSmall "Me lava, dispersant gouvernail et grappin." " "
-}
-
-% CLIMAX
-textSix = \lyricmode {
-  \offsetLeft "⑥ Et dès lors, je me suis baigné dans le Poème "
-  \offsetLeftSmall "De la Mer, infusé d’astres, et lactescent, "
-} textSixAndAHalf = \lyricmode {
-  \offsetLeft "Dévorant les azurs verts ; où, flottaison blême "
-  \offsetLeftSmall "Et ravie, un noyé pensif parfois descend ; "
-} textSeven=  \lyricmode {
-  \offsetLeft "⑦ Où, teignant tout à coup les bleuités, délires "
-  \offsetLeftSmall "Et rythmes lents sous les rutilements du jour, "
-  \offsetLeft "Plus fortes que l’alcool, plus vastes que nos lyres, "
-  \offsetLeftSmall "Fermentent les rousseurs amères de l’amour ! "
-}
-
-% RE-VAMP
-textHeight =  \lyricmode {
-  \offsetLeft "⑧ Je sais les cieux crevant en éclairs, et les trombes "
-  \offsetLeftSmall "Et les ressacs, et les courants : je sais le soir, " " "
-} textHeightndAHalf = \lyricmode {
-  \offsetLeft "L’Aube exaltée ainsi qu’un peuple de colombes, "
-  \offsetLeftSmall "Et j’ai vu quelquefois ce que l’homme a cru voir ! " " "
-} textNine = \lyricmode {
-  \offsetLeft "⑨ J’ai vu le soleil bas, taché d’horreurs mystiques, "
-  \offsetLeftSmall "Illuminant de longs figements violets, " " "
-} textNineAndAHalf = \lyricmode {
-  \offsetLeft "Pareils à des acteurs de drames très antiques "
-  \offsetLeftSmall "Les flots roulant au loin leurs frissons de volets ! " " "
-}
-
-% ETC.
-% (...)
+% Lyrics for quatrains 1-9 (sung) and the plain-verse continuation for
+% quatrains 10-25 are generated from bateau_ivre.yaml -- see
+% generate_lyrics.py. Re-run it after editing the yaml, before compiling.
+\include "bateau_lyrics.ily"
 
 %%%%%%%%%%%%%%%%%%%%%%%
 
@@ -258,6 +199,39 @@ climax = {
   | <a'   d''   fis'' >
 }
 
+% outro
+
+outroBasse = {
+  \voiceTwo
+  | d'1
+  | d'1
+  | d'1
+  | d'1
+}
+
+outro = {
+  \voiceOne
+  | s1
+  | s1
+  | s1
+  | s1
+}
+
+outroLeadGuitar = {
+  \voiceOne
+  | s1
+  | s1
+  | s1
+  | s1
+}
+
+outroEcho = {
+  | s1
+  | s1
+  | s1
+  | s1
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -299,6 +273,14 @@ pieceMusic = \transpose c' c {
       d''2_\markup \small \italic \with-color #darkGray \wordwrap {
         After the intro, the guitar continues as an improvised obbligato: a constant voice, not a series of solos.
       }
+      %%% % Skip to the Outro: after the pickup (2q) + 4-bar intro (16q) + the
+      %%% % d''2 above (2q) we're at absolute quarter 20. The Outro starts after
+      %%% % Vamp(x2, 4 bars) + Sequence (16 bars) + Climax (8 bars) + Vamp(x4, 8
+      %%% % bars) = bar 40's end = quarter 162. Remaining: 142q = 35 bars + a half.
+      %%% % Recompute this if the bar counts above change.
+      %%% s1*35 s2
+      %%% \outroLeadGuitar
+      %%% \bar "|."
     }
     \new Staff = "introEcho" \with {
       \consists "Timing_translator"
@@ -311,6 +293,9 @@ pieceMusic = \transpose c' c {
       \introEcho
       \bar "|"
       r2
+      %%% s1*35 s2
+      %%% \outroEcho
+      %%% \bar "|."
     }
     \new Staff = "main" {
 
@@ -387,7 +372,7 @@ pieceMusic = \transpose c' c {
         \break
 
         \bar ".|:"
-        \section \sectionLine "Vamp" 
+        \section \sectionLine "Vamp"
         \repeat volta 2 \vampBasse
         \set Score.currentBarNumber = #9
         \break
@@ -401,7 +386,12 @@ pieceMusic = \transpose c' c {
         \break
 
         \key d \major
-        \section \sectionLine "Climax"
+        \section
+        \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9 \wordwrap {
+          "The" "climactic" "section" "quotes" "the" "closing" "chords" "of" "Richard" "Strauss,"
+          \italic "Vier letzte Lieder,"
+          "no." "4," "“Im" "Abendrot”" "(original" "key:" "E-flat" "major;" "transposed" "to" "D)."
+        } \sectionLine \markup \concat { "Climax" \super "*" }
         \climaxBasse
         \once \overrideProperty Score.NonMusicalPaperColumn.line-break-system-details
           #'((extra-offset . (0 . 1)))
@@ -413,6 +403,11 @@ pieceMusic = \transpose c' c {
         \textMark \markup { \tiny "4x" }
         \bar ".|:"
         \repeat volta 4 \vampBasse
+
+        %%% \key g \major
+        %%% \section \sectionLine "Outro"
+        %%% \outroBasse
+        %%% \bar "|."
       }
       }
       \new Voice = "accordsI" {
@@ -428,6 +423,9 @@ pieceMusic = \transpose c' c {
         \climax
 
         \repeat volta 4 \vamp
+
+        %%% \outro
+        %%% \bar "|."
       }
       \new Lyrics \lyricsto "basseI" {
         \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1
@@ -491,29 +489,11 @@ pieceMusic = \transpose c' c {
       \override LyricText.font-name = "URW Bookman, URW Bookman L"
       \override LyricText.font-size = #0.5
       \override VerticalAxisGroup.nonstaff-relatedstaff-spacing.minimum-distance = #9
-    }    
+    }
   }
 }
 
-\markup {   
-  \vspace #1 
-  \hspace #3.5 \large "(...)" 
-}
-
-\markup \with-color #darkGray \sans \abs-fontsize #9 \column {
-  \vspace #3
-  \fill-line { \center-column {
-    \line { "Demo score: quatrains 1–9 of 25 are shown." }
-    \line { "The complete version reuses the same music, with" }
-    \line { "minor variations, for the remaining quatrains (10–25)." }
-  } }
-  \vspace #1
-  \fill-line { \center-column {
-    \line { "The climactic section quotes the closing chords of" }
-    \line { "Richard Strauss," \italic "Vier letzte Lieder," "no. 4, “Im Abendrot”" }
-    \line { "(original key: E-flat major; transposed to D)." }
-  } }
-}
+\include "bateau_poem_continuation.ily"
 
 \score {
   \unfoldRepeats \keepWithTag #'midi \pieceMusic
