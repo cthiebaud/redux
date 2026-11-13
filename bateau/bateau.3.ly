@@ -247,25 +247,24 @@ climax = {
 
 outroBasse = {
   \voiceTwo
-  | d,1
-  | d,1
-  | d,2.. d,8~
+  | d,2 d,2 
+  | d,2 d,2 
+  | d,2 d,4. d,8~
   | d,1
 }
 
 outro = {
   \voiceOne
-  | <gis>1
-  | <gis>
-  | <gis>2.. <gis>8~
-  | <gis>1
+  | <gis d'>2 <gis d'>
+  | <gis d'>  <gis d'>
+  | <gis d'>  <gis d'>4. <gis d'>8~
+  | <gis d'>1
 }
 
 outroLeadGuitar = {
   \voiceOne
   | d'2. g'16 f'16 g'16 a'16
-  | \acciaccatura f'8 g'8 f'16 d'16~ d'4 r4 
-  fis'16 f'16 c'8
+  | f'8. d'16~ d'2 fis'16 f'16 c'8
   | d'2.. d'8~
   | d'1
 }
@@ -539,6 +538,29 @@ pieceMusic = \transpose c' c {
   }
 }
 
+% Kept right after the body's \layout score (and before the Outro's own
+% \score below) so this -- the main piece -- claims the unsuffixed
+% "bateau.3.midi" name; the Outro's MIDI then becomes "bateau.3-1.midi".
+\score {
+  \unfoldRepeats \keepWithTag #'midi \pieceMusic
+
+  \midi {
+    \tempo 4 = 70
+    \context {
+      \Staff
+      \remove "Staff_performer"
+    }
+    \context {
+      \Voice
+      \consists "Staff_performer"
+    }
+    \context {
+      \ChordNames
+      \remove "Note_performer"
+    }
+  }
+}
+
 \include "bateau_poem_continuation.ily"
 
 \markup {
@@ -558,10 +580,6 @@ pieceMusic = \transpose c' c {
       \override SectionLabel.padding = #2
     }
   }
-}
-
-\score {
-  \unfoldRepeats \keepWithTag #'midi \pieceMusic
 
   \midi {
     \tempo 4 = 70
