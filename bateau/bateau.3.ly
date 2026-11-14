@@ -13,6 +13,7 @@
   page-breaking = #ly:minimal-breaking
   system-system-spacing.padding = #1.8
   ragged-bottom = ##t
+  ragged-last = ##f
 
   %%% system-system-spacing.basic-distance = #10
   %%% system-system-spacing.minimum-distance = #6
@@ -34,6 +35,10 @@ sectionLineMarkup =
 sectionLine = #(define-music-function (text) (markup?)
   #{ \sectionLabel \markup \sectionLineMarkup #text #})
 
+% Flush against the same page margins (x=0 .. line-width) as the
+% \fill-line columns used for the poem continuation, so both halves of
+% the sung lyrics and the plain-verse continuation share identical
+% left/right edges.
 offsetLeft =
 #(define-music-function () ()
    #{
@@ -41,10 +46,91 @@ offsetLeft =
        #(lambda (grob)
           (let* ((sys  (ly:grob-system grob))
                  (left (car (ly:grob-extent grob sys X))))
-            (ly:grob-translate-axis! grob (- 3.5 left) X)))
+            (ly:grob-translate-axis! grob (- 0 left) X)))
    #})
 
-offsetLeftSmall = \tweak extra-offset #'(-3.5 . 0) \etc
+% The target is a fixed constant (not a live lookup of the system's own
+% extent) because querying a grob's containing system from within that
+% same grob's after-line-breaking callback is self-referential: the
+% system's extent isn't settled yet, and the resulting translation can
+% blow up and wreck the whole page's spacing.
+offsetRight = \tweak after-line-breaking
+  #(lambda (grob)
+     (let* ((sys   (ly:grob-system grob))
+            (right (cdr (ly:grob-extent grob sys X))))
+       (ly:grob-translate-axis! grob (- 128.0374 right) X)))
+  \etc
+
+% A light-gray backing behind the chord-name glyphs so they stay legible
+% (we tried a fully custom placement earlier -- centering the text on
+% the staff and pinning odd/even bars to fixed left/right columns --
+% but doing so safely, without corrupting the page's vertical spacing,
+% proved too fragile: see git history around this comment for the full
+% story). True alpha transparency isn't available here -- LilyPond's
+% PostScript/Ghostscript output path doesn't support it -- so this is
+% an opaque approximation instead of a genuinely see-through white.
+%
+% Box-only version: default (above-staff) placement, untouched -- used
+% for the intro and outro, which this positioning plan doesn't concern.
+chordNameBackground = #(define-music-function () ()
+  #{
+    \override ChordName.stencil =
+      #(lambda (grob)
+         (let* ((text  (ly:text-interface::print grob))
+                (x-ext (interval-widen (ly:stencil-extent text X) 0.3))
+                (y-ext (interval-widen (ly:stencil-extent text Y) 0.3))
+                (box   (stencil-with-color (make-filled-box-stencil x-ext y-ext) (list 0.85 0.85 0.85))))
+           (ly:stencil-add box text)))
+  #})
+
+% Placement itself now uses only stock grob/context properties, each a
+% flat, self-contained adjustment (no cross-grob lookups, nothing that
+% can force another grob's layout to resolve early):
+%  - alignBelowContext (\set mid-stream, not at context creation --
+%    see the main block below) moves the row below the staff instead
+%    of above it.
+%  - nonstaff-relatedstaff-spacing: the *real* gap the layout solver
+%    reserves between the row and the staff, shrunk to a small fixed
+%    constant. This is the one that matters for anything *after* the
+%    chord name (the lyrics) to shift up and follow -- unlike
+%    extra-offset below, which is a late, purely cosmetic nudge the
+%    solver never sees, so nothing reserves less room for it. Safe on
+%    its own (no fighting): the earlier corruption came specifically
+%    from fixing this *and* then pushing past it with a large
+%    extra-offset; a small fixed gap with nothing contradicting it is
+%    the configuration already verified rock-solid across systems.
+%  - X-offset: a constant rightward nudge.
+%  - extra-offset's Y part: now just a small supplementary lift on top
+%    of the already-shrunk gap above, sized as "this chord's own
+%    printed height" (halved) -- so a tall chord like "E7b5b9sus4" and
+%    a plain one like "D7" still end up about the same distance from
+%    the staff, since the taller glyph gets proportionally more lift.
+%    The height comes from the glyph's own stencil (ly:stencil-extent
+%    on ly:text-interface::print's result), not from ly:grob-extent on
+%    the grob itself -- the former is pure font geometry and safe to
+%    read from 'after-line-breaking; the latter ties into the page's
+%    vertical spacing solve and isn't finished yet at that point.
+chordNameBelow = #(define-music-function () ()
+  #{
+    \override ChordNames.VerticalAxisGroup.nonstaff-relatedstaff-spacing =
+      #'((basic-distance . 1) (minimum-distance . 1) (padding . 0) (stretchability . 0))
+    \override ChordName.X-offset = #2.2
+    \override ChordName.stencil =
+      #(lambda (grob)
+         (let* ((text  (ly:text-interface::print grob))
+                (x-ext (interval-widen (ly:stencil-extent text X) 0.3))
+                (y-ext (interval-widen (ly:stencil-extent text Y) 0.3))
+                (box   (stencil-with-color (make-filled-box-stencil x-ext y-ext) (list 0.85 0.85 0.85))))
+           (ly:stencil-add box text)))
+    \override ChordName.after-line-breaking =
+      #(lambda (grob)
+         (ly:chord-name::after-line-breaking grob)
+         (let* ((text   (ly:text-interface::print grob))
+                (y-ext  (ly:stencil-extent text Y))
+                (height (- (cdr y-ext) (car y-ext)))
+                (dy     (/ height 2)))
+           (ly:grob-set-property! grob 'extra-offset (cons 0 dy))))
+  #})
 
 % Lyrics for quatrains 1-9 (sung) and the plain-verse continuation for
 % quatrains 10-25 are generated from bateau_ivre.yaml -- see
@@ -247,10 +333,10 @@ climax = {
 
 outroBasse = {
   \voiceTwo
-  | d,2 d,2 
-  | d,2 d,2 
-  | d,2 d,4. d,8~
-  | d,1
+  | d2 d2 
+  | d2 d2 
+  | d2 d4. d8~
+  | d1
 }
 
 outro = {
@@ -309,11 +395,11 @@ outroMusic = {
         \new ChordNames \with {
           alignAboveContext = "outroMain"
         } {
+          \chordNameBackground
           \chordmode {
             \partial 2
             s2
-            % TODO: outro chords
-            s1 s1 s1 s1
+            d1:sus4+ s1 s1 s1
           }
         }
         \new Voice = "outroBasseVoice" {
@@ -398,12 +484,21 @@ pieceMusic = \transpose c' c {
     % { part I
     <<
       % {
-      \new ChordNames \with {
+      \new ChordNames = "introCN" \with {
         alignAboveContext = "main"
       } {
+        \chordNameBackground
         \partial 2
         s2
         \introChordNames
+      }
+      \new ChordNames = "mainCN" \with {
+        alignBelowContext = "main"
+      } {
+        \chordNameBelow
+        \partial 2
+        s2
+        s1 s1 s1 s1
         \repeat volta 2 \vampChordNames
         \sequenceChordNames
         \climaxChordNames
@@ -492,7 +587,9 @@ pieceMusic = \transpose c' c {
         \textSeven
         <<
           \textHeight
-          \new Lyrics = "heightAndAHalf" {
+          \new Lyrics = "heightAndAHalf" \with {
+            \override VerticalAxisGroup.nonstaff-nonstaff-spacing.minimum-distance = #3.8
+          } {
             \set associatedVoice = "basseI"
             \textHeightndAHalf
           }
@@ -564,7 +661,7 @@ pieceMusic = \transpose c' c {
 \include "bateau_poem_continuation.ily"
 
 \markup {
-  \vspace #4
+  \vspace #2
 }
 
 \score {

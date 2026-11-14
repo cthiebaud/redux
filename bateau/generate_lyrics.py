@@ -55,62 +55,62 @@ def render_sung_lyrics(by_number):
     return f"""% VAMP
 textOne = \\lyricmode {{
   \\offsetLeft "{sym(s,1)} {v(s,1,0)}"
-  \\offsetLeftSmall "{v(s,1,1)}"
+  \\offsetRight "{v(s,1,1)}"
 }} textOneAndAHalf = \\lyricmode {{
   \\offsetLeft "{v(s,1,2)}"
-  \\offsetLeftSmall "{v(s,1,3)}"
+  \\offsetRight "{v(s,1,3)}"
 }}
 
 % SEQUENCE
 textTwoThreeFourFive = \\lyricmode {{
   \\offsetLeft "{sym(s,2)} {v(s,2,0)}"
-  \\offsetLeftSmall "{v(s,2,1)}"
+  \\offsetRight "{v(s,2,1)}"
   \\offsetLeft "{v(s,2,2)}"
-  \\offsetLeftSmall "{v(s,2,3)}"
+  \\offsetRight "{v(s,2,3)}"
 
   \\offsetLeft "{sym(s,3)} {v(s,3,0)}"
-  \\offsetLeftSmall "{v(s,3,1)}"
+  \\offsetRight "{v(s,3,1)}"
   \\offsetLeft "{v(s,3,2)}"
-  \\offsetLeftSmall "{v(s,3,3)}"
+  \\offsetRight "{v(s,3,3)}"
 
   \\offsetLeft "{sym(s,4)} {v(s,4,0)}"
-  \\offsetLeftSmall "{v(s,4,1)}"
+  \\offsetRight "{v(s,4,1)}"
   \\offsetLeft "{v(s,4,2)}"
-  \\offsetLeftSmall "{v(s,4,3)}"
+  \\offsetRight "{v(s,4,3)}"
 
   \\offsetLeft "{sym(s,5)} {v(s,5,0)}"
-  \\offsetLeftSmall "{v(s,5,1)}"
+  \\offsetRight "{v(s,5,1)}"
   \\offsetLeft "{v(s,5,2)}"
-  \\offsetLeftSmall "{v(s,5,3)}" " "
+  \\offsetRight "{v(s,5,3)}" " "
 }}
 
 % CLIMAX
 textSix = \\lyricmode {{
   \\offsetLeft "{sym(s,6)} {v(s,6,0)} "
-  \\offsetLeftSmall "{v(s,6,1)} "
+  \\offsetRight "{v(s,6,1)} "
 }} textSixAndAHalf = \\lyricmode {{
   \\offsetLeft "{v(s,6,2)} "
-  \\offsetLeftSmall "{v(s,6,3)} "
+  \\offsetRight "{v(s,6,3)} "
 }} textSeven=  \\lyricmode {{
   \\offsetLeft "{sym(s,7)} {v(s,7,0)} "
-  \\offsetLeftSmall "{v(s,7,1)} "
+  \\offsetRight "{v(s,7,1)} "
   \\offsetLeft "{v(s,7,2)} "
-  \\offsetLeftSmall "{v(s,7,3)} "
+  \\offsetRight "{v(s,7,3)} "
 }}
 
 % RE-VAMP
 textHeight =  \\lyricmode {{
   \\offsetLeft "{sym(s,8)} {v(s,8,0)} "
-  \\offsetLeftSmall "{v(s,8,1)} " " "
+  \\offsetRight "{v(s,8,1)} " " "
 }} textHeightndAHalf = \\lyricmode {{
   \\offsetLeft "{v(s,8,2)} "
-  \\offsetLeftSmall "{v(s,8,3)} " " "
+  \\offsetRight "{v(s,8,3)} " " "
 }} textNine = \\lyricmode {{
   \\offsetLeft "{sym(s,9)} {v(s,9,0)} "
-  \\offsetLeftSmall "{v(s,9,1)} " " "
+  \\offsetRight "{v(s,9,1)} " " "
 }} textNineAndAHalf = \\lyricmode {{
   \\offsetLeft "{v(s,9,2)} "
-  \\offsetLeftSmall "{v(s,9,3)} " " "
+  \\offsetRight "{v(s,9,3)} " " "
 }}
 """
 
@@ -121,21 +121,38 @@ def render_continuation(by_number, order):
     # breaker can pack them tightly instead of only being able to place or
     # reject a whole section group at once, which left large gaps whenever
     # a group didn't quite fit what was left of a page.
+    #
+    # Within each quatrain, the 4 lines are laid out as two rows of two
+    # columns (line 1 left / line 2 right, then line 3 left / line 4
+    # right), echoing how the sung quatrains 1-9 split across two bars
+    # per system in bateau_lyrics.ily.
     blocks = []
     for section_name, numbers in order:
         if not numbers or numbers[0] < 10:
             continue
         for i, n in enumerate(numbers):
-            lines = "\n".join(
-                f'    \\line {{ "{text}" }}' if j > 0 else f'    \\line {{ "{sym(by_number, n)} {text}" }}'
-                for j, text in enumerate(by_number[n]["vers"])
+            vers = by_number[n]["vers"]
+            first = f"{sym(by_number, n)} {vers[0]}"
+            rows = "\n".join(
+                f'    \\fill-line {{\n'
+                f'      \\line {{ "{first if row == 0 else vers[row]}" }}\n'
+                f'      \\line {{ "{vers[row + 1]}" }}\n'
+                f'    }}'
+                for row in (0, 2)
             )
             header = (
                 f'  \\sectionLineMarkup "{section_name}"\n  \\vspace #1\n'
                 if i == 0
-                else "  \\vspace #0.8\n"
+                else "  \\vspace #0.5\n"
             )
-            blocks.append(f"\\markup \\column {{\n{header}{lines}\n}}")
+            # Same font/size as the sung lyrics (LyricText.font-name/font-size
+            # in bateau.3.ly), so the plain-verse continuation reads as a
+            # continuation of the same text, not a different typeface.
+            blocks.append(
+                f"\\markup \\column {{\n{header}"
+                f'  \\override #\'(font-name . "URW Bookman, URW Bookman L") \\fontsize #0.5\n'
+                f"  \\column {{\n{rows}\n  }}\n}}"
+            )
     return "\n\n".join(blocks) + "\n"
 
 
