@@ -369,6 +369,7 @@ outroMusic = {
     \new Staff = "outroMelody" \with {
       \RemoveEmptyStaves
     } {
+      \set Score.currentBarNumber =#104
       \clef "treble_8"
       \key g \major
       \partial 2
@@ -671,6 +672,8 @@ pieceMusic = \transpose c' c {
     short-indent = #0
     \context {
       \Score
+      barNumberVisibility = #all-bar-numbers-visible
+      \override BarNumber.break-visibility = #begin-of-line-visible
       \override SectionLabel.padding = #2
     }
   }
