@@ -130,6 +130,20 @@ chordNameBelow = #(define-music-function () ()
            (ly:grob-set-property! grob 'extra-offset (cons 0 dy))))
   #})
 
+% LilyPond's automatic chord-name algorithm never prints a natural
+% middle extension once a higher, altered one is present: it keeps
+% altered steps plus the single highest step only when THAT one is
+% natural (scm/lily/chord-ignatzek-names.scm, filter-alterations).
+% Here the sharp 11 is altered and outranks the natural 9, so the 9
+% gets silently dropped from "Ab7(9,#11)" -- an exception is the only
+% way to force it back in.
+chExceptionMusic = {
+  <aes c' ees' ges' bes' d''>1-\markup { \super \concat { "7 9 " \sharp "11" } }
+}
+chExceptions = #(append
+  (sequential-music-to-chord-exceptions chExceptionMusic #t)
+  ignatzekExceptions)
+
 % Lyrics for quatrains 1-9 (sung) and the plain-verse continuation for
 % quatrains 10-25 are generated from bateau_ivre.yaml -- see
 % generate_lyrics.py. Re-run it after editing the yaml, before compiling.
@@ -629,6 +643,10 @@ pieceMusic = \transpose c' c {
       \Lyrics
       \override LyricText.font-name = "URW Bookman, URW Bookman L"
       \override LyricText.font-size = #0.5
+    }
+    \context {
+      \ChordNames
+      chordNameExceptions = #chExceptions
     }
   }
 }
