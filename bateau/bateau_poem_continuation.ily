@@ -2,7 +2,7 @@
 
 \markup \column {
   \sectionLineMarkup "Sequence"
-  \vspace #1
+  \vspace #0.5
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {

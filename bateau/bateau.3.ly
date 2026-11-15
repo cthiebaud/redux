@@ -12,7 +12,7 @@
 
   page-breaking = #ly:minimal-breaking
   system-system-spacing.padding = #1.8
-  ragged-bottom = ##t
+  ragged-bottom = ##f
   ragged-last = ##f
 
   %%% system-system-spacing.basic-distance = #10
@@ -79,7 +79,7 @@ chordNameBackground = #(define-music-function () ()
          (let* ((text  (ly:text-interface::print grob))
                 (x-ext (interval-widen (ly:stencil-extent text X) 0.3))
                 (y-ext (interval-widen (ly:stencil-extent text Y) 0.3))
-                (box   (stencil-with-color (make-filled-box-stencil x-ext y-ext) (list 0.85 0.85 0.85))))
+                (box   (stencil-with-color (make-filled-box-stencil x-ext y-ext) (list 0.92 0.92 0.92))))
            (ly:stencil-add box text)))
   #})
 
@@ -112,23 +112,17 @@ chordNameBackground = #(define-music-function () ()
 %    vertical spacing solve and isn't finished yet at that point.
 chordNameBelow = #(define-music-function () ()
   #{
-    \override ChordNames.VerticalAxisGroup.nonstaff-relatedstaff-spacing =
-      #'((basic-distance . 1) (minimum-distance . 1) (padding . 0) (stretchability . 0))
-    \override ChordName.X-offset = #2.2
-    \override ChordName.stencil =
-      #(lambda (grob)
-         (let* ((text  (ly:text-interface::print grob))
-                (x-ext (interval-widen (ly:stencil-extent text X) 0.3))
-                (y-ext (interval-widen (ly:stencil-extent text Y) 0.3))
-                (box   (stencil-with-color (make-filled-box-stencil x-ext y-ext) (list 0.85 0.85 0.85))))
-           (ly:stencil-add box text)))
+    \chordNameBackground
+     \override ChordNames.VerticalAxisGroup.nonstaff-relatedstaff-spacing =
+       #'((basic-distance . 7) (minimum-distance . 7) (padding . 0) (stretchability . 0))
+    \override ChordName.X-offset = #4.8
     \override ChordName.after-line-breaking =
       #(lambda (grob)
          (ly:chord-name::after-line-breaking grob)
          (let* ((text   (ly:text-interface::print grob))
                 (y-ext  (ly:stencil-extent text Y))
                 (height (- (cdr y-ext) (car y-ext)))
-                (dy     (/ height 2)))
+                (dy     1.5))
            (ly:grob-set-property! grob 'extra-offset (cons 0 dy))))
   #})
 
@@ -460,9 +454,9 @@ pieceMusic = \transpose c' c {
       r8 d'''16 a''16 g''16 f''16 d''8
       \introLeadGuitar
       \bar "|"
-      d''2_\markup \small \italic \with-color #darkGray \wordwrap {
-        After the intro, the guitar continues as an improvised obbligato: a constant voice, not a series of solos.
-      }
+      d''2 %%% _\markup \small \italic \with-color #darkGray \wordwrap {
+      %%%   After the intro, the guitar continues as an improvised obbligato: a constant voice, not a series of solos.
+      %%% }
     }
     \new Staff = "introEcho" \with {
       \consists "Timing_translator"
@@ -474,7 +468,6 @@ pieceMusic = \transpose c' c {
       r2
       \introEcho
       \bar "|"
-      r2
     }
     \new Staff = "main" {
 
@@ -630,7 +623,6 @@ pieceMusic = \transpose c' c {
       \Lyrics
       \override LyricText.font-name = "URW Bookman, URW Bookman L"
       \override LyricText.font-size = #0.5
-      \override VerticalAxisGroup.nonstaff-relatedstaff-spacing.minimum-distance = #9
     }
   }
 }
