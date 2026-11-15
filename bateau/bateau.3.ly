@@ -14,6 +14,10 @@
   system-system-spacing.padding = #1.8
   ragged-bottom = ##f
   ragged-last = ##f
+  last-bottom-spacing = #'((basic-distance . 1)
+                         (minimum-distance . 0)
+                         (padding . 3)
+                         (stretchability . 30))
 
   %%% system-system-spacing.basic-distance = #10
   %%% system-system-spacing.minimum-distance = #6
@@ -468,6 +472,7 @@ pieceMusic = \transpose c' c {
       r2
       \introEcho
       \bar "|"
+      r2
     }
     \new Staff = "main" {
 
@@ -529,10 +534,10 @@ pieceMusic = \transpose c' c {
         \key d \major
         \section
         \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9 \wordwrap {
-          "The" "climactic" "section" "quotes" "the" "closing" "chords" "of" "Richard" "Strauss,"
+          "[1] The" "climactic" "section" "quotes" "the" "closing" "chords" "of" "Richard" "Strauss,"
           \italic "Vier letzte Lieder,"
           "no." "4," "“Im" "Abendrot”" "(original" "key:" "E-flat" "major;" "transposed" "to" "D)."
-        } \sectionLine \markup \concat { "Climax" \super "*" }
+        } \sectionLine \markup \concat { "Climax" \super "[1]" }
         \climaxBasse
         \once \overrideProperty Score.NonMusicalPaperColumn.line-break-system-details
           #'((extra-offset . (0 . 1)))
