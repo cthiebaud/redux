@@ -6,27 +6,12 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑩ J’ai rêvé la nuit verte aux neiges éblouies," }
-      \line { "Baisers montant aux yeux des mers avec lenteurs," }
+      \line { \with-color #oddVoiceColor "⑩ J’ai rêvé la nuit verte aux neiges éblouies," }
+      \line { \with-color #evenVoiceColor "Baisers montant aux yeux des mers avec lenteurs," }
     }
     \fill-line {
-      \line { "La circulation des sèves inouïes," }
-      \line { "Et l’éveil jaune et bleu des phosphores chanteurs !" }
-    }
-  }
-}
-
-\markup \column {
-  \vspace #0.5
-  \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
-  \column {
-    \fill-line {
-      \line { "⑪ J’ai suivi, des mois pleins, pareille aux vacheries" }
-      \line { "Hystériques, la houle à l’assaut des récifs," }
-    }
-    \fill-line {
-      \line { "Sans songer que les pieds lumineux des Maries" }
-      \line { "Pussent forcer le mufle aux Océans poussifs !" }
+      \line { \with-color #oddVoiceColor "La circulation des sèves inouïes," }
+      \line { \with-color #evenVoiceColor "Et l’éveil jaune et bleu des phosphores chanteurs !" }
     }
   }
 }
@@ -36,12 +21,12 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑫ J’ai heurté, savez-vous, d’incroyables Florides" }
-      \line { "Mêlant aux fleurs des yeux de panthères à peaux" }
+      \line { \with-color #oddVoiceColor "⑪ J’ai suivi, des mois pleins, pareille aux vacheries" }
+      \line { \with-color #evenVoiceColor "Hystériques, la houle à l’assaut des récifs," }
     }
     \fill-line {
-      \line { "D’hommes ! Des arcs-en-ciel tendus comme des brides" }
-      \line { "Sous l’horizon des mers, à de glauques troupeaux !" }
+      \line { \with-color #oddVoiceColor "Sans songer que les pieds lumineux des Maries" }
+      \line { \with-color #evenVoiceColor "Pussent forcer le mufle aux Océans poussifs !" }
     }
   }
 }
@@ -51,28 +36,43 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑬ J’ai vu fermenter les marais énormes, nasses" }
-      \line { "Où pourrit dans les joncs tout un Léviathan !" }
+      \line { \with-color #oddVoiceColor "⑫ J’ai heurté, savez-vous, d’incroyables Florides" }
+      \line { \with-color #evenVoiceColor "Mêlant aux fleurs des yeux de panthères à peaux" }
     }
     \fill-line {
-      \line { "Des écroulements d’eaux au milieu des bonaces," }
-      \line { "Et les lointains vers les gouffres cataractant !" }
+      \line { \with-color #oddVoiceColor "D’hommes ! Des arcs-en-ciel tendus comme des brides" }
+      \line { \with-color #evenVoiceColor "Sous l’horizon des mers, à de glauques troupeaux !" }
+    }
+  }
+}
+
+\markup \column {
+  \vspace #0.5
+  \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
+  \column {
+    \fill-line {
+      \line { \with-color #oddVoiceColor "⑬ J’ai vu fermenter les marais énormes, nasses" }
+      \line { \with-color #evenVoiceColor "Où pourrit dans les joncs tout un Léviathan !" }
+    }
+    \fill-line {
+      \line { \with-color #oddVoiceColor "Des écroulements d’eaux au milieu des bonaces," }
+      \line { \with-color #evenVoiceColor "Et les lointains vers les gouffres cataractant !" }
     }
   }
 }
 
 \markup \column {
   \sectionLineMarkup "Climax"
-  \vspace #1
+  \vspace #0.5
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑭ Glaciers, soleils d’argent, flots nacreux, cieux de braises !" }
-      \line { "Échouages hideux au fond des golfes bruns" }
+      \line { \with-color #oddVoiceColor "⑭ Glaciers, soleils d’argent, flots nacreux, cieux de braises !" }
+      \line { \with-color #evenVoiceColor "Échouages hideux au fond des golfes bruns" }
     }
     \fill-line {
-      \line { "Où les serpents géants dévorés des punaises" }
-      \line { "Choient, des arbres tordus, avec de noirs parfums !" }
+      \line { \with-color #oddVoiceColor "Où les serpents géants dévorés des punaises" }
+      \line { \with-color #evenVoiceColor "Choient, des arbres tordus, avec de noirs parfums !" }
     }
   }
 }
@@ -82,28 +82,28 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑮ J’aurais voulu montrer aux enfants ces dorades" }
-      \line { "Du flot bleu, ces poissons d’or, ces poissons chantants." }
+      \line { \with-color #oddVoiceColor "⑮ J’aurais voulu montrer aux enfants ces dorades" }
+      \line { \with-color #evenVoiceColor "Du flot bleu, ces poissons d’or, ces poissons chantants." }
     }
     \fill-line {
-      \line { "— Des écumes de fleurs ont bercé mes dérades" }
-      \line { "Et d’ineffables vents m’ont ailé par instants." }
+      \line { \with-color #oddVoiceColor "— Des écumes de fleurs ont bercé mes dérades" }
+      \line { \with-color #evenVoiceColor "Et d’ineffables vents m’ont ailé par instants." }
     }
   }
 }
 
 \markup \column {
   \sectionLineMarkup "Vamp"
-  \vspace #1
+  \vspace #0.5
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑯ Parfois, martyr lassé des pôles et des zones," }
-      \line { "La mer dont le sanglot faisait mon roulis doux" }
+      \line { \with-color #oddVoiceColor "⑯ Parfois, martyr lassé des pôles et des zones," }
+      \line { \with-color #evenVoiceColor "La mer dont le sanglot faisait mon roulis doux" }
     }
     \fill-line {
-      \line { "Montait vers moi ses fleurs d’ombre aux ventouses jaunes" }
-      \line { "Et je restais, ainsi qu’une femme à genoux…" }
+      \line { \with-color #oddVoiceColor "Montait vers moi ses fleurs d’ombre aux ventouses jaunes" }
+      \line { \with-color #evenVoiceColor "Et je restais, ainsi qu’une femme à genoux…" }
     }
   }
 }
@@ -113,28 +113,28 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑰ Presque île, ballottant sur mes bords les querelles" }
-      \line { "Et les fientes d’oiseaux clabaudeurs aux yeux blonds." }
+      \line { \with-color #oddVoiceColor "⑰ Presque île, ballottant sur mes bords les querelles" }
+      \line { \with-color #evenVoiceColor "Et les fientes d’oiseaux clabaudeurs aux yeux blonds." }
     }
     \fill-line {
-      \line { "Et je voguais, lorsqu’à travers mes liens frêles" }
-      \line { "Des noyés descendaient dormir, à reculons !" }
+      \line { \with-color #oddVoiceColor "Et je voguais, lorsqu’à travers mes liens frêles" }
+      \line { \with-color #evenVoiceColor "Des noyés descendaient dormir, à reculons !" }
     }
   }
 }
 
 \markup \column {
   \sectionLineMarkup "Sequence"
-  \vspace #1
+  \vspace #0.5
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑱ Or moi, bateau perdu sous les cheveux des anses," }
-      \line { "Jeté par l’ouragan dans l’éther sans oiseau," }
+      \line { \with-color #oddVoiceColor "⑱ Or moi, bateau perdu sous les cheveux des anses," }
+      \line { \with-color #evenVoiceColor "Jeté par l’ouragan dans l’éther sans oiseau," }
     }
     \fill-line {
-      \line { "Moi dont les Monitors et les voiliers des Hanses" }
-      \line { "N’auraient pas repêché la carcasse ivre d’eau ;" }
+      \line { \with-color #oddVoiceColor "Moi dont les Monitors et les voiliers des Hanses" }
+      \line { \with-color #evenVoiceColor "N’auraient pas repêché la carcasse ivre d’eau ;" }
     }
   }
 }
@@ -144,27 +144,12 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "⑲ Libre, fumant, monté de brumes violettes," }
-      \line { "Moi qui trouais le ciel rougeoyant comme un mur" }
+      \line { \with-color #oddVoiceColor "⑲ Libre, fumant, monté de brumes violettes," }
+      \line { \with-color #evenVoiceColor "Moi qui trouais le ciel rougeoyant comme un mur" }
     }
     \fill-line {
-      \line { "Qui porte, confiture exquise aux bons poètes," }
-      \line { "Des lichens de soleil et des morves d’azur ;" }
-    }
-  }
-}
-
-\markup \column {
-  \vspace #0.5
-  \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
-  \column {
-    \fill-line {
-      \line { "⑳ Qui courais, taché de lunules électriques," }
-      \line { "Planche folle, escorté des hippocampes noirs," }
-    }
-    \fill-line {
-      \line { "Quand les Juillets faisaient crouler à coups de triques" }
-      \line { "Les cieux ultramarins aux ardents entonnoirs ;" }
+      \line { \with-color #oddVoiceColor "Qui porte, confiture exquise aux bons poètes," }
+      \line { \with-color #evenVoiceColor "Des lichens de soleil et des morves d’azur ;" }
     }
   }
 }
@@ -174,28 +159,43 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "㉑ Moi qui tremblais, sentant geindre à cinquante lieues" }
-      \line { "Le rut des Béhémots et les Maelstroms épais," }
+      \line { \with-color #oddVoiceColor "⑳ Qui courais, taché de lunules électriques," }
+      \line { \with-color #evenVoiceColor "Planche folle, escorté des hippocampes noirs," }
     }
     \fill-line {
-      \line { "Fileur éternel des immobilités bleues," }
-      \line { "Je regrette l’Europe aux anciens parapets !" }
+      \line { \with-color #oddVoiceColor "Quand les Juillets faisaient crouler à coups de triques" }
+      \line { \with-color #evenVoiceColor "Les cieux ultramarins aux ardents entonnoirs ;" }
+    }
+  }
+}
+
+\markup \column {
+  \vspace #0.5
+  \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
+  \column {
+    \fill-line {
+      \line { \with-color #oddVoiceColor "㉑ Moi qui tremblais, sentant geindre à cinquante lieues" }
+      \line { \with-color #evenVoiceColor "Le rut des Béhémots et les Maelstroms épais," }
+    }
+    \fill-line {
+      \line { \with-color #oddVoiceColor "Fileur éternel des immobilités bleues," }
+      \line { \with-color #evenVoiceColor "Je regrette l’Europe aux anciens parapets !" }
     }
   }
 }
 
 \markup \column {
   \sectionLineMarkup "Climax"
-  \vspace #1
+  \vspace #0.5
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "㉒ J’ai vu des archipels sidéraux ! Et des îles" }
-      \line { "Dont les cieux délirants sont ouverts au vogueur :" }
+      \line { \with-color #oddVoiceColor "㉒ J’ai vu des archipels sidéraux ! Et des îles" }
+      \line { \with-color #evenVoiceColor "Dont les cieux délirants sont ouverts au vogueur :" }
     }
     \fill-line {
-      \line { "— Est-ce en ces nuits sans fonds que tu dors et t’exiles," }
-      \line { "Million d’oiseaux d’or, ô future Vigueur ?" }
+      \line { \with-color #oddVoiceColor "— Est-ce en ces nuits sans fonds que tu dors et t’exiles," }
+      \line { \with-color #evenVoiceColor "Million d’oiseaux d’or, ô future Vigueur ?" }
     }
   }
 }
@@ -205,28 +205,28 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "㉓ Mais, vrai, j’ai trop pleuré ! Les Aubes sont navrantes." }
-      \line { "Toute lune est atroce et tout soleil amer :" }
+      \line { \with-color #oddVoiceColor "㉓ Mais, vrai, j’ai trop pleuré ! Les Aubes sont navrantes." }
+      \line { \with-color #evenVoiceColor "Toute lune est atroce et tout soleil amer :" }
     }
     \fill-line {
-      \line { "L’âcre amour m’a gonflé de torpeurs enivrantes." }
-      \line { "Ô que ma quille éclate ! Ô que j’aille à la mer !" }
+      \line { \with-color #oddVoiceColor "L’âcre amour m’a gonflé de torpeurs enivrantes." }
+      \line { \with-color #evenVoiceColor "Ô que ma quille éclate ! Ô que j’aille à la mer !" }
     }
   }
 }
 
 \markup \column {
   \sectionLineMarkup "Vamp"
-  \vspace #1
+  \vspace #0.5
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "㉔ Si je désire une eau d’Europe, c’est la flache" }
-      \line { "Noire et froide où vers le crépuscule embaumé" }
+      \line { \with-color #oddVoiceColor "㉔ Si je désire une eau d’Europe, c’est la flache" }
+      \line { \with-color #evenVoiceColor "Noire et froide où vers le crépuscule embaumé" }
     }
     \fill-line {
-      \line { "Un enfant accroupi, plein de tristesse, lâche" }
-      \line { "Un bateau frêle comme un papillon de mai." }
+      \line { \with-color #oddVoiceColor "Un enfant accroupi, plein de tristesse, lâche" }
+      \line { \with-color #evenVoiceColor "Un bateau frêle comme un papillon de mai." }
     }
   }
 }
@@ -236,12 +236,12 @@
   \override #'(font-name . "URW Bookman, URW Bookman L") \fontsize #0.5
   \column {
     \fill-line {
-      \line { "㉕ Je ne puis plus, baigné de vos langueurs, ô lames," }
-      \line { "Enlever leur sillage aux porteurs de cotons," }
+      \line { \with-color #oddVoiceColor "㉕ Je ne puis plus, baigné de vos langueurs, ô lames," }
+      \line { \with-color #evenVoiceColor "Enlever leur sillage aux porteurs de cotons," }
     }
     \fill-line {
-      \line { "Ni traverser l’orgueil des drapeaux et des flammes," }
-      \line { "Ni nager sous les yeux horribles des pontons" }
+      \line { \with-color #oddVoiceColor "Ni traverser l’orgueil des drapeaux et des flammes," }
+      \line { \with-color #evenVoiceColor "Ni nager sous les yeux horribles des pontons" }
     }
   }
 }

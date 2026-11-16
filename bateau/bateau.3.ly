@@ -4,6 +4,11 @@
 
 #(define darkGray (rgb-color 0.5 0.5 0.5))
 
+% The poem alternates between two performers verse by verse (not
+% quatrain by quatrain): one speaks the even verses, the other the odd.
+#(define oddVoiceColor  (rgb-color 0.0 0.439 0.722)) % Spanish blue
+#(define evenVoiceColor (rgb-color 0.133 0.545 0.133)) % Forest Green
+
 \paper {
 
   property-defaults.fonts.serif      = "Nimbus Sans"      % default text
@@ -42,7 +47,12 @@ sectionLine = #(define-music-function (text) (markup?)
 % Flush against the same page margins (x=0 .. line-width) as the
 % \fill-line columns used for the poem continuation, so both halves of
 % the sung lyrics and the plain-verse continuation share identical
-% left/right edges.
+% left/right edges. Also colors the line by performer: the poem
+% alternates performers verse by verse (not quatrain by quatrain), and
+% since every quatrain has an even number of lines (4), that alternation
+% always lands odd verses in the left column and even verses in the
+% right column -- so the color can be hardcoded per column here instead
+% of threaded through as a parameter.
 offsetLeft =
 #(define-music-function () ()
    #{
@@ -51,6 +61,7 @@ offsetLeft =
           (let* ((sys  (ly:grob-system grob))
                  (left (car (ly:grob-extent grob sys X))))
             (ly:grob-translate-axis! grob (- 0 left) X)))
+     \once \override LyricText.color = #oddVoiceColor
    #})
 
 % The target is a fixed constant (not a live lookup of the system's own
@@ -58,12 +69,16 @@ offsetLeft =
 % same grob's after-line-breaking callback is self-referential: the
 % system's extent isn't settled yet, and the resulting translation can
 % blow up and wreck the whole page's spacing.
-offsetRight = \tweak after-line-breaking
-  #(lambda (grob)
-     (let* ((sys   (ly:grob-system grob))
-            (right (cdr (ly:grob-extent grob sys X))))
-       (ly:grob-translate-axis! grob (- 128.0374 right) X)))
-  \etc
+offsetRight =
+#(define-music-function () ()
+   #{
+     \once \override LyricText.after-line-breaking =
+       #(lambda (grob)
+          (let* ((sys   (ly:grob-system grob))
+                 (right (cdr (ly:grob-extent grob sys X))))
+            (ly:grob-translate-axis! grob (- 128.0374 right) X)))
+     \once \override LyricText.color = #evenVoiceColor
+   #})
 
 % A light-gray backing behind the chord-name glyphs so they stay legible
 % (we tried a fully custom placement earlier -- centering the text on

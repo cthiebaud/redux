@@ -133,15 +133,19 @@ def render_continuation(by_number, order):
         for i, n in enumerate(numbers):
             vers = by_number[n]["vers"]
             first = f"{sym(by_number, n)} {vers[0]}"
+            # Performers alternate verse by verse, not quatrain by
+            # quatrain; with 4 lines per quatrain that always lands odd
+            # verses (vers[0], vers[2]) in the left column and even
+            # verses (vers[1], vers[3]) in the right column.
             rows = "\n".join(
                 f'    \\fill-line {{\n'
-                f'      \\line {{ "{first if row == 0 else vers[row]}" }}\n'
-                f'      \\line {{ "{vers[row + 1]}" }}\n'
+                f'      \\line {{ \\with-color #oddVoiceColor "{first if row == 0 else vers[row]}" }}\n'
+                f'      \\line {{ \\with-color #evenVoiceColor "{vers[row + 1]}" }}\n'
                 f'    }}'
                 for row in (0, 2)
             )
             header = (
-                f'  \\sectionLineMarkup "{section_name}"\n  \\vspace #1\n'
+                f'  \\sectionLineMarkup "{section_name}"\n  \\vspace #0.5\n'
                 if i == 0
                 else "  \\vspace #0.5\n"
             )
