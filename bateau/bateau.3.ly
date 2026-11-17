@@ -33,7 +33,7 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
   % Ragged (not justify-to-fill) for the web build: otherwise the
   % oversized single page would stretch system spacing throughout to
   % fill all 3000mm, instead of just sitting at its natural height.
-  ragged-bottom = #(if web-svg #t #f)
+  ragged-bottom = #f % #(if web-svg #t #f)
   ragged-last = #(if web-svg #t #f)
   % stretchability 0 for the web build: otherwise this spring (last
   % system -> footer, independent of ragged-bottom above) stretches to
@@ -314,12 +314,11 @@ sequenceBasse = {
   | bes 
   \break
   | e 
-  | a 
+  | a
   \break
   | as
   | g
 %
-  \webPageBreak
   | << \tag #'score { g } \tag #'midi { g' } >>
   | c'
   \break
@@ -477,7 +476,7 @@ outroMusic = {
         }
         \new Voice = "outroBasseVoice" {
           \key g \major
-          \section \sectionLine "Outro"
+          \section \sectionLabel \markup \with-color #darkGray "Outro"
           \partial 2
           r2
           \noBreak
@@ -580,14 +579,7 @@ pieceMusic = \transpose c' c {
         \repeat volta 2 \vampChordNames
         \sequenceChordNames
         \climaxChordNames
-      }
-      \new ChordNames = "riffCNCN" \with {
-        alignAboveContext = "main"
-      } {
-        \chordNameBackground
-        \partial 2
-        s2
-        s1 s1 s1 s1
+        \chordmode { d1:7 s1 s1 s1 }
         \repeat volta 2 \vampChordNames
       }
       %}
@@ -632,7 +624,11 @@ pieceMusic = \transpose c' c {
 
         \key g \major
         \section \sectionLine "Vamp"
-        | d'1 | d'1 | d'1 | d'1 \repeat volta 2 {| d1 | d1 }
+        | d'1 | d'1
+        \break
+        | d'1 | d'1
+        \break
+        \repeat volta 2 {| d1 | d1 }
       }
       }
       \new Voice = "accordsI" {
