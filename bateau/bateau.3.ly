@@ -411,6 +411,7 @@ outroMusic = {
     \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
     \new Staff = "outroMelody" \with {
       \RemoveEmptyStaves
+      instrumentName = "Lead Guitar"
     } {
       \set Score.currentBarNumber =#104
       \clef "treble_8"
@@ -422,6 +423,7 @@ outroMusic = {
     }
     \new Staff = "outroEcho" \with {
       \RemoveEmptyStaves
+      instrumentName = "Bottleneck Guitar"
     } {
       \set Staff.midiInstrument = "vibraphone"
       \clef "treble_8"
@@ -431,7 +433,9 @@ outroMusic = {
       \outroEcho
       \bar "|."
     }
-    \new Staff = "outroMain" {
+    \new Staff = "outroMain" \with {
+      instrumentName = "Guitar & Bass"
+    } {
       \set Staff.midiInstrument = "acoustic guitar (nylon)"
       <<
         \new ChordNames \with {
@@ -495,6 +499,7 @@ pieceMusic = \transpose c' c {
     \new Staff = "introMelody" \with {
       \RemoveEmptyStaves
       \consists "Timing_translator"
+      instrumentName = "Lead Guitar"
     } {
       \clef "treble_8"
       \key g \major
@@ -508,6 +513,7 @@ pieceMusic = \transpose c' c {
     }
     \new Staff = "introEcho" \with {
       \consists "Timing_translator"
+      instrumentName = "Bottleneck Guitar"
     } {
       \set Staff.midiInstrument = "vibraphone"
       \clef "treble_8"
@@ -518,7 +524,9 @@ pieceMusic = \transpose c' c {
       \bar "|"
       r2
     }
-    \new Staff = "main" {
+    \new Staff = "main" \with {
+      instrumentName = "Guitar & Bass"
+    } {
 
     \set Staff.midiInstrument = "acoustic guitar (nylon)"
     \set Voice.midiInstrument = "acoustic guitar (nylon)"
@@ -567,7 +575,6 @@ pieceMusic = \transpose c' c {
         \noBreak
         \voiceTwo
         \introBasse
-        \break
 
         \bar ".|:"
         \section \sectionLine "Vamp"
@@ -658,7 +665,7 @@ pieceMusic = \transpose c' c {
   \layout {
     \clef "treble_8"
     \time 4/4
-    indent = #0
+    indent = #18
     short-indent = #0
     \override LyricText.self-alignment-X = #LEFT
     \accidentalStyle modern-voice-cautionary
@@ -716,7 +723,7 @@ pieceMusic = \transpose c' c {
   \layout {
     \clef "treble_8"
     \time 4/4
-    indent = #0
+    indent = #18
     short-indent = #0
     \context {
       \Score
