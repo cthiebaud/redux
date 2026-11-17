@@ -230,6 +230,19 @@ vampChordNames = \chordmode {
   | g2:7/d  c:7/d
 }
 
+% Upper melody line for the 2nd (re-vamp, x4) occurrence only, transcribed
+% from vamp_riff.mid: a 4-bar riff (staccato stabs on D/C, then a longer
+% descending tag) meant to be played twice to fill the 8 real bars of
+% \repeat volta 4 \vampBasse. Written an octave higher than it should
+% sound, like introLeadGuitar, since pieceMusic's outer \transpose c' c
+% shifts everything down an octave at render time.
+vampRiff = {
+  r4 c''8. [c''16] r8 c''8 c''16 d''16 d''8 |
+  r4 c''8. [c''16] r16 b'16 a'8 g'16 \acciaccatura f'16 fis'16 d'8 |
+  r4 c''8. [c''16] r8 c''8 c''16 d''16 d''8 |
+  r16 f''8. d''16 c''16 a'16 gis'16 g'16 fis'16 d'16 c'16 a16 f8.
+}
+
 % sequence
 
 sequence = {
@@ -282,6 +295,7 @@ sequenceBasse = {
   | as
   | g
 %
+  \pageBreak
   | << \tag #'score { g } \tag #'midi { g' } >>
   | c'
   \break
@@ -530,7 +544,15 @@ pieceMusic = \transpose c' c {
         \repeat volta 2 \vampChordNames
         \sequenceChordNames
         \climaxChordNames
-        \repeat volta 4 \vampChordNames
+      }
+      \new ChordNames = "riffCNCN" \with {
+        alignAboveContext = "main"
+      } {
+        \chordNameBackground
+        \partial 2
+        s2
+        s1 s1 s1 s1
+        \repeat volta 2 \vampChordNames
       }
       %}
       {
@@ -575,10 +597,7 @@ pieceMusic = \transpose c' c {
 
         \key g \major
         \section \sectionLine "Vamp"
-        \override Score.TextMark.Y-offset = #-2
-        \textMark \markup { \tiny "4x" }
-        \bar ".|:"
-        \repeat volta 4 \vampBasse
+        | d'1 | d'1 | d'1 | d'1 \repeat volta 2 {| d1 | d1 }
       }
       }
       \new Voice = "accordsI" {
@@ -592,8 +611,8 @@ pieceMusic = \transpose c' c {
         \repeat volta 2 \vamp
         \sequence
         \climax
-
-        \repeat volta 4 \vamp
+        \vampRiff
+        \repeat volta 2 \vamp
       }
       \new Lyrics \lyricsto "basseI" {
         \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1
@@ -613,14 +632,8 @@ pieceMusic = \transpose c' c {
           }
         >>
         \textSeven
+        \textHeight
         <<
-          \textHeight
-          \new Lyrics = "heightAndAHalf" \with {
-            \override VerticalAxisGroup.nonstaff-nonstaff-spacing.minimum-distance = #3.8
-          } {
-            \set associatedVoice = "basseI"
-            \textHeightndAHalf
-          }
           \new Lyrics = "nine" {
             \set associatedVoice = "basseI"
             \textNine
@@ -688,6 +701,8 @@ pieceMusic = \transpose c' c {
     }
   }
 }
+
+\pageBreak
 
 \include "bateau_poem_continuation.ily"
 

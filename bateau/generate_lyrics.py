@@ -101,16 +101,15 @@ textSix = \\lyricmode {{
 % RE-VAMP
 textHeight =  \\lyricmode {{
   \\offsetLeft "{sym(s,8)} {v(s,8,0)} "
-  \\offsetRight "{v(s,8,1)} " " "
-}} textHeightndAHalf = \\lyricmode {{
+  \\offsetRight "{v(s,8,1)} "
   \\offsetLeft "{v(s,8,2)} "
-  \\offsetRight "{v(s,8,3)} " " "
+  \\offsetRight "{v(s,8,3)} "
 }} textNine = \\lyricmode {{
   \\offsetLeft "{sym(s,9)} {v(s,9,0)} "
-  \\offsetRight "{v(s,9,1)} " " "
+  \\offsetRight "{v(s,9,1)} "
 }} textNineAndAHalf = \\lyricmode {{
   \\offsetLeft "{v(s,9,2)} "
-  \\offsetRight "{v(s,9,3)} " " "
+  \\offsetRight "{v(s,9,3)} "
 }}
 """
 

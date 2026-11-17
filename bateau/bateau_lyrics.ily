@@ -49,14 +49,13 @@ textSix = \lyricmode {
 % RE-VAMP
 textHeight =  \lyricmode {
   \offsetLeft "⑧ Je sais les cieux crevant en éclairs, et les trombes "
-  \offsetRight "Et les ressacs, et les courants : je sais le soir, " " "
-} textHeightndAHalf = \lyricmode {
+  \offsetRight "Et les ressacs, et les courants : je sais le soir, "
   \offsetLeft "L’Aube exaltée ainsi qu’un peuple de colombes, "
-  \offsetRight "Et j’ai vu quelquefois ce que l’homme a cru voir ! " " "
+  \offsetRight "Et j’ai vu quelquefois ce que l’homme a cru voir ! "
 } textNine = \lyricmode {
   \offsetLeft "⑨ J’ai vu le soleil bas, taché d’horreurs mystiques, "
-  \offsetRight "Illuminant de longs figements violets, " " "
+  \offsetRight "Illuminant de longs figements violets, "
 } textNineAndAHalf = \lyricmode {
   \offsetLeft "Pareils à des acteurs de drames très antiques "
-  \offsetRight "Les flots roulant au loin leurs frissons de volets ! " " "
+  \offsetRight "Les flots roulant au loin leurs frissons de volets ! "
 }
