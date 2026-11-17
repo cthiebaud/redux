@@ -2,6 +2,17 @@
 
 #(set-global-staff-size 16)
 
+% Set by bateau/build-web-svg.sh (via a generated wrapper .ly that
+% \includes this file after defining these) to produce one continuous
+% page for the web -- instead of the normal paginated PDF -- by
+% skipping the manual page breaks below and sizing the page to exactly
+% fit everything, footer included. web-svg-height starts oversized
+% (pass 1 of the script) then gets set to the measured real height
+% (pass 2), so the final page has no leftover blank space.
+#(define web-svg (if (defined? 'web-svg) web-svg #f))
+#(define web-svg-height (if (defined? 'web-svg-height) web-svg-height 2000))
+webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
+
 #(define darkGray (rgb-color 0.5 0.5 0.5))
 
 % The poem alternates between two performers verse by verse (not
@@ -11,18 +22,31 @@
 
 \paper {
 
+  paper-height = #(if web-svg (* web-svg-height mm) (* 297 mm))
+
   property-defaults.fonts.serif      = "Nimbus Sans"      % default text
   property-defaults.fonts.sans       = "Nimbus Sans"
   property-defaults.fonts.typewriter = "Nimbus Mono PS"
 
   page-breaking = #ly:minimal-breaking
   system-system-spacing.padding = #1.8
-  ragged-bottom = ##f
-  ragged-last = ##f
-  last-bottom-spacing = #'((basic-distance . 1)
-                         (minimum-distance . 0)
-                         (padding . 3)
-                         (stretchability . 30))
+  % Ragged (not justify-to-fill) for the web build: otherwise the
+  % oversized single page would stretch system spacing throughout to
+  % fill all 3000mm, instead of just sitting at its natural height.
+  ragged-bottom = #(if web-svg #t #f)
+  ragged-last = #(if web-svg #t #f)
+  % stretchability 0 for the web build: otherwise this spring (last
+  % system -> footer, independent of ragged-bottom above) stretches to
+  % fill the oversized page, pushing the footer almost all the way down.
+  last-bottom-spacing = #(if web-svg
+                           '((basic-distance . 1)
+                             (minimum-distance . 0)
+                             (padding . 3)
+                             (stretchability . 0))
+                           '((basic-distance . 1)
+                             (minimum-distance . 0)
+                             (padding . 3)
+                             (stretchability . 30)))
 
   %%% system-system-spacing.basic-distance = #10
   %%% system-system-spacing.minimum-distance = #6
@@ -295,7 +319,7 @@ sequenceBasse = {
   | as
   | g
 %
-  \pageBreak
+  \webPageBreak
   | << \tag #'score { g } \tag #'midi { g' } >>
   | c'
   \break
@@ -374,9 +398,12 @@ climax = {
 
 outroBasse = {
   \voiceTwo
-  | d2 d2 
-  | d2 d2 
+  | d2 d2
+  \noBreak
+  | d2 d2
+  \noBreak
   | d2 d4. d8~
+  \noBreak
   | d1
 }
 
@@ -453,6 +480,7 @@ outroMusic = {
           \section \sectionLine "Outro"
           \partial 2
           r2
+          \noBreak
           \voiceTwo
           \outroBasse
         }
@@ -709,7 +737,7 @@ pieceMusic = \transpose c' c {
   }
 }
 
-\pageBreak
+\webPageBreak
 
 \include "bateau_poem_continuation.ily"
 
