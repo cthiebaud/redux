@@ -909,6 +909,7 @@
             "src": "bateau/bateau_suno.mp3",
             "voice": "m",
             "code": "bateau-fr",
+            "lyricsUrl": "bateau/bateau.3.html",
             "label": "FR",
             "suno": "https://suno.com/s/QEtB3AbmPKMkLzyA",
             "rateable": false,
@@ -1124,7 +1125,7 @@
 
         const link = node.querySelector('.track-lyrics-link');
         if (t.code) {
-          link.href = 'paroles.html#' + t.code;
+          link.href = t.lyricsUrl || ('paroles.html#' + t.code);
           link.setAttribute('aria-label', 'Paroles (' + t.label + ')');
           node.querySelector('.track-lyrics-label').textContent = t.label;
           link.addEventListener('click', e => {
