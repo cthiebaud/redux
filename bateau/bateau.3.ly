@@ -237,10 +237,10 @@ vampChordNames = \chordmode {
 % sound, like introLeadGuitar, since pieceMusic's outer \transpose c' c
 % shifts everything down an octave at render time.
 vampRiff = {
-  r4 c''8. [c''16] r8 c''8 c''16 d''16 d''8 |
-  r4 c''8. [c''16] r16 b'16 a'8 g'16 \acciaccatura f'16 fis'16 d'8 |
-  r4 c''8. [c''16] r8 c''8 c''16 d''16 d''8 |
-  r16 f''8. d''16 c''16 a'16 gis'16 g'16 fis'16 d'16 c'16 a16 f8.
+  r4 c''8-. [d'16 c''16-.~] c''16 d'16 c''8-. c''16 (d''16) d''8 |
+  r4 c''8-. [d'16 c''16-.~] c''16 b'16 a'8 g'16 \acciaccatura f'16 fis'16 d'8 |
+  r4 c''8-. [d'16 c''16-.~] c''16 d'16 c''8-. c''16 (d''16) d''8 |
+  r16 f''8.  d''16 c''16 a'16 gis'16 g'16 f'16 d'16 c'16 a16 f8.
 }
 
 % sequence
