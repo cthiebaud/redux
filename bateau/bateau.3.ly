@@ -13,8 +13,6 @@
 #(define web-svg-height (if (defined? 'web-svg-height) web-svg-height 2000))
 webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
 
-#(define darkGray (rgb-color 0.5 0.5 0.5))
-
 % The poem alternates between two performers verse by verse (not
 % quatrain by quatrain): one speaks the even verses, the other the odd.
 #(define oddVoiceColor  (rgb-color 0.0 0.439 0.722)) % Spanish blue
@@ -71,7 +69,6 @@ sectionLineMarkup =
          % pad-or-not argument here, since it's the one, permanent
          % exception, not a per-call choice.
          \vspace #1
-        % \with-color #darkGray
         % In the score, \sectionLabel's SectionLabel grob renders this
         % markup at its own font-size (1.5, LilyPond's default -- see
         % scm/lily/define-grobs.scm). Called directly as plain markup
@@ -123,31 +120,9 @@ offsetRight =
      \once \override LyricText.color = #evenVoiceColor
    #})
 
-% A light-gray backing behind the chord-name glyphs so they stay legible
-% (we tried a fully custom placement earlier -- centering the text on
-% the staff and pinning odd/even bars to fixed left/right columns --
-% but doing so safely, without corrupting the page's vertical spacing,
-% proved too fragile: see git history around this comment for the full
-% story). True alpha transparency isn't available here -- LilyPond's
-% PostScript/Ghostscript output path doesn't support it -- so this is
-% an opaque approximation instead of a genuinely see-through white.
-%
-% Box-only version: default (above-staff) placement, untouched -- used
-% for the intro and outro, which this positioning plan doesn't concern.
-chordNameBackground = #(define-music-function () ()
-  #{
-    \override ChordName.stencil =
-      #(lambda (grob)
-         (let* ((text  (ly:text-interface::print grob))
-                (x-ext (interval-widen (ly:stencil-extent text X) 0.3))
-                (y-ext (interval-widen (ly:stencil-extent text Y) 0.3))
-                (box   (stencil-with-color (make-filled-box-stencil x-ext y-ext) (list 0.92 0.92 0.92))))
-           (ly:stencil-add box text)))
-  #})
-
-% Placement itself now uses only stock grob/context properties, each a
-% flat, self-contained adjustment (no cross-grob lookups, nothing that
-% can force another grob's layout to resolve early):
+% Placement uses only stock grob/context properties, each a flat,
+% self-contained adjustment (no cross-grob lookups, nothing that can
+% force another grob's layout to resolve early):
 %  - alignBelowContext (\set mid-stream, not at context creation --
 %    see the main block below) moves the row below the staff instead
 %    of above it.
@@ -174,7 +149,6 @@ chordNameBackground = #(define-music-function () ()
 %    vertical spacing solve and isn't finished yet at that point.
 chordNameBelow = #(define-music-function () ()
   #{
-    \chordNameBackground
      \override ChordNames.VerticalAxisGroup.nonstaff-relatedstaff-spacing =
        #'((basic-distance . 7) (minimum-distance . 7) (padding . 0) (stretchability . 0))
     \override ChordName.X-offset = #4.8
@@ -555,7 +529,6 @@ outroMusic = {
         \new ChordNames \with {
           alignAboveContext = "outroMain"
         } {
-          \chordNameBackground
           \chordmode {
             \partial 2
             s2
@@ -591,13 +564,13 @@ outroMusic = {
   % subtitle = \markup { \abs-fontsize #10 "lundi 11 juin 2018, 8 h 20 du matin"}
   poet = "Poème d’Arthur Rimbaud"
   composer = "Musique de Christophe Thiebaud"
-  copyright = \markup \with-color #darkGray \small {
+  copyright = \markup \small {
     \center-column {
       "© 2026 Christophe Thiebaud. Tous droits réservés."
       "Déposé à la SACEM · ISWC T-305.593.089-3"
     }
   }
-  tagline = \markup \with-color #darkGray
+  tagline = \markup
     \pad-to-box #'(0 . 0) #'(0 . 3)
       \with-url
         "https://lilypond.org"
@@ -652,7 +625,6 @@ pieceMusic = \transpose c' c {
       \new ChordNames = "introCN" \with {
         alignAboveContext = "main"
       } {
-        \chordNameBackground
         \partial 2
         s2
         \introChordNames
@@ -678,7 +650,7 @@ pieceMusic = \transpose c' c {
         \key g \major
 
         \section
-        \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9
+        \footnote \markup \null #'(0 . 0) \markup \abs-fontsize #9
           \override #'(word-space . 0.3) \wordwrap {
           "[1]" "6ème" "corde" "accordée" "en" "ré" "(drop" "D)."
         } \sectionLine "Intro"
@@ -704,7 +676,7 @@ pieceMusic = \transpose c' c {
 
         \key d \major
         \section
-        \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9
+        \footnote \markup \null #'(0 . 0) \markup \abs-fontsize #9
           \override #'(word-space . 0.3) \wordwrap {
           "[2]" "La" "section" "Climax" "cite" "les" "accords" "de" "conclusion" "de" "Richard" "Strauss,"
           \italic "Vier letzte Lieder,"
