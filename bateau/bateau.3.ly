@@ -22,7 +22,7 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
 
 \paper {
 
-  paper-height = #(if web-svg (* web-svg-height mm) (* 300 mm))
+  paper-height = #(if web-svg (* web-svg-height mm) (* 280 mm))
   top-margin = 2\mm
   bottom-margin = 2\mm
 
@@ -54,18 +54,35 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
   %%% system-system-spacing.minimum-distance = #6
 }
 
+% The one place that controls how a section header (Intro/Vamp/
+% Sequence/Climax/Outro/etc.) looks, for both the sung score (via
+% \sectionLine below) and the generated poem continuation (which
+% calls this markup command by name directly, in bateau_lyrics.ily) --
+% so changing the look here never requires touching generate_lyrics.py
+% or regenerating anything.
 sectionLineMarkup =
 #(define-markup-command (sectionLineMarkup layout props text) (markup?)
-   (let ((lw (ly:output-def-lookup layout 'line-width)))
-     (interpret-markup layout props
-       #{
-         \markup \column {
-           \vspace #1
-           \with-color #darkGray \override #'(thickness . 2) \draw-dotted-line #(cons lw 0)
-           \vspace #0.3
-           \with-color #darkGray #text
-         }
-       #})))
+   (interpret-markup layout props
+     #{
+       \markup \column {
+         % A bit of breathing room above every section header except
+         % the very first one in the piece (Intro) -- that one bypasses
+         % this command entirely (see its call site) rather than take a
+         % pad-or-not argument here, since it's the one, permanent
+         % exception, not a per-call choice.
+         \vspace #1
+        % \with-color #darkGray
+        % In the score, \sectionLabel's SectionLabel grob renders this
+        % markup at its own font-size (1.5, LilyPond's default -- see
+        % scm/lily/define-grobs.scm). Called directly as plain markup
+        % (the poem continuation), there's no grob to set that, so it
+        % would fall back to the ambient size instead. \override here
+        % (not \fontsize, which would be additive and double up in the
+        % score) sets the same absolute 1.5 in both places.
+        \override #'(font-size . 1.5)
+        #text
+       }
+     #}))
 
 sectionLine = #(define-music-function (text) (markup?)
   #{ \sectionLabel \markup \sectionLineMarkup #text #})
@@ -547,7 +564,7 @@ outroMusic = {
         }
         \new Voice = "outroBasseVoice" {
           \key g \major
-          \section \sectionLabel \markup \with-color #darkGray "Outro"
+          \section \sectionLine "Outro"
           \partial 2
           r2
           \noBreak
@@ -664,7 +681,7 @@ pieceMusic = \transpose c' c {
         \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9
           \override #'(word-space . 0.3) \wordwrap {
           "[1]" "6ème" "corde" "accordée" "en" "ré" "(drop" "D)."
-        } \sectionLabel \markup \with-color #darkGray "Intro"
+        } \sectionLine "Intro"
         \partial 2
         r2
         \noBreak
