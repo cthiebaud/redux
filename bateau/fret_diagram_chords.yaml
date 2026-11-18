@@ -1,0 +1,37 @@
+# Source of truth for measure_chord_widths.py: maps each fret-diagram
+# variable (bateau.3.ly) to the real \chordmode spec it stands in for,
+# so the script can render the actual chord name LilyPond will print
+# and measure its exact width -- rather than the plain-text
+# approximation fret-diag falls back to when no measurement exists.
+#
+# Keep in sync with bateau.3.ly by hand: whenever a fret-diagram
+# variable there is added, removed, or paired with a different chord
+# bar, update this file to match, then re-run measure_chord_widths.py.
+reSept: d1:7
+solSeptReBasse: g2:7/d
+doNeufReBasse: c:7/d
+
+solMineurSept: g1:m7
+doSeptNeufDieze: c:7.9+
+faQuinteAugm: f:7+.5+
+siSeptMaj: bes:7+
+miMinSeptQuinteDimNeufDieze: e:m7.5-.9
+laSeptNeufBemol: a:7.9-
+laBemolSeptQuinteDim: aes:7.5-
+solSept: g:7.9
+
+solMinNeuf: g:m7.9
+doSeptNeufDiezeQuinteAugm: c:7.9+.13-
+faQuinteAugmBis: f:7+.5+.9
+siSeptMajQuinteAugm: bes:7+.5+
+miMinSeptQuinteDimNeufBemol: e:7sus4.5-.9-
+laSeptSusQuatre: a2:7sus4
+laSept: a:7
+laBemolNeufOnze: aes1:7.9.11+
+solNeuf: g2:9
+doSusQuatreNeufReBasse: c:9sus4
+
+reMajeur: d1
+siBemolFaBasse: bes/f
+siMineur: b:m
+laMajeur: a
