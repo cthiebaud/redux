@@ -24,7 +24,9 @@ solMinNeuf: g:m7.9
 doSeptNeufDiezeQuinteAugm: c:7.9+.13-
 faQuinteAugmBis: f:7+.5+.9
 siSeptMajQuinteAugm: bes:7+.5+
-miMinSeptQuinteDimNeufBemol: e:7sus4.5-.9-
+miMinSeptQuinteDimNeufBemol: e:m7.5-.9-
+miSeptSusQuatreQuinteDimNeufBemol: e:7sus4.5-.9-
+miSeptNeufBemolAddTreize: e:7.9-.13
 laSeptSusQuatre: a2:7sus4
 laSept: a:7
 laBemolNeufOnze: aes1:7.9.11+

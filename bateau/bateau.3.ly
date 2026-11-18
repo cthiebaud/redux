@@ -237,14 +237,16 @@ faQuinteAugm                = \markup \fret-diag "faQuinteAugm" "F7#5" "3-3;x;x;
 siSeptMaj                   = \markup \fret-diag "siSeptMaj" "Bb7+" "x;1-1;x;2-3;3-4;1-2;"
 miMinSeptQuinteDimNeufDieze = \markup \fret-diag "miMinSeptQuinteDimNeufDieze" "Em7b5,9" "2-1;x;x;3-3;3-4;2-2;"
 laSeptNeufBemol             = \markup \fret-diag "laSeptNeufBemol" "A7b9" "x;o;x;3-2;2-3;3-4;"
-laBemolSeptQuinteDim        = \markup \fret-diag "laBemolSeptQuinteDim" "Ab7b5" "6-2;x;6-2;5-4;3-1;4-3;"
+laBemolSeptQuinteDim        = \markup \fret-diag "laBemolSeptQuinteDim" "Ab7b5" "6-3;x;o;5-2;7-4;4-1;"
 solSept                     = \markup \fret-diag "solSept" "G9" "5-2;x;o;4-1;6-4;5-3;"
 
 solMinNeuf                  = \markup \fret-diag "solMinNeuf" "Gm9" "5-2;x;o;3-1;6-4;5-3;"
 doSeptNeufDiezeQuinteAugm   = \markup \fret-diag "doSeptNeufDiezeQuinteAugm" "C7#9b13" "x;3-2;2-1;3-3;4-4-(;4-4-);"
 faQuinteAugmBis             = \markup \fret-diag "faQuinteAugmBis" "F7#5,9" "3-2;x;2-1-(;2-1;2-1-);3-3;"
 siSeptMajQuinteAugm         = \markup \fret-diag "siSeptMajQuinteAugm" "Bb7#5" "x;1-1;x;2-2;3-4;2-3;"
-miMinSeptQuinteDimNeufBemol = \markup \fret-diag "miMinSeptQuinteDimNeufBemol" "E7sus4b5b9" "2-3;1-2;o;o;3-4;1-1;"
+miMinSeptQuinteDimNeufBemol = \markup \fret-diag "miMinSeptQuinteDimNeufBemol" "Em7b5b9" "2-3;1-2;o;o;3-4;1-1;"
+miSeptSusQuatreQuinteDimNeufBemol = \markup \fret-diag "miSeptSusQuatreQuinteDimNeufBemol" "E7sus4b5b9" "x;7-3;7-4;3-1;3-1;x;"
+miSeptNeufBemolAddTreize    = \markup \fret-diag "miSeptNeufBemolAddTreize" "E7b9add13" "2-2;x;o;1-1;2-3;1-1;"
 laSeptSusQuatre             = \markup \fret-diag "laSeptSusQuatre" "A7sus4" "x;o;5-3;x;3-1;o;"
 laSept                      = \markup \fret-diag "laSept" "A7" "x;o;5-3;6-4;3-1;o;"
 laBemolNeufOnze             = \markup \fret-diag "laBemolNeufOnze" "Ab7,9,#11" "6-4;3-1-(;4-2;3-1;3-1-);x;"
@@ -255,6 +257,7 @@ reMajeur                    = \markup \fret-diag "reMajeur" "D" "o;5-1;4-3;2-1;3
 siBemolFaBasse              = \markup \fret-diag "siBemolFaBasse" "Bb/F" "3-1;x;3-2;3-1;3-2;x;"
 siMineur                    = \markup \fret-diag "siMineur" "Bm" "x;2-1;4-3;4-3;3-2;x;"
 laMajeur                    = \markup \fret-diag "laMajeur" "A" "x;o;2-3;2-3;2-4;o;"
+reMajeurDeux                = \markup \fret-diag "reMajeurDeux" "D" "o;o;0;2-1;3-3;2-2x;"
 
 % Lyrics for quatrains 1-9 (sung) and the plain-verse continuation for
 % quatrains 10-25 are generated from bateau_ivre.yaml -- see
@@ -344,20 +347,20 @@ vampRiff = {
 
 sequence = {
   \voiceOne
-  | <f'     bes'  d''              >1 ( 
-  | <e'     bes'  dis''            >  )(
-  | <a'     cis'' e''              >  )(
-  | <a'     d''   f''              >  )(
-  | <bes'   d''   fis''            >  )(
-  | <bes'   cis'' g''              >  )(
-  | <ges'   c''   eeses'' aes''    >  )(
-  | <f'     b'    d''      a''     >  )
+  | <f'    bes'  d''            >1 ( 
+  | <e'    bes'  dis''          >  )(
+  | <a'    cis'' e''            >  )(
+  | <a'    d''   f''            >  )(
+  | <bes'  d''   fis''          >  )(
+  | <bes'  cis'' g''            >  )(
+  | <ges'  c''   eeses'' aes''  >  )(
+  | <f'    b'    d''      a''   >  )
   % 
-  | <d'     bes'  f''      a''     >1 ( 
-  | <e'     bes'  dis''    aes''   >  )(
-  | <e'     a'    cis''    g''     >  )(
-  | <a'           d''      fis''   >  )(
-  | <a'     bes'  d''      f''     >  )(  % E7sus4(b5,b9) (bass e' at line 221)
+  | <d'    bes'  f''      a''   >1 ( 
+  | <e'    bes'  dis''    aes'' >  )(
+  | <e'    a'    cis''    g''   >  )(
+  | <      a'    d''      fis'' >  )(
+  | <e' a' bes'  d''      f''   >  )(  
   | <<
     {
       \voiceOne
@@ -398,7 +401,7 @@ sequenceBasse = {
   | << \tag #'score { f1_\faQuinteAugmBis } \tag #'midi { f'1 } >>
   | bes1_\siSeptMajQuinteAugm
   \break
-  | << \tag #'score { e1_\miMinSeptQuinteDimNeufBemol } \tag #'midi { e'1 } >>
+  | << \tag #'score { e1_\miSeptSusQuatreQuinteDimNeufBemol } \tag #'midi { e'1 } >>
   | a1
   \break
   | as1_\laBemolNeufOnze
@@ -455,7 +458,7 @@ climaxBasse = {
   | b1_\siMineur
   | a1_\laMajeur
   \break
-  | d1_\reMajeur
+  | d1_\reMajeurDeux
   | d1
 }
 
