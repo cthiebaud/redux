@@ -467,7 +467,7 @@ climaxChordNames = \chordmode {
   | b:m
   | a
   | d
-  | d
+  | s
 }
 
 climax = {
