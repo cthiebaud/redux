@@ -22,7 +22,7 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
 
 \paper {
 
-  paper-height = #(if web-svg (* web-svg-height mm) (* 297 mm))
+  paper-height = #(if web-svg (* web-svg-height mm) (* 300 mm))
   top-margin = 2\mm
   bottom-margin = 2\mm
 
@@ -809,8 +809,6 @@ pieceMusic = \transpose c' c {
     }
   }
 }
-
-\webPageBreak
 
 \include "bateau_poem_continuation.ily"
 
