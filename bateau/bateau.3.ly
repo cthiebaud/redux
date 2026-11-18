@@ -23,6 +23,8 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
 \paper {
 
   paper-height = #(if web-svg (* web-svg-height mm) (* 297 mm))
+  top-margin = 2\mm
+  bottom-margin = 2\mm
 
   property-defaults.fonts.serif      = "Nimbus Sans"      % default text
   property-defaults.fonts.sans       = "Nimbus Sans"
@@ -183,6 +185,59 @@ chExceptions = #(append
   (sequential-music-to-chord-exceptions chExceptionMusic #t)
   ignatzekExceptions)
 
+% Fret diagrams (guitar chord boxes), imported from the earlier
+% bateau.0.ly draft -- its bass line and chord symbols map bar-for-bar
+% onto the Vamp and Sequence sections below (Climax and the Outro are
+% newer and have no equivalent there). Placement is left at LilyPond's
+% default for now.
+#(define-markup-command
+  (fret-diag layout props chord)
+  (markup?) (
+    interpret-markup layout props #{
+      \markup {
+        \hspace #13
+        % Pushed down to clear the chord-name row sitting right above
+        % (chordNameBelow's own gap/lift -- see its definition -- isn't
+        % aware of this markup, attached to a note in a different
+        % context, so without this the two collide).
+        \translate #(cons 0 -1.5)
+        \override #'(fret-diagram-details . ((number-type . roman-lower) (finger-code . in-dot) (barre-type . straight))) {
+          \fret-diagram-terse #chord
+        }
+      }
+    #}
+  )
+)
+
+reSept                      = \markup \fret-diag "o;x;4-2;5-4;3-1;x;"
+solSeptReBasse              = \markup \fret-diag "o;x;3-1;4-4;3-2;x;"
+doNeufReBasse               = \markup \fret-diag "o;x;2-1;3-3;3-4;x;"
+
+solMineurSept               = \markup \fret-diag "5-3;x;3-1-(;3-1;3-1-);x;"
+doSeptNeufDieze             = \markup \fret-diag "x;3-2;2-1;3-3;4-4;x;"
+faQuinteAugm                = \markup \fret-diag "3-3;x;x;2-1;2-2;o;"
+siSeptMaj                   = \markup \fret-diag "x;1-1;x;2-3;3-4;1-2;"
+miMinSeptQuinteDimNeufDieze = \markup \fret-diag "2-1;x;x;3-3;3-4;2-2;"
+laSeptNeufBemol             = \markup \fret-diag "x;o;x;3-2;2-3;3-4;"
+laBemolSeptQuinteDim        = \markup \fret-diag "6-2;x;6-2;5-4;3-1;4-3;"
+solSept                     = \markup \fret-diag "5-2;x;o;4-1;6-4;5-3;"
+
+solMinNeuf                  = \markup \fret-diag "5-2;x;o;3-1;6-4;5-3;"
+doSeptNeufDiezeQuinteAugm   = \markup \fret-diag "x;3-2;2-1;3-3;4-4-(;4-4-);"
+faQuinteAugmBis             = \markup \fret-diag "3-2;x;2-1-(;2-1;2-1-);3-3;"
+siSeptMajQuinteAugm         = \markup \fret-diag "x;1-1;x;2-2;3-4;2-3;"
+miMinSeptQuinteDimNeufBemol = \markup \fret-diag "2-3;1-2;o;o;3-4;1-1;"
+laSeptSusQuatre             = \markup \fret-diag "x;o;5-3;x;3-1;o;"
+laSept                      = \markup \fret-diag "x;o;5-3;6-4;3-1;o;"
+laBemolNeufOnze             = \markup \fret-diag "6-4;3-1-(;4-2;3-1;3-1-);x;"
+solNeuf                     = \markup \fret-diag "5-4;2-1-(;3-2;2-1-);3-3;x;"
+doSusQuatreNeufReBasse      = \markup \fret-diag "x;3-1-(;3-1;3-1;3-1-);x;"
+
+reMajeur                    = \markup \fret-diag "o;5-1;4-3;2-1;3-2;x;"
+siBemolFaBasse              = \markup \fret-diag "3-1;x;3-2;3-1;3-2;x;"
+siMineur                    = \markup \fret-diag "x;2-1;4-3;4-3;3-2;x;"
+laMajeur                    = \markup \fret-diag "x;o;2-3;2-3;2-4;o;"
+
 % Lyrics for quatrains 1-9 (sung) and the plain-verse continuation for
 % quatrains 10-25 are generated from bateau_ivre.yaml -- see
 % generate_lyrics.py. Re-run it after editing the yaml, before compiling.
@@ -238,7 +293,7 @@ introChordNames = \chordmode {
 
 vampBasse = {
   \voiceTwo
-  | d1
+  | d1_\reSept
   | d1
 }
 
@@ -307,29 +362,45 @@ sequence = {
 
 sequenceBasse = {
   \voiceTwo
-  | g1 
-  | c' 
+  | g1_\solMineurSept
+  | c'1_\doSeptNeufDieze
   \break
-  | f 
-  | bes 
+  | f1_\faQuinteAugm
+  | bes1_\siSeptMaj
   \break
-  | e 
-  | a
+  | e1_\miMinSeptQuinteDimNeufDieze
+  | a1_\laSeptNeufBemol
   \break
-  | as
-  | g
+  | as1_\laBemolSeptQuinteDim
+  | g1_\solSept
 %
-  | << \tag #'score { g } \tag #'midi { g' } >>
-  | c'
+  | << \tag #'score { g1_\solMinNeuf } \tag #'midi { g'1 } >>
+  | c'1_\doSeptNeufDiezeQuinteAugm
   \break
-  | << \tag #'score { f } \tag #'midi { f' } >>
-  | bes
+  | << \tag #'score { f1_\faQuinteAugmBis } \tag #'midi { f'1 } >>
+  | bes1_\siSeptMajQuinteAugm
   \break
-  | << \tag #'score { e } \tag #'midi { e' } >>
-  | a
+  | << \tag #'score { e1_\miMinSeptQuinteDimNeufBemol } \tag #'midi { e'1 } >>
+  | a1
   \break
-  | as
-  | g2   c'
+  | as1_\laBemolNeufOnze
+  | g2_\solNeuf   c'2_\doSusQuatreNeufReBasse
+}
+
+% A silent voice, parallel to basseI, that exists only to carry the
+% second fret-diagram where a bar holds two harmonies (Vamp's 2nd bar,
+% Sequence's A7sus4/A7 bar) -- entirely separate from basseI itself so
+% it can never change that voice's note count, which \lyricsto "basseI"
+% depends on to stay in sync with the sung lyrics. Stops right after
+% the last diagram it needs to carry; a voice shorter than its
+% simultaneous siblings is fine, nothing downstream depends on it.
+fretDiagramOverlay = {
+  \partial 2
+  s2
+  s1 s1 s1 s1
+  \repeat volta 2 { s1 | s2_\solSeptReBasse s2_\doNeufReBasse }
+  s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1 s1
+  s2_\laSeptSusQuatre s2_\laSept
 }
 
 sequenceChordNames = \chordmode {
@@ -358,15 +429,15 @@ climaxBasse = {
   \voiceTwo
   \bar ".|:"
   \repeat volta 2 {
-    | d1
-    | f1
+    | d1_\reMajeur
+    | f1_\siBemolFaBasse
   }
   \set Score.currentBarNumber = #29
   \break
-  | b1
-  | a1
+  | b1_\siMineur
+  | a1_\laMajeur
   \break
-  | d1
+  | d1_\reMajeur
   | d1
 }
 
@@ -437,7 +508,7 @@ outroMusic = {
     \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
     \new Staff = "outroMelody" \with {
       \RemoveEmptyStaves
-      instrumentName = "Lead Guitar"
+      instrumentName = "Guitare solo"
     } {
       \set Score.currentBarNumber =#104
       \clef "treble_8"
@@ -449,7 +520,7 @@ outroMusic = {
     }
     \new Staff = "outroEcho" \with {
       \RemoveEmptyStaves
-      instrumentName = "Bottleneck Guitar"
+      instrumentName = "Guitare bottleneck"
     } {
       \set Staff.midiInstrument = "vibraphone"
       \clef "treble_8"
@@ -460,7 +531,7 @@ outroMusic = {
       \bar "|."
     }
     \new Staff = "outroMain" \with {
-      instrumentName = "Guitar & Bass"
+      instrumentName = "Guitare et Basse"
     } {
       \set Staff.midiInstrument = "acoustic guitar (nylon)"
       <<
@@ -505,8 +576,8 @@ outroMusic = {
   composer = "Musique de Christophe Thiebaud"
   copyright = \markup \with-color #darkGray \small {
     \center-column {
-      "© 2026 Christophe Thiebaud. All rights reserved."
-      "Registered with SACEM · ISWC T-305.593.089-3"
+      "© 2026 Christophe Thiebaud. Tous droits réservés."
+      "Déposé à la SACEM · ISWC T-305.593.089-3"
     }
   }
   tagline = \markup \with-color #darkGray
@@ -526,7 +597,7 @@ pieceMusic = \transpose c' c {
     \new Staff = "introMelody" \with {
       \RemoveEmptyStaves
       \consists "Timing_translator"
-      instrumentName = "Lead Guitar"
+      instrumentName = "Guitare solo"
     } {
       \clef "treble_8"
       \key g \major
@@ -540,7 +611,7 @@ pieceMusic = \transpose c' c {
     }
     \new Staff = "introEcho" \with {
       \consists "Timing_translator"
-      instrumentName = "Bottleneck Guitar"
+      instrumentName = "Guitare bottleneck"
     } {
       \set Staff.midiInstrument = "vibraphone"
       \clef "treble_8"
@@ -552,7 +623,7 @@ pieceMusic = \transpose c' c {
       r2
     }
     \new Staff = "main" \with {
-      instrumentName = "Guitar & Bass"
+      instrumentName = \markup \concat { "Guitare" \super "[1]" " et Basse" }
     } {
 
     \set Staff.midiInstrument = "acoustic guitar (nylon)"
@@ -589,7 +660,11 @@ pieceMusic = \transpose c' c {
         \set Voice.instrumentTransposition = c
         \key g \major
 
-        \section \sectionLabel \markup \with-color #darkGray "Intro"
+        \section
+        \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9
+          \override #'(word-space . 0.3) \wordwrap {
+          "[1]" "6ème" "corde" "accordée" "en" "ré" "(drop" "D)."
+        } \sectionLabel \markup \with-color #darkGray "Intro"
         \partial 2
         r2
         \noBreak
@@ -612,11 +687,12 @@ pieceMusic = \transpose c' c {
 
         \key d \major
         \section
-        \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9 \wordwrap {
-          "[1] The" "climactic" "section" "quotes" "the" "closing" "chords" "of" "Richard" "Strauss,"
+        \footnote \markup \null #'(0 . 0) \markup \with-color #darkGray \abs-fontsize #9
+          \override #'(word-space . 0.3) \wordwrap {
+          "[2]" "La" "section" "Climax" "cite" "les" "accords" "de" "conclusion" "de" "Richard" "Strauss,"
           \italic "Vier letzte Lieder,"
-          "no." "4," "“Im" "Abendrot”" "(original" "key:" "E-flat" "major;" "transposed" "to" "D)."
-        } \sectionLine \markup \concat { "Climax" \super "[1]" }
+          "n°" "4," "«" "Im" "Abendrot" "»" "(tonalité" "originale" ":" "mi" "bémol" "majeur" ";" "transposée" "en" "ré)."
+        } \sectionLine \markup \concat { "Climax" \super "[2]" }
         \climaxBasse
         \once \overrideProperty Score.NonMusicalPaperColumn.line-break-system-details
           #'((extra-offset . (0 . 1)))
@@ -645,6 +721,7 @@ pieceMusic = \transpose c' c {
         \vampRiff
         \repeat volta 2 \vamp
       }
+      \new Voice = "fretExtraI" { \voiceFour \fretDiagramOverlay }
       \new Lyrics \lyricsto "basseI" {
         \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1 \skip 1
         <<
