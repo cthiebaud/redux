@@ -257,7 +257,7 @@ reMajeur                    = \markup \fret-diag "reMajeur" "D" "o;5-1;4-3;2-1;3
 siBemolFaBasse              = \markup \fret-diag "siBemolFaBasse" "Bb/F" "3-1;x;3-2;3-1;3-2;x;"
 siMineur                    = \markup \fret-diag "siMineur" "Bm" "x;2-1;4-3;4-3;3-2;x;"
 laMajeur                    = \markup \fret-diag "laMajeur" "A" "x;o;2-3;2-3;2-4;o;"
-reMajeurDeux                = \markup \fret-diag "reMajeurDeux" "D" "o;o;0;2-1;3-3;2-2x;"
+reMajeurDeux                = \markup \fret-diag "reMajeurDeux" "D" "o;o;o;2-1;3-3;2-2;"
 
 % Lyrics for quatrains 1-9 (sung) and the plain-verse continuation for
 % quatrains 10-25 are generated from bateau_ivre.yaml -- see
