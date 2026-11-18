@@ -21,8 +21,8 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
 \paper {
 
   paper-height = #(if web-svg (* web-svg-height mm) (* 280 mm))
-  top-margin = 2\mm
-  bottom-margin = 2\mm
+  top-margin = 1.2\mm
+  bottom-margin = 1.8\mm
 
   property-defaults.fonts.serif      = "Nimbus Sans"      % default text
   property-defaults.fonts.sans       = "Nimbus Sans"
