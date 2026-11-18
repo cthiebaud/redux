@@ -101,15 +101,15 @@
         // they're linked to is thickened, purely so the two can be
         // visually matched up against the printed numbers below --
         // superscripts (a different, smaller font-size) are left alone.
-        const CHORD_ROOT_FONT_SIZE = '2.6162';
-        const SECTION_WORDS = new Set(['Intro', 'Vamp', 'Sequence', 'Climax', 'Outro']);
+        //// const CHORD_ROOT_FONT_SIZE = '2.6162';
+        //// const SECTION_WORDS = new Set(['Intro', 'Vamp', 'Sequence', 'Climax', 'Outro']);
 
-        function groupTranslate(el) {
-          const m = /translate\(([-\d.]+),\s*([-\d.]+)\)/.exec(
-            el.parentElement.getAttribute('transform') || ''
-          );
-          return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : null;
-        }
+        //// function groupTranslate(el) {
+        ////   const m = /translate\(([-\d.]+),\s*([-\d.]+)\)/.exec(
+        ////     el.parentElement.getAttribute('transform') || ''
+        ////   );
+        ////   return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : null;
+        //// }
 
         // Collect every horizontal staff line as {x, y}, y being the
         // line's absolute position (group translate-y + the line's own
@@ -118,66 +118,66 @@
         // elements, evenly spaced like staff lines -- excluded here by
         // length, since a staff line spans the whole system width while
         // a fret-diagram's is only a few units (the width of the box).
-        const MIN_STAFF_LINE_LENGTH = 20;
-        const staffLines = [];
-        for (const line of svg.querySelectorAll('line')) {
-          const y1 = parseFloat(line.getAttribute('y1'));
-          const y2 = parseFloat(line.getAttribute('y2'));
-          if (Math.abs(y1 - y2) > 1e-6) continue;
-          const x1 = parseFloat(line.getAttribute('x1'));
-          const x2 = parseFloat(line.getAttribute('x2'));
-          if (Math.abs(x2 - x1) < MIN_STAFF_LINE_LENGTH) continue;
-          const t = groupTranslate(line);
-          if (!t) continue;
-          staffLines.push({ x: t.x, y: t.y + y1, el: line });
-        }
+        //// const MIN_STAFF_LINE_LENGTH = 20;
+        //// const staffLines = [];
+        //// for (const line of svg.querySelectorAll('line')) {
+        ////   const y1 = parseFloat(line.getAttribute('y1'));
+        ////   const y2 = parseFloat(line.getAttribute('y2'));
+        ////   if (Math.abs(y1 - y2) > 1e-6) continue;
+        ////   const x1 = parseFloat(line.getAttribute('x1'));
+        ////   const x2 = parseFloat(line.getAttribute('x2'));
+        ////   if (Math.abs(x2 - x1) < MIN_STAFF_LINE_LENGTH) continue;
+        ////   const t = groupTranslate(line);
+        ////   if (!t) continue;
+        ////   staffLines.push({ x: t.x, y: t.y + y1, el: line });
+        //// }
 
         // Cluster lines into staves: groups of >=3 lines, 1 staff-space
         // apart, sharing the same x start.
-        const staves = [];
-        const used = new Array(staffLines.length).fill(false);
-        const byXY = [...staffLines].sort((a, b) => a.x - b.x || a.y - b.y);
-        for (let i = 0; i < byXY.length; i++) {
-          if (used[i]) continue;
-          const group = [byXY[i]];
-          used[i] = true;
-          for (let j = i + 1; j < byXY.length; j++) {
-            if (used[j]) continue;
-            if (Math.abs(byXY[j].x - byXY[i].x) < 0.5 &&
-                group.some(g => Math.abs(byXY[j].y - g.y - 1.0) < 0.15)) {
-              group.push(byXY[j]);
-              used[j] = true;
-            }
-          }
-          if (group.length >= 3) {
-            const bottom = group.reduce((a, b) => (a.y > b.y ? a : b));
-            staves.push({ x: byXY[i].x, bottom });
-          }
-        }
+        //// const staves = [];
+        //// const used = new Array(staffLines.length).fill(false);
+        //// const byXY = [...staffLines].sort((a, b) => a.x - b.x || a.y - b.y);
+        //// for (let i = 0; i < byXY.length; i++) {
+        ////   if (used[i]) continue;
+        ////   const group = [byXY[i]];
+        ////   used[i] = true;
+        ////   for (let j = i + 1; j < byXY.length; j++) {
+        ////     if (used[j]) continue;
+        ////     if (Math.abs(byXY[j].x - byXY[i].x) < 0.5 &&
+        ////         group.some(g => Math.abs(byXY[j].y - g.y - 1.0) < 0.15)) {
+        ////       group.push(byXY[j]);
+        ////       used[j] = true;
+        ////     }
+        ////   }
+        ////   if (group.length >= 3) {
+        ////     const bottom = group.reduce((a, b) => (a.y > b.y ? a : b));
+        ////     staves.push({ x: byXY[i].x, bottom });
+        ////   }
+        //// }
 
         // Chord-root glyphs: bold them, then for each find its nearest
         // staff bottom (the closest one strictly above it) and thicken
         // that line.
-        const results = [];
-        for (const text of svg.querySelectorAll(`text[font-size="${CHORD_ROOT_FONT_SIZE}"]`)) {
-          const tspan = text.querySelector('tspan');
-          const label = tspan ? tspan.textContent : '';
-          if (SECTION_WORDS.has(label)) continue;
-          text.style.fontWeight = '900';
+        //// const results = [];
+        //// for (const text of svg.querySelectorAll(`text[font-size="${CHORD_ROOT_FONT_SIZE}"]`)) {
+        ////   const tspan = text.querySelector('tspan');
+        ////   const label = tspan ? tspan.textContent : '';
+        ////   if (SECTION_WORDS.has(label)) continue;
+        ////   text.style.fontWeight = '900';
 
-          const t = groupTranslate(text);
-          if (!t) continue;
-          let nearest = null;
-          for (const s of staves) {
-            if (s.bottom.y < t.y && (!nearest || s.bottom.y > nearest.bottom.y)) nearest = s;
-          }
-          if (!nearest) continue;
-          nearest.bottom.el.style.strokeWidth = '0.5';
-          results.push({ label, distance: t.y - nearest.bottom.y });
-        }
+        ////   const t = groupTranslate(text);
+        ////   if (!t) continue;
+        ////   let nearest = null;
+        ////   for (const s of staves) {
+        ////     if (s.bottom.y < t.y && (!nearest || s.bottom.y > nearest.bottom.y)) nearest = s;
+        ////   }
+        ////   if (!nearest) continue;
+        ////   nearest.bottom.el.style.strokeWidth = '0.5';
+        ////   results.push({ label, distance: t.y - nearest.bottom.y });
+        //// }
 
-        console.log('Chord name distance from its staff\'s bottom line (staff-spaces):');
-        console.table(results);
+        //// console.log('Chord name distance from its staff\'s bottom line (staff-spaces):');
+        //// console.table(results);
       });
   </script>
 </body>
