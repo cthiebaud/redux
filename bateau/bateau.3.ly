@@ -39,6 +39,18 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
                              (stretchability . 30)))
 }
 
+\header {
+  title = "Le Bateau ivre"
+  poet = "Poème d’Arthur Rimbaud"
+  composer = "Musique de Christophe Thiebaud"
+  copyright = \markup \small {
+    \center-column {
+      "© 2026 Christophe Thiebaud. Tous droits réservés."
+      "Déposé à la SACEM · ISWC T-305.593.089-3"
+    }
+  }
+}
+
 % Shared look for every section header: used by both the sung score
 % (via \sectionLine below) and the poem continuation, which calls this
 % by name in bateau_lyrics.ily. Details: bateau.claude.md "sectionLineMarkup".
@@ -437,86 +449,7 @@ outroEcho = {
   | d'1
 }
 
-% Independent piece, own timing from bar 1. \new StaffGroup is
-% deliberately commented out (kept for possible reuse) -- same in
-% pieceMusic. Details: bateau.claude.md "StaffGroup".
-outroMusic = {
-  % \new StaffGroup
-  { <<
-    \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
-    \new Staff = "outroMelody" \with {
-      \RemoveEmptyStaves
-      instrumentName = "Guitare solo"
-    } {
-      \set Score.currentBarNumber =#104
-      \clef "treble_8"
-      \key g \major
-      \partial 2
-      r16 a16 d'16 a'16 g'16 f'16 d'16 c'16
-      \outroLeadGuitar
-      \bar "|."
-    }
-    \new Staff = "outroEcho" \with {
-      \RemoveEmptyStaves
-      instrumentName = "Guitare bottleneck"
-    } {
-      \set Staff.midiInstrument = "vibraphone"
-      \clef "treble_8"
-      \key g \major
-      \partial 2
-      r2
-      \outroEcho
-      \bar "|."
-    }
-    \new Staff = "outroMain" \with {
-      instrumentName = "Guitare et Basse"
-    } {
-      \set Staff.midiInstrument = "acoustic guitar (nylon)"
-      <<
-        \new ChordNames \with {
-          alignAboveContext = "outroMain"
-        } {
-          \chordmode {
-            \partial 2
-            s2
-            d1:sus4+ s1 s1 s1
-          }
-        }
-        \new Voice = "outroBasseVoice" {
-          \key g \major
-          \section \sectionLine "Outro"
-          \partial 2
-          r2
-          \noBreak
-          \voiceTwo
-          \outroBasse
-        }
-        \new Voice = "outroAccordsVoice" {
-          \partial 2
-          s2
-          \voiceOne
-          \outro
-        }
-      >>
-    }
-  >>
-  }
-}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\header {
-  title = "Le Bateau ivre"
-  poet = "Poème d’Arthur Rimbaud"
-  composer = "Musique de Christophe Thiebaud"
-  copyright = \markup \small {
-    \center-column {
-      "© 2026 Christophe Thiebaud. Tous droits réservés."
-      "Déposé à la SACEM · ISWC T-305.593.089-3"
-    }
-  }
-}
 
 \markup {
   \vspace #1
@@ -740,6 +673,72 @@ pieceMusic = \transpose c' c {
 
 \markup {
   \vspace #2
+}
+
+% Independent piece, own timing from bar 1. \new StaffGroup is
+% deliberately commented out (kept for possible reuse) -- same in
+% pieceMusic. Details: bateau.claude.md "StaffGroup".
+outroMusic = {
+  % \new StaffGroup
+  { <<
+    \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
+    \new Staff = "outroMelody" \with {
+      \RemoveEmptyStaves
+      instrumentName = "Guitare solo"
+    } {
+      \set Score.currentBarNumber =#104
+      \clef "treble_8"
+      \key g \major
+      \partial 2
+      r16 a16 d'16 a'16 g'16 f'16 d'16 c'16
+      \outroLeadGuitar
+      \bar "|."
+    }
+    \new Staff = "outroEcho" \with {
+      \RemoveEmptyStaves
+      instrumentName = "Guitare bottleneck"
+    } {
+      \set Staff.midiInstrument = "vibraphone"
+      \clef "treble_8"
+      \key g \major
+      \partial 2
+      r2
+      \outroEcho
+      \bar "|."
+    }
+    \new Staff = "outroMain" \with {
+      instrumentName = "Guitare et Basse"
+    } {
+      \set Staff.midiInstrument = "acoustic guitar (nylon)"
+      <<
+        \new ChordNames \with {
+          alignAboveContext = "outroMain"
+        } {
+          \chordmode {
+            \partial 2
+            s2
+            d1:sus4+ s1 s1 s1
+          }
+        }
+        \new Voice = "outroBasseVoice" {
+          \key g \major
+          \section \sectionLine "Outro"
+          \partial 2
+          r2
+          \noBreak
+          \voiceTwo
+          \outroBasse
+        }
+        \new Voice = "outroAccordsVoice" {
+          \partial 2
+          s2
+          \voiceOne
+          \outro
+        }
+      >>
+    }
+  >>
+  }
 }
 
 \score {
