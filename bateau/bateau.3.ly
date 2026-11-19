@@ -19,7 +19,6 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
 #(define evenVoiceColor (rgb-color 0.133 0.545 0.133)) % Forest Green
 
 \paper {
-
   paper-height = #(if web-svg (* web-svg-height mm) (* 280 mm))
   top-margin = 1.2\mm
   bottom-margin = 1.8\mm
@@ -525,7 +524,8 @@ outroEcho = {
 % fresh timing starting at bar 1, no relation to pieceMusic. It's placed
 % after the poem continuation in the file so it prints after it too.
 outroMusic = {
-  \new StaffGroup { <<
+  % \new StaffGroup 
+  { <<
     \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
     \new Staff = "outroMelody" \with {
       \RemoveEmptyStaves
@@ -612,7 +612,8 @@ outroMusic = {
 }
 
 pieceMusic = \transpose c' c {
-  \new StaffGroup { <<
+  % \new StaffGroup 
+  { <<
     \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
     \new Staff = "introMelody" \with {
       \RemoveEmptyStaves
