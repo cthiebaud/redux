@@ -2,13 +2,8 @@
 
 #(set-global-staff-size 16)
 
-% Set by bateau/build-web-svg.sh (via a generated wrapper .ly that
-% \includes this file after defining these) to produce one continuous
-% page for the web -- instead of the normal paginated PDF -- by
-% skipping the manual page breaks below and sizing the page to exactly
-% fit everything, footer included. web-svg-height starts oversized
-% (pass 1 of the script) then gets set to the measured real height
-% (pass 2), so the final page has no leftover blank space.
+% Set by build-web-svg.sh to render one continuous page for the web
+% instead of paginated PDF. Details: bateau.claude.md "web-svg".
 #(define web-svg (if (defined? 'web-svg) web-svg #f))
 #(define web-svg-height (if (defined? 'web-svg-height) web-svg-height 2000))
 webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
@@ -29,14 +24,10 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
 
   page-breaking = #ly:minimal-breaking
   system-system-spacing.padding = #1.8
-  % Ragged (not justify-to-fill) for the web build: otherwise the
-  % oversized single page would stretch system spacing throughout to
-  % fill all 3000mm, instead of just sitting at its natural height.
+  % Ragged for the web build, else system spacing stretches to fill
+  % the oversized page. Details: bateau.claude.md "web-svg".
   ragged-bottom = #f % #(if web-svg #t #f)
   ragged-last = #(if web-svg #t #f)
-  % stretchability 0 for the web build: otherwise this spring (last
-  % system -> footer, independent of ragged-bottom above) stretches to
-  % fill the oversized page, pushing the footer almost all the way down.
   last-bottom-spacing = #(if web-svg
                            '((basic-distance . 1)
                              (minimum-distance . 0)
@@ -46,35 +37,19 @@ webPageBreak = #(if web-svg #{ #} #{ \pageBreak #})
                              (minimum-distance . 0)
                              (padding . 3)
                              (stretchability . 30)))
-
-  %%% system-system-spacing.basic-distance = #10
-  %%% system-system-spacing.minimum-distance = #6
 }
 
-% The one place that controls how a section header (Intro/Vamp/
-% Sequence/Climax/Outro/etc.) looks, for both the sung score (via
-% \sectionLine below) and the generated poem continuation (which
-% calls this markup command by name directly, in bateau_lyrics.ily) --
-% so changing the look here never requires touching generate_lyrics.py
-% or regenerating anything.
+% Shared look for every section header: used by both the sung score
+% (via \sectionLine below) and the poem continuation, which calls this
+% by name in bateau_lyrics.ily. Details: bateau.claude.md "sectionLineMarkup".
 sectionLineMarkup =
 #(define-markup-command (sectionLineMarkup layout props text) (markup?)
    (interpret-markup layout props
      #{
        \markup \column {
-         % A bit of breathing room above every section header except
-         % the very first one in the piece (Intro) -- that one bypasses
-         % this command entirely (see its call site) rather than take a
-         % pad-or-not argument here, since it's the one, permanent
-         % exception, not a per-call choice.
          \vspace #1
-        % In the score, \sectionLabel's SectionLabel grob renders this
-        % markup at its own font-size (1.5, LilyPond's default -- see
-        % scm/lily/define-grobs.scm). Called directly as plain markup
-        % (the poem continuation), there's no grob to set that, so it
-        % would fall back to the ambient size instead. \override here
-        % (not \fontsize, which would be additive and double up in the
-        % score) sets the same absolute 1.5 in both places.
+        % \override (not \fontsize, additive) sets the same absolute
+        % font-size whether a SectionLabel grob is rendering this or not.
         \override #'(font-size . 1.5)
         #text
        }
@@ -83,15 +58,9 @@ sectionLineMarkup =
 sectionLine = #(define-music-function (text) (markup?)
   #{ \sectionLabel \markup \sectionLineMarkup #text #})
 
-% Flush against the same page margins (x=0 .. line-width) as the
-% \fill-line columns used for the poem continuation, so both halves of
-% the sung lyrics and the plain-verse continuation share identical
-% left/right edges. Also colors the line by performer: the poem
-% alternates performers verse by verse (not quatrain by quatrain), and
-% since every quatrain has an even number of lines (4), that alternation
-% always lands odd verses in the left column and even verses in the
-% right column -- so the color can be hardcoded per column here instead
-% of threaded through as a parameter.
+% Aligns to the same margins as the poem continuation's \fill-line
+% columns, and colors by performer (hardcoded per column). Details:
+% bateau.claude.md "offsetLeft / offsetRight".
 offsetLeft =
 #(define-music-function () ()
    #{
@@ -103,11 +72,8 @@ offsetLeft =
      \once \override LyricText.color = #oddVoiceColor
    #})
 
-% The target is a fixed constant (not a live lookup of the system's own
-% extent) because querying a grob's containing system from within that
-% same grob's after-line-breaking callback is self-referential: the
-% system's extent isn't settled yet, and the resulting translation can
-% blow up and wreck the whole page's spacing.
+% Fixed constant, not a live lookup of the system's extent -- that
+% would be self-referential from inside this same callback.
 offsetRight =
 #(define-music-function () ()
    #{
@@ -119,33 +85,9 @@ offsetRight =
      \once \override LyricText.color = #evenVoiceColor
    #})
 
-% Placement uses only stock grob/context properties, each a flat,
-% self-contained adjustment (no cross-grob lookups, nothing that can
-% force another grob's layout to resolve early):
-%  - alignBelowContext (\set mid-stream, not at context creation --
-%    see the main block below) moves the row below the staff instead
-%    of above it.
-%  - nonstaff-relatedstaff-spacing: the *real* gap the layout solver
-%    reserves between the row and the staff, shrunk to a small fixed
-%    constant. This is the one that matters for anything *after* the
-%    chord name (the lyrics) to shift up and follow -- unlike
-%    extra-offset below, which is a late, purely cosmetic nudge the
-%    solver never sees, so nothing reserves less room for it. Safe on
-%    its own (no fighting): the earlier corruption came specifically
-%    from fixing this *and* then pushing past it with a large
-%    extra-offset; a small fixed gap with nothing contradicting it is
-%    the configuration already verified rock-solid across systems.
-%  - X-offset: a constant rightward nudge.
-%  - extra-offset's Y part: now just a small supplementary lift on top
-%    of the already-shrunk gap above, sized as "this chord's own
-%    printed height" (halved) -- so a tall chord like "E7b5b9sus4" and
-%    a plain one like "D7" still end up about the same distance from
-%    the staff, since the taller glyph gets proportionally more lift.
-%    The height comes from the glyph's own stencil (ly:stencil-extent
-%    on ly:text-interface::print's result), not from ly:grob-extent on
-%    the grob itself -- the former is pure font geometry and safe to
-%    read from 'after-line-breaking; the latter ties into the page's
-%    vertical spacing solve and isn't finished yet at that point.
+% Positions the chord-name row below the staff (alignBelowContext, set
+% at context creation) and nudges it with nonstaff-relatedstaff-spacing,
+% X-offset and extra-offset. Details: bateau.claude.md "chordNameBelow".
 chordNameBelow = #(define-music-function () ()
   #{
      \override ChordNames.VerticalAxisGroup.nonstaff-relatedstaff-spacing =
@@ -161,13 +103,9 @@ chordNameBelow = #(define-music-function () ()
            (ly:grob-set-property! grob 'extra-offset (cons 0 dy))))
   #})
 
-% LilyPond's automatic chord-name algorithm never prints a natural
-% middle extension once a higher, altered one is present: it keeps
-% altered steps plus the single highest step only when THAT one is
-% natural (scm/lily/chord-ignatzek-names.scm, filter-alterations).
-% Here the sharp 11 is altered and outranks the natural 9, so the 9
-% gets silently dropped from "Ab7(9,#11)" -- an exception is the only
-% way to force it back in.
+% LilyPond drops the natural 9 from "Ab7(9,#11)" since a higher
+% altered step (#11) suppresses it (chord-ignatzek-names.scm) --
+% an exception forces it back in.
 chExceptionMusic = {
   <aes c' ees' ges' bes' d''>1-\markup { \super \concat { "7 9 " \sharp "11" } }
 }
@@ -175,25 +113,11 @@ chExceptions = #(append
   (sequential-music-to-chord-exceptions chExceptionMusic #t)
   ignatzekExceptions)
 
-% Fret diagrams (guitar chord boxes), imported from the earlier
-% bateau.0.ly draft -- its bass line and chord symbols map bar-for-bar
-% onto the Vamp and Sequence sections below (Climax and the Outro are
-% newer and have no equivalent there). Placement is left at LilyPond's
-% default for now.
-%
-% The push-right needs to scale with how wide the associated chord
-% name reads (a fixed amount for every chord either collides with
-% wide ones or leaves narrow ones stranded too far right -- see git
-% history around this comment). fret_diagram_offsets.scm, generated by
-% measure_chord_widths.py actually rendering each chord through
-% LilyPond and reading its exact glyph widths back out of the PDF,
-% gives a byte-accurate push per key when present; this file is
-% optional tooling output, not a build dependency, so its absence
-% (or a key missing from it) falls back to estimating from "name", a
-% plain-text approximation of the chord (not a byte-identical
-% reproduction of its glyphs -- stacked alterations/extensions render
-% more compactly than their flat text form, so this over-estimates a
-% bit, which is the safe direction).
+% Fret diagrams (guitar chord boxes). Horizontal push scales with the
+% associated chord name's width, so it clears the name regardless of
+% how long it is; exact width comes from fret_diagram_offsets.scm
+% (generated by measure_chord_widths.py) when available, else a
+% plain-text estimate. Details: bateau.claude.md "fret-diagram offsets".
 #(define fret-diagram-offsets
    (if (file-exists? "fret_diagram_offsets.scm")
        (call-with-input-file "fret_diagram_offsets.scm" read)
@@ -213,10 +137,8 @@ chExceptions = #(append
       (interpret-markup layout props #{
         \markup {
           \hspace #push
-          % Pushed down to clear the chord-name row sitting right above
-          % (chordNameBelow's own gap/lift -- see its definition -- isn't
-          % aware of this markup, attached to a note in a different
-          % context, so without this the two collide).
+          % Pushed down to clear the chord-name row above (chordNameBelow
+          % doesn't know about this markup).
           \translate #(cons 0 -1.5)
           \override #'(fret-diagram-details . ((number-type . roman-lower) (finger-code . in-dot) (barre-type . straight))) {
             \fret-diagram-terse #chord
@@ -329,12 +251,10 @@ vampChordNames = \chordmode {
   | g2:7/d  c:7/d
 }
 
-% Upper melody line for the 2nd (re-vamp, x4) occurrence only, transcribed
-% from vamp_riff.mid: a 4-bar riff (staccato stabs on D/C, then a longer
-% descending tag) meant to be played twice to fill the 8 real bars of
-% \repeat volta 4 \vampBasse. Written an octave higher than it should
-% sound, like introLeadGuitar, since pieceMusic's outer \transpose c' c
-% shifts everything down an octave at render time.
+% Upper melody for the 2nd Vamp only (transcribed from vamp_riff.mid),
+% covering its first 4 of 6 printed bars -- the rest come from
+% \repeat volta 2 \vamp. Written an octave high, like introLeadGuitar,
+% for pieceMusic's outer \transpose. Details: bateau.claude.md "vampRiff".
 vampRiff = {
   r4 c''8-. [d'16 c''16-.~] c''16 d'16 c''8-. c''16 (d''16) d''8 |
   r4 c''8-. [d'16 c''16-.~] c''16 b'16 a'8 g'16 \acciaccatura f'16 fis'16 d'8 |
@@ -407,13 +327,10 @@ sequenceBasse = {
   | g2_\solNeuf   c'2_\doSusQuatreNeufReBasse
 }
 
-% A silent voice, parallel to basseI, that exists only to carry the
-% second fret-diagram where a bar holds two harmonies (Vamp's 2nd bar,
-% Sequence's A7sus4/A7 bar) -- entirely separate from basseI itself so
-% it can never change that voice's note count, which \lyricsto "basseI"
-% depends on to stay in sync with the sung lyrics. Stops right after
-% the last diagram it needs to carry; a voice shorter than its
-% simultaneous siblings is fine, nothing downstream depends on it.
+% Silent voice, separate from basseI, carrying the second fret-diagram
+% where a bar holds two harmonies -- kept separate so it can't disturb
+% basseI's note count, which \lyricsto depends on. Details:
+% bateau.claude.md "fretDiagramOverlay".
 fretDiagramOverlay = {
   \partial 2
   s2
@@ -520,11 +437,11 @@ outroEcho = {
   | d'1
 }
 
-% The Outro is a fully independent piece: its own StaffGroup, its own
-% fresh timing starting at bar 1, no relation to pieceMusic. It's placed
-% after the poem continuation in the file so it prints after it too.
+% Independent piece, own timing from bar 1. \new StaffGroup is
+% deliberately commented out (kept for possible reuse) -- same in
+% pieceMusic. Details: bateau.claude.md "StaffGroup".
 outroMusic = {
-  % \new StaffGroup 
+  % \new StaffGroup
   { <<
     \set StaffGroup.systemStartDelimiter = #'SystemStartSquare
     \new Staff = "outroMelody" \with {
@@ -591,7 +508,6 @@ outroMusic = {
 
 \header {
   title = "Le Bateau ivre"
-  % subtitle = \markup { \abs-fontsize #10 "lundi 11 juin 2018, 8 h 20 du matin"}
   poet = "Poème d’Arthur Rimbaud"
   composer = "Musique de Christophe Thiebaud"
   copyright = \markup \small {
@@ -626,9 +542,7 @@ pieceMusic = \transpose c' c {
       r8 d'''16 a''16 g''16 f''16 d''8
       \introLeadGuitar
       \bar "|"
-      d''2 %%% _\markup \small \italic \with-color #darkGray \wordwrap {
-      %%%   After the intro, the guitar continues as an improvised obbligato: a constant voice, not a series of solos.
-      %%% }
+      d''2
     }
     \new Staff = "introEcho" \with {
       \consists "Timing_translator"
@@ -652,7 +566,6 @@ pieceMusic = \transpose c' c {
 
     % { part I
     <<
-      % {
       \new ChordNames = "introCN" \with {
         alignAboveContext = "main"
       } {
@@ -673,7 +586,6 @@ pieceMusic = \transpose c' c {
         \chordmode { d1:7 s1 s1 s1 }
         \repeat volta 2 \vampChordNames
       }
-      %}
       {
       \new Voice = "basseI" {
         \set midiInstrument = "acoustic bass"
@@ -774,7 +686,6 @@ pieceMusic = \transpose c' c {
       }
     >>
     % end of part I
-    %}
 
     }
   >> }

@@ -21,6 +21,36 @@
 <meta name="twitter:image" content="https://redux.cthiebaud.com/bateau/og-image.jpg">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css">
+<style>
+  /* Same font files LilyPond embeds into bateau.3.pdf (see
+     bateau.claude.md "fonts"), so the SVG's <text font-family="...">
+     elements render identically to the PDF instead of falling back
+     to whatever generic sans-serif the viewer's browser happens to have. */
+  @font-face {
+    font-family: "Nimbus Sans";
+    src: url("fonts/NimbusSans-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Nimbus Sans";
+    src: url("fonts/NimbusSans-Bold.woff2") format("woff2");
+    font-weight: bold;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Nimbus Sans";
+    src: url("fonts/NimbusSans-Italic.woff2") format("woff2");
+    font-weight: normal;
+    font-style: italic;
+  }
+  @font-face {
+    font-family: "URW Bookman";
+    src: url("fonts/URWBookman-Light.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+  }
+</style>
 </head>
 <body>
   <div class="container py-5" id="score"></div>
