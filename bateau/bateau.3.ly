@@ -516,11 +516,6 @@ outroMusic = {
       "Déposé à la SACEM · ISWC T-305.593.089-3"
     }
   }
-  tagline = \markup
-    \pad-to-box #'(0 . 0) #'(0 . 3)
-      \with-url
-        "https://lilypond.org"
-        #(format #f "LilyPond v~a" (lilypond-version))
 }
 
 \markup {
