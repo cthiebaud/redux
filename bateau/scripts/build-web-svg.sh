@@ -17,18 +17,21 @@
 # into many small pages instead of one. 2000mm is a wide margin above
 # this piece's ~730mm of real content.
 #
-# Usage: ./build-web-svg.sh   (run from the bateau/ directory)
+# Usage: ./scripts/build-web-svg.sh   (run from the bateau/ directory)
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 NAME=bateau.3
+DIST_DIR=dist
 WRAPPER=_web-build-wrapper.ly
 PAGE_HEIGHT_MM=2000
 
 cleanup() {
-  rm -f "$WRAPPER" "$NAME-web".midi "$NAME-web"-*.midi "$NAME-web"-*.svg
+  rm -f "$WRAPPER" "$DIST_DIR/$NAME-web".midi "$DIST_DIR/$NAME-web"-*.midi "$DIST_DIR/$NAME-web"-*.svg
 }
 trap cleanup EXIT
+
+mkdir -p "$DIST_DIR"
 
 cat > "$WRAPPER" <<EOF
 \\version "2.26.0"
@@ -37,14 +40,14 @@ cat > "$WRAPPER" <<EOF
 \\include "$NAME.ly"
 EOF
 
-lilypond -dbackend=svg -dno-point-and-click -o "$NAME-web" "$WRAPPER" \
+lilypond -dbackend=svg -dno-point-and-click -o "$DIST_DIR/$NAME-web" "$WRAPPER" \
   2>&1 | grep -v "^Processing\|^Parsing\|^Interpreting\|^Preprocessing\|^Calculating\|^MIDI output\|unsupported formats"
 
-PAGES=$(ls "$NAME-web"*.svg 2>/dev/null | wc -l | tr -d ' ')
+PAGES=$(ls "$DIST_DIR/$NAME-web"*.svg 2>/dev/null | wc -l | tr -d ' ')
 if [ "$PAGES" != "1" ]; then
   echo "Expected 1 page at ${PAGE_HEIGHT_MM}mm but got $PAGES -- raise PAGE_HEIGHT_MM." >&2
   exit 1
 fi
 
-mv "$NAME-web.svg" "$NAME.web.svg"
-echo "Wrote $NAME.web.svg (uncropped, ${PAGE_HEIGHT_MM}mm tall -- bateau.3.html closes the footer gap and crops at load time)"
+mv "$DIST_DIR/$NAME-web.svg" "$DIST_DIR/$NAME.web.svg"
+echo "Wrote $DIST_DIR/$NAME.web.svg (uncropped, ${PAGE_HEIGHT_MM}mm tall -- bateau.3.html closes the footer gap and crops at load time)"

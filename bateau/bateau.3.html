@@ -55,7 +55,7 @@
 <body>
   <div class="container py-5" id="score"></div>
   <script>
-    fetch('bateau.3.web.svg')
+    fetch('dist/bateau.3.web.svg')
       .then(r => r.text())
       .then(svgText => {
         const container = document.getElementById('score');

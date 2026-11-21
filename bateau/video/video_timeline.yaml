@@ -1,0 +1,504 @@
+# Timeline for the bateau_partiel_solo_guitar_0 video.
+#
+# The audio file itself isn't committed -- see cache/ and README.md in
+# this directory for how to fetch it from Suno and what to set `audio:`
+# below to.
+#
+# Section boundaries below are REAL, given by ear against the track:
+#   (silence)     0:00
+#   pre-intro     0:01.345   (2 bars, including Intro's anacrusis)
+#   intro         0:08.20    (4 bars, anacrusis already spent by pre-intro)
+#   vamp          0:22.00    (8 bars -- the written 4-bar Vamp, repeated)
+#   sequence      0:49.50    (16 bars, as written)
+#   climax        1:44.50    (8 bars, single pass, as written)
+#   vamp D7 pedal 2:12.40    (12 bars, D7 held/implied throughout)
+#   2nd vamp      2:53.80    (nominally 8 bars of the Vamp pattern)
+#
+# The take ends with a ralentando that makes precise chord timing not
+# worth chasing: per your call, the 2nd vamp is shown as a clean 8
+# bars at the nominal 70bpm from its start (173.80 - 201.23), and no
+# chord is shown for the remaining tail (201.23 - 208.87) as the
+# tempo dissolves toward the end.
+#
+# Within each section, individual chord start/end times are still
+# INTERPOLATED where more than one chord shares a section -- taken in
+# the order/relative-duration bateau.3.ly's chordmode gives them,
+# stretched or squeezed evenly to fit the real section length. Treat
+# those internal start/end times as a guess still -- correct by ear.
+# Only the section boundaries above, and the file's actual duration
+# below, are trustworthy as given.
+#
+# Schema per cue:
+#   start, end   -- seconds into the audio file named by `audio:` below
+#   section      -- see boundary list above
+#   chord        -- the composed chord, as written in bateau.3.ly /
+#                   fret_diagram_chords.yaml. Shown large/primary.
+#   chord_suno   -- what Suno's performance actually plays here. Fill in
+#                   by hand (empty for now); shown smaller, labelled
+#                   "Suno reading", directly under the composed chord --
+#                   but only when it differs from `chord` (the renderer
+#                   auto-hides it when the two match, so feel free to
+#                   fill this in for every cue without curating it first).
+#   emoji        -- no longer rendered (dropped as too distracting); any
+#                   values left in cues below are inert and safe to ignore.
+#   comment      -- your annotation, fill in by hand (empty for now)
+#   background   -- path to a still image for this cue, fill in by hand
+#                   (omit or leave empty to keep reusing the previous cue's image)
+
+# Update this to the exact filename suno-tape saved (see README.md) --
+# it lives in cache/, which is gitignored.
+audio: cache/bateau_partiel_solo_guitar_0-1795259617147.webm
+duration: 209.28
+tempo_bpm: 70
+source_score: bateau.3.ly
+
+cues:
+  # --- true silence before anything starts ---
+  - start: 0.00
+    end: 1.345
+    section: ""
+    chord: ""
+    chord_suno: ""
+    comment: ""
+    background: Rimbaud-in-the-Place-Vendome-1_16x9.png
+
+  # --- pre-intro: free rubato lead-in, 2 bars (incl. Intro's anacrusis) ---
+  - start: 1.345
+    end: 8.20
+    section: Pre-intro
+    chord: ""
+    chord_suno: ""
+    comment: ""
+    background: ""
+
+  # --- Intro, 4 bars (8.20 - 22.00) ---
+  - start: 8.20
+    end: 11.65
+    section: Intro
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 11.65
+    end: 12.94
+    section: Intro
+    chord: G7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 12.94
+    end: 15.10
+    section: Intro
+    chord: C9sus4
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 15.10
+    end: 18.55
+    section: Intro
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 18.55
+    end: 19.84
+    section: Intro
+    chord: G7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 19.84
+    end: 22.00
+    section: Intro
+    chord: C9sus4
+    chord_suno: ""
+    comment: ""
+    background: ""
+
+  # --- Vamp, written 4-bar pattern repeated (8 bars, 22.00 - 49.50) ---
+  - start: 22.00
+    end: 25.44
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 25.44
+    end: 27.16
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 27.16
+    end: 28.88
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 28.88
+    end: 32.31
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 32.31
+    end: 34.03
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 34.03
+    end: 35.75
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 35.75
+    end: 39.19
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 39.19
+    end: 40.91
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 40.91
+    end: 42.63
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 42.63
+    end: 46.06
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 46.06
+    end: 47.78
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 47.78
+    end: 49.50
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+
+  # --- Sequence, 16 bars (49.50 - 104.50) ---
+  - start: 49.50
+    end: 52.94
+    section: Sequence
+    chord: Gm7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 52.94
+    end: 56.38
+    section: Sequence
+    chord: C7#9
+    chord_suno: "Cm7"
+    emoji: "😱"
+    comment: ""
+    background: ""
+  - start: 56.38
+    end: 59.81
+    section: Sequence
+    chord: F7#5
+    chord_suno: "A7"
+    emoji: "😞"
+    comment: ""
+    background: ""
+  - start: 59.81
+    end: 63.25
+    section: Sequence
+    chord: Bb7+
+    chord_suno: ""
+    emoji: "👍"
+    comment: ""
+    background: ""
+  - start: 63.25
+    end: 66.69
+    section: Sequence
+    chord: Em7b5,9
+    chord_suno: "Ebm maj7"
+    emoji: "🤔"
+    comment: ""
+    background: ""
+  - start: 66.69
+    end: 70.13
+    section: Sequence
+    chord: A7b9
+    chord_suno: "A7"
+    comment: ""
+    background: ""
+  - start: 70.13
+    end: 73.56
+    section: Sequence
+    chord: Ab7b5
+    chord_suno: "Ab7"
+    emoji: "😶"
+    comment: ""
+    background: ""
+  - start: 73.56
+    end: 77.00
+    section: Sequence
+    chord: G9
+    chord_suno: "G7"
+    comment: ""
+    background: ""
+  - start: 77.00
+    end: 80.44
+    section: Sequence
+    chord: Gm9
+    chord_suno: "Bb maj7"
+    emoji: "😶"
+    comment: ""
+    background: ""
+  - start: 80.44
+    end: 83.88
+    section: Sequence
+    chord: C7#9b13
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 83.88
+    end: 87.31
+    section: Sequence
+    chord: F7#5,9
+    chord_suno: "A7"
+    comment: ""
+    background: ""
+  - start: 87.31
+    end: 90.75
+    section: Sequence
+    chord: Bb7#5
+    chord_suno: "D7"
+    emoji: "😲"
+    comment: ""
+    background: ""
+  - start: 90.75
+    end: 94.19
+    section: Sequence
+    chord: E7sus4b5b9
+    chord_suno: "Gm7"
+    emoji: "😌"
+    comment: ""
+    background: ""
+  - start: 94.19
+    end: 95.91
+    section: Sequence
+    chord: A7sus4
+    chord_suno: "A7"
+    emoji: "😞"
+    comment: ""
+    background: ""
+  - start: 95.91
+    end: 97.63
+    section: Sequence
+    chord: A7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 97.63
+    end: 101.06
+    section: Sequence
+    chord: "Ab7,9,#11"
+    chord_suno: "Ab7"
+    comment: ""
+    background: ""
+  - start: 101.06
+    end: 102.78
+    section: Sequence
+    chord: G9
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 102.78
+    end: 104.50
+    section: Sequence
+    chord: C9sus4
+    chord_suno: ""
+    comment: ""
+    background: ""
+
+  # --- Climax, single pass, 8 bars (104.50 - 132.40) ---
+  - start: 104.50
+    end: 107.99
+    section: Climax
+    chord: D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 107.99
+    end: 111.48
+    section: Climax
+    chord: Bb/F
+    chord_suno: "Gm7"
+    emoji: "😡"
+    comment: ""
+    background: ""
+  - start: 111.48
+    end: 114.96
+    section: Climax
+    chord: D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 114.96
+    end: 118.45
+    section: Climax
+    chord: Bb/F
+    chord_suno: "Gm7"
+    emoji: "😡"
+    comment: ""
+    background: ""
+  - start: 118.45
+    end: 121.94
+    section: Climax
+    chord: Bm
+    chord_suno: "Bm7"
+    comment: ""
+    background: ""
+  - start: 121.94
+    end: 125.43
+    section: Climax
+    chord: A
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 125.43
+    end: 128.91
+    section: Climax
+    chord: D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 128.91
+    end: 132.40
+    section: Climax
+    chord: D
+    chord_suno: ""
+    comment: ""
+    background: ""
+
+  # --- Vamp D7 pedal: 12 bars, D7 held/implied throughout (132.40 - 173.80) ---
+  - start: 132.40
+    end: 173.80
+    section: Vamp (D7 pedal)
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+
+  # --- 2nd Vamp: shown as a clean 8 bars at nominal 70bpm, not stretched
+  # to match the take's ralentando (173.80 - 201.23) ---
+  - start: 173.80
+    end: 177.23
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 177.23
+    end: 178.94
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 178.94
+    end: 180.66
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 180.66
+    end: 184.09
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 184.09
+    end: 185.80
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 185.80
+    end: 187.51
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 187.51
+    end: 190.94
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 190.94
+    end: 192.66
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 192.66
+    end: 194.37
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 194.37
+    end: 197.80
+    section: Vamp
+    chord: D7
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 197.80
+    end: 199.51
+    section: Vamp
+    chord: G7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+  - start: 199.51
+    end: 201.23
+    section: Vamp
+    chord: C7/D
+    chord_suno: ""
+    comment: ""
+    background: ""
+
+  # --- ralentando tail: tempo dissolves, no chord shown (201.23 - 208.87) ---
+  - start: 201.23
+    end: 208.87
+    section: Vamp (ad lib)
+    chord: ""
+    chord_suno: ""
+    comment: ""
+    background: ""

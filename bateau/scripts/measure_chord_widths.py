@@ -18,7 +18,7 @@ project's workflow for PDF inspection).
 
 Run after editing fret_diagram_chords.yaml (a chord moved, a new one
 was added, chExceptionMusic changed, etc.):
-    python3 measure_chord_widths.py
+    python3 scripts/measure_chord_widths.py
 """
 
 import pathlib
@@ -30,8 +30,9 @@ import tempfile
 import yaml
 
 HERE = pathlib.Path(__file__).parent
-CHORDS_YAML = HERE / "fret_diagram_chords.yaml"
-OFFSETS_OUT = HERE / "fret_diagram_offsets.scm"
+BATEAU_DIR = HERE.parent
+CHORDS_YAML = BATEAU_DIR / "fret_diagram_chords.yaml"
+OFFSETS_OUT = BATEAU_DIR / "build" / "fret_diagram_offsets.scm"
 
 # Must mirror bateau.3.ly: same staff size and fonts (both affect
 # glyph metrics) and the same chordNameExceptions (changes which
@@ -167,6 +168,7 @@ def main():
             print(f"  {key:30s} {chord:20s} width={width:.3f}  push={push:.3f}")
         lines.append(")")
 
+    OFFSETS_OUT.parent.mkdir(exist_ok=True)
     OFFSETS_OUT.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"wrote {OFFSETS_OUT}")
 

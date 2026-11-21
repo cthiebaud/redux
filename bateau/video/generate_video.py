@@ -1,0 +1,390 @@
+#!/usr/bin/env python3
+"""Renders the bateau_solo_sublime video from video_timeline.yaml.
+
+Reads the cue list (background images, chords, comments, section labels),
+builds an ffmpeg filter graph (background slideshow + drawtext overlays),
+and muxes it with the audio. Re-run after editing the yaml.
+"""
+
+import json
+import math
+import multiprocessing as mp
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import yaml
+from PIL import Image
+
+HERE = Path(__file__).parent
+BUILD_DIR = HERE / "build"
+DIST_DIR = HERE / "dist"
+TIMELINE = HERE / "video_timeline.yaml"
+OUTPUT = DIST_DIR / "bateau_video_draft.mp4"
+
+WIDTH, HEIGHT, FPS = 1920, 1080, 30
+
+FONT_CHORD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+FONT_COMMENT = "/Users/christophe.thiebaud/Library/Fonts/URWBookman-Demi.otf"
+FONT_SECTION = "/System/Library/Fonts/Supplemental/Arial.ttf"
+FONT_SECTION_ITALIC = "/System/Library/Fonts/Supplemental/Arial Italic.ttf"
+
+GOLD = "0xD9B98Cff"
+
+# between(t,start,end) is inclusive on both ends, so when one cue's end
+# exactly equals the next cue's start, the single frame landing on that
+# timestamp satisfies both windows at once and both cues' text/box flash
+# together for one frame. Shaving half a frame off every end makes windows
+# exclusive there, so adjacent cues can never both be true simultaneously.
+EPSILON = 0.5 / FPS
+
+
+def load_cues():
+    data = yaml.safe_load(TIMELINE.read_text())
+    return data["audio"], data["duration"], data["cues"]
+
+
+def background_segments(cues, duration):
+    """Carries the last non-empty `background` forward (sticky)."""
+    segments = []
+    current_bg, seg_start = None, 0.0
+    for cue in cues:
+        bg = cue.get("background") or None
+        if bg and bg != current_bg:
+            if current_bg is not None:
+                segments.append((seg_start, cue["start"], current_bg))
+            current_bg, seg_start = bg, cue["start"]
+    segments.append((seg_start, duration, current_bg))
+    return segments
+
+
+def zoom_box(t, zoom_start, duration, native_w, native_h, zoom_x, zoom_w):
+    """The source crop box (native pixel coords, sub-pixel precision) for a
+    given timestamp -- same window-interpolation derivation as the ffmpeg
+    version (window WIDTH is what's linear/eased in time, not the zoom
+    factor, which is a reciprocal of that), just evaluated in full floating
+    point with no intermediate rounding at all."""
+    if zoom_start is None or t <= zoom_start:
+        p = 0.0
+    else:
+        tau = max(0.0, min(1.0, (t - zoom_start) / (duration - zoom_start)))
+        p = tau * tau
+    window_width = WIDTH + (zoom_w - WIDTH) * p
+    window_left = zoom_x * p
+    # Width and height scale by their OWN native/target ratio rather than a
+    # single shared factor -- if the source isn't exactly 16:9 (ours is off
+    # by a fraction of a pixel from a prior manual crop), a shared factor
+    # makes nh briefly exceed native_h right at the start, needing a clamp
+    # that holds height fixed while width keeps shrinking underneath it --
+    # a tiny but real aspect wobble for the first ~5s of the zoom. Separate
+    # factors keep nw/nh in bounds by construction (window_width never
+    # exceeds WIDTH, so nw never exceeds native_w, and likewise for height),
+    # so no clamping is needed at all, and any source/target aspect mismatch
+    # is spread smoothly across the whole zoom instead of dumped at its start.
+    nw = window_width * (native_w / WIDTH)
+    nh = window_width * HEIGHT / WIDTH * (native_h / HEIGHT)
+    nx = window_left * (native_w / WIDTH)
+    return (nx, 0.0, nx + nw, nh)
+
+
+_worker_img = None
+_worker_params = None
+
+
+def _zoom_worker_init(bg_path, params):
+    global _worker_img, _worker_params
+    _worker_img = Image.open(bg_path).convert("RGB")
+    _worker_params = params
+
+
+def _zoom_render_frame(args):
+    i, t = args
+    zoom_start, duration, zoom_x, zoom_w = _worker_params
+    native_w, native_h = _worker_img.size
+    box = zoom_box(t, zoom_start, duration, native_w, native_h, zoom_x, zoom_w)
+    frame = _worker_img.resize((WIDTH, HEIGHT), Image.LANCZOS, box=box)
+    return i, frame.tobytes()
+
+
+def render_zoomed_background(bg_path, out_path, duration, fps, zoom_start,
+                              zoom_x=250, zoom_w=390):
+    """Pre-renders the zoom as a plain background video, with the crop done
+    as a single sub-pixel-accurate resize per frame in Python (PIL) instead
+    of ffmpeg's scale+crop -- each of which independently snaps to whole
+    pixels every frame, and the two snaps don't agree with each other,
+    which is what actually produced the visible stepping/shimmer. This is
+    the only rounding that happens: one resize, straight to the final
+    1920x1080 output grid. Cached by a sidecar file so re-running the main
+    script for text/box tweaks doesn't re-render the zoom unless its own
+    inputs (source image, duration, zoom timing) actually changed.
+    """
+    # Bump this whenever zoom_box's formula/curve changes -- the key below
+    # only covers its *inputs*, so a pure logic change wouldn't otherwise
+    # invalidate an already-cached (now stale) render.
+    ZOOM_FORMULA_VERSION = "window_width_v2"
+
+    cache_file = out_path.with_suffix(".cache.json")
+    cache_key = {
+        "formula_version": ZOOM_FORMULA_VERSION,
+        "bg_mtime": Path(bg_path).stat().st_mtime,
+        "duration": duration, "fps": fps, "zoom_start": zoom_start,
+        "zoom_x": zoom_x, "zoom_w": zoom_w, "width": WIDTH, "height": HEIGHT,
+    }
+    if out_path.exists() and cache_file.exists():
+        try:
+            if json.loads(cache_file.read_text()) == cache_key:
+                print(f"Using cached zoomed background: {out_path.name}")
+                return
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    n_frames = math.ceil(duration * fps)
+    params = (zoom_start, duration, zoom_x, zoom_w)
+    nproc = os.cpu_count() or 4
+    print(f"Rendering {n_frames} zoomed background frames "
+          f"(sub-pixel, {nproc} processes)...")
+
+    # crf 10 (near-lossless) for this intermediate: it gets decoded and
+    # re-encoded again in the final compositing pass, and compressing it
+    # hard twice would double up H.264's lossy DCT quantization and 4:2:0
+    # chroma subsampling right where we're trying to eliminate shimmer.
+    ffmpeg_cmd = [
+        "ffmpeg", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
+        "-s", f"{WIDTH}x{HEIGHT}", "-r", str(fps), "-i", "-",
+        "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "10",
+        "-pix_fmt", "yuv420p", str(out_path),
+    ]
+    proc = subprocess.Popen(ffmpeg_cmd, stdin=subprocess.PIPE)
+
+    tasks = [(i, i / fps) for i in range(n_frames)]
+    try:
+        with mp.Pool(nproc, initializer=_zoom_worker_init,
+                     initargs=(str(bg_path), params)) as pool:
+            for _, data in pool.imap(_zoom_render_frame, tasks, chunksize=8):
+                proc.stdin.write(data)
+        proc.stdin.close()
+    except BrokenPipeError:
+        pass  # ffmpeg exited early; proc.wait()/returncode below reports why
+    proc.wait()
+    if proc.returncode != 0:
+        sys.exit("ffmpeg failed encoding the zoomed background")
+
+    cache_file.write_text(json.dumps(cache_key))
+    print(f"Wrote {out_path.name}")
+
+
+def esc_path(p):
+    # ffmpeg filtergraph option values: escape ':' so it isn't read as a
+    # filter-option separator (irrelevant on typical macOS paths, kept
+    # defensively since textfile paths are user-controlled).
+    return str(p).replace(":", r"\:")
+
+
+def drawbox(x, y, w, h, color, start, end, fill):
+    t = "fill" if fill else "3"
+    return (
+        f"drawbox=x={x}:y={y}:w={w}:h={h}:color={color}:t={t}:"
+        f"enable='between(t,{start:.3f},{end - EPSILON:.3f})'"
+    )
+
+
+def drawtext(textfile, fontfile, fontsize, color, x, y, start, end, box=True):
+    parts = [
+        f"fontfile='{esc_path(fontfile)}'",
+        f"textfile='{esc_path(textfile)}'",
+        f"fontsize={fontsize}",
+        f"fontcolor={color}",
+        f"x={x}",
+        f"y={y}",
+        f"enable='between(t,{start:.3f},{end - EPSILON:.3f})'",
+    ]
+    if box:
+        parts += ["box=1", "boxcolor=black@0.45", "boxborderw=16"]
+    return "drawtext=" + ":".join(parts)
+
+
+def main():
+    BUILD_DIR.mkdir(exist_ok=True)
+    DIST_DIR.mkdir(exist_ok=True)
+
+    audio_file, duration, cues = load_cues()
+    audio_path = HERE / audio_file
+
+    tmpdir = Path(tempfile.mkdtemp(prefix="bateau_video_"))
+    filters = []
+    inputs = []  # (ffmpeg input args list,)
+
+    # --- background slideshow: one looped/trimmed image input per segment ---
+    bg_segs = background_segments(cues, duration)
+    missing = [bg for _, _, bg in bg_segs if not (HERE / bg).exists()]
+    if missing:
+        sys.exit(f"Missing background image(s): {missing}")
+
+    # Ken Burns zoom onto the "supposed Rimbaud" face: starts at the first
+    # Vamp section, ends at the track's close. A single background spanning
+    # that whole stretch is pre-rendered (sub-pixel accurate, in Python --
+    # see render_zoomed_background) rather than built from ffmpeg's
+    # scale+crop, which independently snaps each to whole pixels every
+    # frame and was the actual source of the zoom's visible stepping.
+    # Multiple backgrounds fall back to the old ffmpeg-only path (the zoom
+    # isn't built to span more than one image).
+    n_bg = len(bg_segs)
+    zoom_start = next((c["start"] for c in cues if c["section"] == "Vamp"), None)
+    if n_bg == 1 and zoom_start is not None and zoom_start < duration:
+        start, end, bg = bg_segs[0]
+        zoomed_bg_path = BUILD_DIR / "bateau_zoomed_bg.mp4"
+        render_zoomed_background(HERE / bg, zoomed_bg_path, duration, FPS, zoom_start)
+        inputs += ["-i", str(zoomed_bg_path)]
+        filters.append("[0:v]setsar=1[bg0]")
+        video_label = "bg0"
+    else:
+        concat_labels = []
+        for i, (start, end, bg) in enumerate(bg_segs):
+            seg_dur = end - start
+            inputs += ["-loop", "1", "-t", f"{seg_dur:.3f}", "-i", str(HERE / bg)]
+            label = f"bg{i}"
+            filters.append(
+                f"[{i}:v]scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,"
+                f"crop={WIDTH}:{HEIGHT},fps={FPS},setsar=1[{label}]"
+            )
+            concat_labels.append(f"[{label}]")
+        if n_bg > 1:
+            filters.append("".join(concat_labels) + f"concat=n={n_bg}:v=1:a=0[bgall]")
+            video_label = "bgall"
+        else:
+            video_label = concat_labels[0].strip("[]")
+
+    # chain labels sequentially since drawtext filters must stack on one pipe
+    def next_label(prefix):
+        next_label.n += 1
+        return f"{prefix}{next_label.n}"
+    next_label.n = 0
+
+    chain = video_label
+    final_filters = []
+
+    # --- chord cluster: one semi-transparent box behind everything written
+    # (the heard chord -- Suno's reading when given, else the written chord
+    # -- plus the written/composed chord underneath), ALWAYS shown together
+    # so the attribution reads as a constant, not just a flag for divergence.
+    # Anchored to the bottom-right corner, clear of the zoomed-in face.
+    #
+    # drawbox's own x/y expressions see `w`/`h` as ITS OWN width/height
+    # options (self-reference), not the frame size -- unlike drawtext, where
+    # bare w/h do mean frame size. Since WIDTH/HEIGHT are fixed constants
+    # here, the box and its text are positioned with plain literal pixel
+    # numbers computed in Python instead, sidestepping that footgun entirely.
+    # The box itself stays on screen for the whole video, independent of
+    # any single cue -- only the text inside it comes and goes per cue.
+    BOX_W, BOX_H, PAD = 800, 328, 60
+    BOX_X, BOX_Y = WIDTH - BOX_W - PAD, HEIGHT - BOX_H - PAD
+    TEXT_CENTER_X = BOX_X + BOX_W // 2
+    out = next_label("v")
+    final_filters.append(
+        f"[{chain}]" + drawbox(BOX_X, BOX_Y, BOX_W, BOX_H, "black@0.55", 0.0, duration, fill=True)
+        + f"[{out}]"
+    )
+    chain = out
+
+    # Both captions are permanent fixtures of the box -- shown for the whole
+    # video, not just while a cue happens to have a chord -- so the box
+    # never has an empty/unlabelled moment even when there's nothing to
+    # report for the current instant.
+    heard_cap_tf = tmpdir / "heard_cap.txt"
+    heard_cap_tf.write_text("CHORD YOU HEAR")
+    out = next_label("v")
+    final_filters.append(
+        f"[{chain}]"
+        + drawtext(heard_cap_tf, FONT_SECTION, 30, "0xFFFFFFbb",
+                   f"{TEXT_CENTER_X}-text_w/2", BOX_Y + 18, 0.0, duration, box=False)
+        + f"[{out}]"
+    )
+    chain = out
+
+    written_cap_tf = tmpdir / "written_cap.txt"
+    written_cap_tf.write_text("Chord originally written by Christophe Thiebaud")
+    out = next_label("v")
+    final_filters.append(
+        f"[{chain}]"
+        + drawtext(written_cap_tf, FONT_SECTION_ITALIC, 26, GOLD,
+                   f"{TEXT_CENTER_X}-text_w/2", BOX_Y + 193, 0.0, duration, box=False)
+        + f"[{out}]"
+    )
+    chain = out
+
+    for cue in cues:
+        chord = (cue.get("chord") or "").strip()
+        if not chord:
+            continue
+        s, e = cue["start"], cue["end"]
+        heard = (cue.get("chord_suno") or "").strip() or chord
+
+        tf = tmpdir / f"heard_{s:.3f}.txt"
+        tf.write_text(heard)
+        out = next_label("v")
+        final_filters.append(
+            f"[{chain}]"
+            + drawtext(tf, FONT_CHORD, 88, "white",
+                       f"{TEXT_CENTER_X}-text_w/2", BOX_Y + 53, s, e, box=False)
+            + f"[{out}]"
+        )
+        chain = out
+
+        tf = tmpdir / f"written_{s:.3f}.txt"
+        tf.write_text(chord)
+        out = next_label("v")
+        final_filters.append(
+            f"[{chain}]"
+            + drawtext(tf, FONT_CHORD, 56, "white",
+                       f"{TEXT_CENTER_X}-text_w/2", BOX_Y + 243, s, e, box=False)
+            + f"[{out}]"
+        )
+        chain = out
+
+    # --- comment text (smaller, below chord) ---
+    for cue in cues:
+        comment = (cue.get("comment") or "").strip()
+        if not comment:
+            continue
+        tf = tmpdir / f"comment_{cue['start']:.3f}.txt"
+        tf.write_text(comment)
+        out = next_label("v")
+        final_filters.append(
+            f"[{chain}]"
+            + drawtext(
+                tf, FONT_COMMENT, 36, "0xF2E9DCff",
+                "(w-text_w)/2", "h-70",
+                cue["start"], cue["end"],
+            )
+            + f"[{out}]"
+        )
+        chain = out
+
+    all_filters = filters + final_filters
+    filter_complex = ";\n".join(all_filters)
+    # kept on disk too, for inspecting/debugging the generated graph
+    script_path = tmpdir / "filter_complex.txt"
+    script_path.write_text(filter_complex)
+
+    audio_input_index = n_bg
+    cmd = [
+        "ffmpeg", "-y",
+        *inputs,
+        "-i", str(audio_path),
+        "-filter_complex", filter_complex,
+        "-map", f"[{chain}]",
+        "-map", f"{audio_input_index}:a",
+        "-t", f"{duration:.3f}",
+        "-c:v", "libx264", "-preset", "medium", "-crf", "16", "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-b:a", "192k",
+        str(OUTPUT),
+    ]
+    print("Running ffmpeg ({} filters)...".format(len(all_filters)))
+    subprocess.run(cmd, check=True)
+    print(f"Wrote {OUTPUT}")
+
+
+if __name__ == "__main__":
+    main()

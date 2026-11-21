@@ -1,6 +1,3 @@
-[Intro]
-
-[Verse]
 Comme je dèssandè dé Fleuveu zin passibles,
 Je ne me santi plu guidé par lé haleurs :
 Dè Pô-Rouje criar lé zavè pri pour cibles
@@ -38,7 +35,7 @@ Fèrmanteu lé rousseurs zamères de l'amour !
 
 Je sé lé cieu crevan tan néclèrs, è lé trombes
 È lé ressacs è lé couran : je sé le soir,
-Lô beu ègzaltée inssi qu'un peuple de colombes,
+L'Aube ègzaltée inssi qu'un peuple de colombes,
 È jé vu kèlkefoi se ke l'homme a cru voir !
 
 Jé vu le solèy ba, taché dorreurs mistiques,
@@ -76,7 +73,7 @@ Du flo bleu, sé poissons dor, sé poissons chantants.
 — Dèz écu meu de fleurs on bèrcé mé dérades
 È dinèfables vents mon tai lé par instants.
 
-Parfoi, martir lassé dé paules è dé zaunes,
+Parfoi, martir lassé dé pauleu zè dé zaunes,
 La mèr don le sanglo feuzè mon roulis doux
 Montè vèrs moi sé fleurs dombre ô vantouseu jaunes
 È je restè, inssi kuneu femme à jenoux....

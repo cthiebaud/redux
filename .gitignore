@@ -1,4 +1,10 @@
 *.logicx
+LogicPro/
+Suno/
+bateau/build/
+bateau/video/build/
+bateau/video/dist/
+bateau/video/cache/
 extras/
 
 __pycache__/
