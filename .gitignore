@@ -5,6 +5,9 @@ bateau/build/
 bateau/video/build/
 bateau/video/dist/
 bateau/video/cache/
+bateau/video/karaoke/build/
+bateau/video/karaoke/dist/
+bateau/video/karaoke/cache/
 extras/
 
 __pycache__/
